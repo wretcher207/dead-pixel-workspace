@@ -4,7 +4,16 @@
       "Bash(git init:*)",
       "Bash(git branch:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "Bash(gh repo:*)",
+      "Bash(where gh:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh --version)",
+      "Bash(export PATH=\"$PATH:/c/Users/david/AppData/Local/GitHub CLI\")",
+      "Bash(where gh.exe)",
+      "Bash(winget install:*)",
+      "Bash(/c/Program Files/GitHub CLI/gh.exe repo:*)"
     ]
   }
 }
