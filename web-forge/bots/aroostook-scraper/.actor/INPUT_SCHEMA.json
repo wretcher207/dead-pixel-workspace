@@ -1,0 +1,69 @@
+{
+  "title": "Aroostook County Business Scraper",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "categories": {
+      "title": "Business Categories",
+      "type": "array",
+      "description": "Business categories to search on Google Maps",
+      "editor": "stringList",
+      "default": [
+        "medical offices",
+        "dental offices",
+        "veterinary clinics",
+        "auto repair",
+        "insurance agencies",
+        "property management",
+        "hotels motels",
+        "funeral homes",
+        "plumbing HVAC electrical",
+        "legal offices",
+        "real estate agencies",
+        "accounting tax preparation",
+        "pharmacies"
+      ]
+    },
+    "towns": {
+      "title": "Towns",
+      "type": "array",
+      "description": "Towns to search within Aroostook County",
+      "editor": "stringList",
+      "default": [
+        "Houlton",
+        "Presque Isle",
+        "Caribou",
+        "Fort Kent",
+        "Madawaska",
+        "Van Buren",
+        "Limestone",
+        "Mars Hill",
+        "Ashland",
+        "Fort Fairfield",
+        "Washburn",
+        "Easton",
+        "Mapleton"
+      ]
+    },
+    "maxConcurrency": {
+      "title": "Max Concurrent Browsers",
+      "type": "integer",
+      "description": "Maximum number of browser tabs running at once",
+      "default": 3,
+      "maximum": 5,
+      "minimum": 1
+    },
+    "delayMin": {
+      "title": "Min Delay (seconds)",
+      "type": "integer",
+      "description": "Minimum random delay between actions",
+      "default": 2
+    },
+    "delayMax": {
+      "title": "Max Delay (seconds)",
+      "type": "integer",
+      "description": "Maximum random delay between actions",
+      "default": 5
+    }
+  }
+}
