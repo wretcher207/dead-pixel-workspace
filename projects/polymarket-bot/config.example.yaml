@@ -1,0 +1,33 @@
+mode: paper  # paper | live
+
+polling_interval: 30  # seconds between market scans
+
+telegram:
+  bot_token: "YOUR_TELEGRAM_BOT_TOKEN"
+  chat_id: "YOUR_CHAT_ID"
+
+wallet:
+  private_key: "YOUR_POLYGON_PRIVATE_KEY"
+  chain_id: 137
+
+polymarket:
+  clob_host: "https://clob.polymarket.com"
+  gamma_host: "https://gamma-api.polymarket.com"
+
+risk:
+  max_bet: 5.00
+  max_exposure: 50.00
+  max_daily_trades: 20
+  max_per_market: 10.00
+
+strategies:
+  market_signals:
+    enabled: true
+    min_confidence: 0.6
+    price_move_threshold: 0.10
+    volume_spike_threshold: 3.0
+    lookback_minutes: 60
+  arbitrage:
+    enabled: false
+    min_confidence: 0.7
+    min_spread: 0.03
