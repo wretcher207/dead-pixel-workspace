@@ -33,21 +33,26 @@ export async function createCrawler({ maxConcurrency, delayMin, delayMax }) {
         async requestHandler({ page, request, enqueueLinks }) {
             const { category, town } = request.userData;
 
+            // Dismiss Google consent dialog if present
+            const consentBtn = await page.$('button[aria-label="Accept all"]').catch(() => null);
+            if (consentBtn) {
+                await consentBtn.click();
+                await new Promise((r) => setTimeout(r, 2000));
+            }
+
             // Random delay to avoid detection
             const delay = (Math.random() * (delayMax - delayMin) + delayMin) * 1000;
             await new Promise((r) => setTimeout(r, delay));
 
             if (request.userData.isDetailPage) {
                 // === DETAIL PAGE: extract business data ===
-                await page.waitForSelector(SELECTORS.businessName, { timeout: 10000 }).catch(() => null);
+                await page.waitForSelector(SELECTORS.businessName, { timeout: 15000 }).catch(() => null);
 
-                // Check seasonal/closed status
-                const statusText = await page.$eval(
-                    `${SELECTORS.temporarilyClosed}, ${SELECTORS.permanentlyClosed}`,
-                    (el) => el.textContent
-                ).catch(() => null);
+                // Check seasonal/closed status via page text
+                const pageText = await page.content();
+                const hasClosedMarker = pageText.includes('Permanently closed') || pageText.includes('Temporarily closed');
 
-                if (isSeasonalBusiness(statusText)) {
+                if (hasClosedMarker && isSeasonalBusiness(await page.textContent('body').catch(() => ''))) {
                     log.info(`Skipping seasonal/closed: ${request.url}`);
                     return;
                 }
@@ -70,8 +75,10 @@ export async function createCrawler({ maxConcurrency, delayMin, delayMax }) {
                 // === SEARCH RESULTS PAGE: scroll and enqueue listings ===
                 log.info(`Searching: ${category} in ${town}`);
 
-                // Wait for results to load
-                await page.waitForSelector(SELECTORS.scrollContainer, { timeout: 15000 }).catch(() => null);
+                // Wait for results feed to load
+                await page.waitForSelector(SELECTORS.scrollContainer, { timeout: 30000 }).catch(() => null);
+                // Extra wait for results to populate
+                await new Promise((r) => setTimeout(r, 3000));
 
                 // Scroll the results panel to load all listings
                 const scrollContainer = await page.$(SELECTORS.scrollContainer);
