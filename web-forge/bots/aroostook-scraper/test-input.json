@@ -1,0 +1,7 @@
+{
+  "categories": ["veterinary clinics"],
+  "towns": ["Houlton"],
+  "maxConcurrency": 1,
+  "delayMin": 3,
+  "delayMax": 6
+}
