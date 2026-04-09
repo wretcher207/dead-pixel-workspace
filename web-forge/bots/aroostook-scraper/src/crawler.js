@@ -13,8 +13,11 @@ import { Actor } from 'apify';
  * @param {number} options.delayMin - min random delay in seconds
  * @param {number} options.delayMax - max random delay in seconds
  */
-export function createCrawler({ maxConcurrency, delayMin, delayMax }) {
+export async function createCrawler({ maxConcurrency, delayMin, delayMax }) {
     const dedup = new Deduplicator();
+    const proxyConfiguration = await Actor.createProxyConfiguration({
+        groups: ['RESIDENTIAL'],
+    });
 
     const crawler = new PlaywrightCrawler({
         maxConcurrency,
@@ -23,9 +26,7 @@ export function createCrawler({ maxConcurrency, delayMin, delayMax }) {
                 headless: true,
             },
         },
-        proxyConfiguration: Actor.createProxyConfiguration({
-            groups: ['RESIDENTIAL'],
-        }),
+        proxyConfiguration,
         navigationTimeoutSecs: 60,
         requestHandlerTimeoutSecs: 120,
 

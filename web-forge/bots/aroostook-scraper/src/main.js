@@ -18,7 +18,7 @@ try {
     log.info(`Starting scrape: ${categories.length} categories x ${towns.length} towns = ${categories.length * towns.length} searches`);
 
     const searchRequests = generateSearchUrls(categories, towns);
-    const crawler = createCrawler({ maxConcurrency, delayMin, delayMax });
+    const crawler = await createCrawler({ maxConcurrency, delayMin, delayMax });
 
     await crawler.run(searchRequests);
 
