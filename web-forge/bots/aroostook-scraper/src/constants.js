@@ -36,7 +36,7 @@ export const SELECTORS = {
     searchBox: '#searchboxinput',
     resultItem: 'div[role="feed"] > div > div > a',
     scrollContainer: 'div[role="feed"]',
-    businessName: 'main[aria-label] h1',
+    businessName: 'h1',
     phone: 'button[data-item-id^="phone"]',
     address: 'button[data-item-id="address"]',
     website: 'a[data-item-id="authority"]',
