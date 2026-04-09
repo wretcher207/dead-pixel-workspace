@@ -1,6 +1,7 @@
 import pytest
 from src.strategies.base import Signal
 from src.strategies.market_signals import MarketSignalsStrategy
+from src.strategies.arbitrage import ArbitrageStrategy
 
 
 @pytest.fixture
@@ -61,3 +62,41 @@ def test_analyze_returns_empty_on_no_snapshots(strategy):
     current = {"price": 0.5, "volume": 100}
     signals = strategy.analyze_market("0x1", "Q?", "t", current, [])
     assert signals == []
+
+
+@pytest.fixture
+def arb_strategy():
+    return ArbitrageStrategy({"min_confidence": 0.7, "min_spread": 0.03})
+
+
+def test_complement_mispricing(arb_strategy):
+    market = {"condition_id": "0x1", "question": "Will it rain?", "yes_price": 0.45, "no_price": 0.50,
+              "outcome_yes_token": "ty", "outcome_no_token": "tn"}
+    signals = arb_strategy.check_complement(market)
+    assert len(signals) >= 1
+    assert signals[0].side == "BUY"
+    assert "complement" in signals[0].reason.lower()
+
+
+def test_no_complement_arb_when_fair(arb_strategy):
+    market = {"condition_id": "0x1", "question": "Test?", "yes_price": 0.50, "no_price": 0.50,
+              "outcome_yes_token": "ty", "outcome_no_token": "tn"}
+    signals = arb_strategy.check_complement(market)
+    assert len(signals) == 0
+
+
+def test_overpriced_complement(arb_strategy):
+    market = {"condition_id": "0x1", "question": "Test?", "yes_price": 0.55, "no_price": 0.50,
+              "outcome_yes_token": "ty", "outcome_no_token": "tn"}
+    signals = arb_strategy.check_complement(market)
+    assert len(signals) >= 1
+    assert signals[0].side == "SELL"
+
+
+def test_related_market_inconsistency(arb_strategy):
+    markets = [
+        {"condition_id": "0x1", "question": "Will Biden run in 2028?", "yes_price": 0.30, "outcome_yes_token": "t1"},
+        {"condition_id": "0x2", "question": "Will Biden win in 2028?", "yes_price": 0.35, "outcome_yes_token": "t2"},
+    ]
+    signals = arb_strategy.check_related_markets(markets)
+    assert isinstance(signals, list)
