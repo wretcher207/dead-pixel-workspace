@@ -7,8 +7,8 @@ describe('extractBusinessData', () => {
             $eval: (selector, fn) => {
                 const values = {
                     'h1': 'Houlton Veterinary Clinic',
-                    'button[data-item-id^="phone"] .fontBodyMedium': '(207) 532-1234',
-                    'button[data-item-id="address"] .fontBodyMedium': '123 Main St, Houlton, ME 04730',
+                    'button[data-item-id^="phone"]': '(207) 532-1234',
+                    'button[data-item-id="address"]': '123 Main St, Houlton, ME 04730',
                 };
                 return Promise.resolve(values[selector] || null);
             },
