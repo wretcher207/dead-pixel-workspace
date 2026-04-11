@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.DS_Store
+*.log
+.env*
+!.env.example
+public/images/showcase/*-800.webp
+public/images/showcase/*-1600.webp
+public/images/logo-480.webp
