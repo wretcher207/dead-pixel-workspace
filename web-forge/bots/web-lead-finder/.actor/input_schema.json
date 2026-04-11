@@ -1,0 +1,41 @@
+{
+  "title": "Web Lead Finder Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "categories": {
+      "title": "Business categories to search",
+      "type": "array",
+      "description": "List of business types to search for on Google Maps. Examples: tattoo shop, hair salon, coffee shop.",
+      "editor": "stringList",
+      "default": ["tattoo shop", "hair salon", "barbershop", "coffee shop", "record store", "skate shop", "guitar store", "nail salon", "piercing studio"]
+    },
+    "locations": {
+      "title": "Locations to search",
+      "type": "array",
+      "description": "Towns or cities to search in. Format: 'City, State'. Example: Portland, Maine.",
+      "editor": "stringList",
+      "default": ["Portland, Maine", "Bangor, Maine", "Lewiston, Maine", "Augusta, Maine", "Biddeford, Maine"]
+    },
+    "maxConcurrency": {
+      "title": "Max concurrent browsers",
+      "type": "integer",
+      "description": "How many browser tabs run in parallel. Keep at 3 to avoid blocks.",
+      "default": 3,
+      "minimum": 1,
+      "maximum": 10
+    },
+    "delayMin": {
+      "title": "Min delay between requests (seconds)",
+      "type": "integer",
+      "description": "Minimum random delay between page requests to avoid detection.",
+      "default": 2
+    },
+    "delayMax": {
+      "title": "Max delay between requests (seconds)",
+      "type": "integer",
+      "description": "Maximum random delay between page requests to avoid detection.",
+      "default": 5
+    }
+  }
+}

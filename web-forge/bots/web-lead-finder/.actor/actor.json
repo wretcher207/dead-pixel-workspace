@@ -1,0 +1,10 @@
+{
+  "actorSpecification": 1,
+  "name": "web-lead-finder",
+  "title": "Web Lead Finder — No-Website Business Detector",
+  "description": "Finds new small businesses without proper websites. Scores leads A/B/C based on social presence and recency. Built for Dead Pixel Design outreach.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "environmentVariables": {},
+  "dockerfile": "../Dockerfile"
+}
