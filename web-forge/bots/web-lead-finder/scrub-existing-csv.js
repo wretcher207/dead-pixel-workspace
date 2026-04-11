@@ -9,6 +9,13 @@
 import fs from 'fs';
 import path from 'path';
 import { checkDomainExists } from './src/extractor.js';
+import { EXCLUDED_KEYWORDS } from './src/constants.js';
+
+function isExcludedBrand(name) {
+    if (!name) return false;
+    const lower = name.toLowerCase();
+    return EXCLUDED_KEYWORDS.some((kw) => lower.includes(kw));
+}
 
 const inputFile = process.argv[2] || '2026-04-10_maine-leads.csv';
 
@@ -65,6 +72,17 @@ async function worker() {
         if (!job) return;
         const cols = parseCsvRow(job.row);
         const name = cols[nameIdx];
+
+        // Brand chain filter — catches Walmart, Dick's, etc. that slipped past
+        // the upstream exclusion list. Mark them as "found" with a BRAND tag
+        // so they get dropped.
+        if (isExcludedBrand(name)) {
+            results[job.idx] = { row: job.row, name, found: 'BRAND_CHAIN' };
+            i++;
+            process.stdout.write(`[${String(i).padStart(4)}/${rows.length}] ${name.padEnd(45).slice(0, 45)}  BRAND CHAIN\n`);
+            continue;
+        }
+
         const found = await checkDomainExists(name);
         results[job.idx] = { row: job.row, name, found };
         i++;
