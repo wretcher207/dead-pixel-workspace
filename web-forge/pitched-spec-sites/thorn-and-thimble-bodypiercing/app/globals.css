@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", "Cormorant Garamond", serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --ink: #0a0706;
+  --ink-700: #17110d;
+  --ink-600: #1f1812;
+  --bone: #f3ebdd;
+  --rose: #c79b72;
+  --rose-light: #e3b48a;
+  --mute: #8a7a66;
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "ss02", "ss03", "kern";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(199, 155, 114, 0.09), transparent 60%),
+    radial-gradient(1000px 500px at -10% 30%, rgba(217, 168, 148, 0.07), transparent 65%),
+    radial-gradient(800px 800px at 50% 120%, rgba(199, 155, 114, 0.06), transparent 70%),
+    #0a0706;
+}
+
+::selection {
+  background: rgba(227, 180, 138, 0.3);
+  color: #fbf6ec;
+}
+
+/* Scrollbar (desktop) */
+::-webkit-scrollbar {
+  width: 10px;
+  background: #0a0706;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2018;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a2e23;
+}
+
+/* Typography utilities */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 20, "WONK" 0;
+}
+
+.display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 70, "WONK" 1;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+
+/* Hairline divider */
+.hairline {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(199, 155, 114, 0.45) 20%,
+    rgba(227, 180, 138, 0.65) 50%,
+    rgba(199, 155, 114, 0.45) 80%,
+    transparent
+  );
+}
+
+/* Grain overlay */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 0 0.86  0 0 0 0.12 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* Focus states */
+*:focus-visible {
+  outline: 2px solid var(--rose-light);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Buttons */
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.15rem 2.1rem;
+  background: linear-gradient(135deg, #d4a077 0%, #c79b72 50%, #b58560 100%);
+  color: #17110d;
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  border: 1px solid rgba(227, 180, 138, 0.6);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 500ms ease;
+  box-shadow: 0 20px 60px -30px rgba(199, 155, 114, 0.7),
+    inset 0 1px 0 rgba(255, 234, 208, 0.6);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 30px 80px -30px rgba(199, 155, 114, 0.85),
+    inset 0 1px 0 rgba(255, 234, 208, 0.8);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.1rem 0;
+  color: var(--bone);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(243, 235, 221, 0.18);
+  transition: color 400ms ease, border-color 400ms ease;
+}
+.btn-ghost:hover {
+  color: var(--rose-light);
+  border-color: rgba(227, 180, 138, 0.55);
+}
+
+/* Decorative pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem 0.55rem 0.8rem;
+  border: 1px solid rgba(243, 235, 221, 0.14);
+  background: rgba(243, 235, 221, 0.03);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(243, 235, 221, 0.84);
+}
+.pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--rose-light);
+  box-shadow: 0 0 10px rgba(227, 180, 138, 0.7);
+}
+
+/* Section label */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+.section-label::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rose));
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
