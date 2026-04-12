@@ -1,0 +1,24 @@
+{
+  "name": "claudes-receipts-helper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Headless helper agent that tails Claude Code JSONL transcripts and forwards metadata to Claude's Receipts.",
+  "main": "dist/index.js",
+  "bin": {
+    "claudes-receipts-helper": "dist/cli.js"
+  },
+  "scripts": {
+    "dev": "tsx src/cli.ts run",
+    "register": "tsx src/cli.ts register",
+    "build": "tsc",
+    "start": "node dist/cli.js run"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

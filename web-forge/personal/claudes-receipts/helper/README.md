@@ -1,19 +1,71 @@
-# Helper App Foundation
+# Claude's Receipts — Helper Agent
 
-The local helper app is the canonical source of truth for Claude's Receipts.
+Headless Node daemon. Tails Claude Code JSONL transcripts under
+`~/.claude/projects/` and posts metadata-only events to the
+dashboard's `/api/ingest` endpoint.
 
-Initial responsibilities:
+This is the v1 helper. A Tauri-shelled version with a settings UI and
+system-tray controls lands later; for now the agent runs as a
+background process you start with npm or a Windows Scheduled Task.
 
-- register a device to a user account
-- store a revocable per-device ingest credential
-- watch the local Claude Code telemetry source
-- normalize metadata-only events
-- batch and retry uploads
-- persist an offline queue for recovery
+## What it reads
 
-Suggested implementation order:
+Claude Code writes one JSONL file per session under
+`~/.claude/projects/<project-slug>/<session-id>.jsonl`. Each line is a
+JSON record. The helper extracts:
 
-1. Tauri shell with a minimal settings screen
-2. background worker that writes an encrypted or protected queue
-3. ingest adapter that emits metadata-only session events
-4. secure upload client against `POST /api/ingest`
+- `queue-operation` with `operation: "enqueue"` → `prompt_submitted`
+- `type: "assistant"` with `message.usage` → `api_request_completed`
+  plus token/cost metadata
+- `tool_use` content blocks in assistant messages → `tool_completed`
+- `tool_result` blocks where `is_error: true` → `api_error`
+
+No prompt content, code, or tool payloads are read or forwarded.
+
+## Setup
+
+```bash
+cd helper
+npm install
+```
+
+Register the device against the dashboard. Mint a device + ingest key
+by hitting `POST /api/devices/register` while signed in, then:
+
+```bash
+npm run register -- \
+  --endpoint https://your-dashboard \
+  --device-id <uuid> \
+  --ingest-key <key>
+```
+
+Configuration lands in `%APPDATA%/claudes-receipts/config.json` on
+Windows or `~/.config/claudes-receipts/config.json` elsewhere, with
+permissions `0600`.
+
+## Run
+
+```bash
+npm run dev     # tsx, with file watching
+npm run build   # tsc -> dist/
+npm start       # node dist/cli.js run
+```
+
+## Offline recovery
+
+Failed uploads are appended to
+`<configDir>/cursors/queue.jsonl`. On the next flush tick, the queue
+is replayed before new events are posted.
+
+## Cursor state
+
+Per-file byte offsets live in `<configDir>/cursors/*.cursor.json` so
+the agent resumes exactly where it stopped on restart and never
+double-sends a line.
+
+## Next
+
+- native Windows service / Linux systemd unit
+- Tauri shell with settings UI, system tray, and pairing flow
+- richer event extraction (accepted/rejected decisions, per-tool
+  timing)
