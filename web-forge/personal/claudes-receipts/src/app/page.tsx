@@ -34,6 +34,7 @@ export default async function Home() {
       ? liveData.highlights
       : dashboardHighlights;
   const demoMode = !liveData?.hasRealData;
+  const effectiveRanking = liveData?.rankingSummary ?? rankingSnapshot;
   return (
     <AppShell currentPath="/" navigation={siteNavigation}>
       <PageHeader
@@ -102,11 +103,11 @@ export default async function Home() {
               <p className="subtle-kicker">Internal Standing</p>
               <div className="stack-sm">
                 <h3 className="record-title">
-                  {rankingSnapshot.percentile} of users had a calmer week.
+                  {effectiveRanking.percentile} of users had a calmer week.
                 </h3>
-                <p className="copy-muted">{rankingSnapshot.summary}</p>
+                <p className="copy-muted">{effectiveRanking.summary}</p>
               </div>
-              <DataList items={rankingSnapshot.dimensions} />
+              <DataList items={effectiveRanking.dimensions} />
             </div>
           </div>
         </div>

@@ -1,16 +1,26 @@
+import { getServerSession } from "next-auth";
 import { AppShell, DataList, PageHeader, SectionBlock } from "@/components/receipts-ui";
-import { deviceSummary, devices } from "@/lib/receipts-data";
+import { authOptions } from "@/lib/auth";
+import { deviceSummary, devices as deviceMocks } from "@/lib/receipts-data";
 import { siteNavigation } from "@/lib/navigation";
+import { loadDeviceCards } from "@/lib/receipts-queries";
 
 export const metadata = {
   title: "Devices",
 };
 
-export default function DevicesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DevicesPage() {
+  const session = await getServerSession(authOptions);
+  const live = await loadDeviceCards(session?.user?.id ?? null);
+  const cards = live && live.length > 0 ? live : deviceMocks;
+  const demoMode = !live || live.length === 0;
+
   return (
     <AppShell currentPath="/devices" navigation={siteNavigation}>
       <PageHeader
-        eyebrow="Surfaces And Machines"
+        eyebrow={demoMode ? "Demo Devices" : "Surfaces And Machines"}
         title="Local, remote-controlled, and lightly incriminating"
         description="Device analysis separates machine identity from interaction mode so remote control sessions are still counted by the box that actually did the work."
         videoSrc="/videos/devices-floor.mp4"
@@ -23,8 +33,11 @@ export default function DevicesPage() {
         description="Nicknames, distribution, remote-control share, and helper status are all represented here because the local helper app owns truth."
       >
         <div className="grid gap-5 lg:grid-cols-3">
-          {devices.map((device) => (
-            <article className="section-frame" key={device.name}>
+          {cards.map((device) => (
+            <article
+              className="section-frame"
+              key={"id" in device ? String(device.id) : device.name}
+            >
               <div className="stack-sm">
                 <p className="subtle-kicker">{device.surfaceMix}</p>
                 <h3 className="record-title">{device.name}</h3>

@@ -20,6 +20,14 @@ import {
   type MachineIntensity,
   type ProjectBurn,
 } from "@/lib/metrics";
+import {
+  computeRankings,
+  DIMENSION_LABELS,
+  formatPercentileAsStanding,
+  loadLatestRankings,
+  type RankingDimension,
+  type UserRankings,
+} from "@/lib/rankings";
 import type {
   DashboardPanel,
   DetailItem,
@@ -234,11 +242,37 @@ export async function loadDashboardData(
     });
   }
 
+  const cachedRankings = await loadLatestRankings(userId);
+  const rankings: UserRankings =
+    cachedRankings && Object.keys(cachedRankings).length > 0
+      ? cachedRankings
+      : await computeRankings(userId);
+
+  const rankingSummary = buildRankingSummary(rankings);
+
   return {
     hasRealData: true,
     overviewStats,
     highlights,
-    rankingSummary: null,
+    rankingSummary,
+  };
+}
+
+function buildRankingSummary(rankings: UserRankings): DashboardData["rankingSummary"] {
+  const entries = Object.entries(rankings) as [RankingDimension, number][];
+  if (entries.length === 0) return null;
+
+  const sorted = [...entries].sort((a, b) => b[1] - a[1]);
+  const headline = sorted[0];
+  const percentile = formatPercentileAsStanding(headline[1]);
+
+  return {
+    percentile,
+    summary: `Highest standing on ${DIMENSION_LABELS[headline[0]].toLowerCase()}.`,
+    dimensions: sorted.slice(0, 4).map(([dim, pct]) => ({
+      label: DIMENSION_LABELS[dim],
+      value: formatPercentileAsStanding(pct),
+    })),
   };
 }
 
@@ -444,6 +478,223 @@ export async function loadSessionDetail(
       },
     ],
   };
+}
+
+export type ProjectCard = {
+  id: string;
+  name: string;
+  status: string;
+  summary: string;
+  facts: DetailItem[];
+};
+
+export async function loadProjectCards(
+  userId: string | null,
+): Promise<ProjectCard[] | null> {
+  const db = getDb();
+  if (!db || !userId) return null;
+
+  const userSessions = await db.query.sessions.findMany({
+    where: eq(sessions.userId, userId),
+  });
+  const projectRows = await db.query.projects.findMany({
+    where: eq(projects.userId, userId),
+  });
+  if (projectRows.length === 0) return [];
+
+  const burns = aggregateCostByProject(userSessions);
+  const leader = burns[0];
+
+  return projectRows
+    .map<ProjectCard>((project) => {
+      const burn =
+        burns.find((b) => b.projectId === project.id) ??
+        ({
+          projectId: project.id,
+          burnCents: 0,
+          costPerActiveHourCents: 0,
+          sessionCount: 0,
+        } satisfies ProjectBurn);
+      const isLeader = leader?.projectId === project.id;
+      const status = project.archived
+        ? "Archived"
+        : isLeader
+          ? "Highest Burn Project"
+          : project.pinned
+            ? "Pinned"
+            : "Tracked";
+      return {
+        id: project.id,
+        name: project.currentAlias ?? project.canonicalKey,
+        status,
+        summary: project.canonicalKey,
+        facts: [
+          { label: "30-day burn", value: formatCents(burn.burnCents) },
+          { label: "Sessions", value: String(burn.sessionCount) },
+          {
+            label: "Cost per active hour",
+            value: formatCents(burn.costPerActiveHourCents),
+          },
+          { label: "Canonical key", value: project.canonicalKey },
+        ],
+      };
+    })
+    .sort((a, b) => {
+      const aCents = Number(a.facts[0].value.replace(/[^0-9.-]/g, "") || "0");
+      const bCents = Number(b.facts[0].value.replace(/[^0-9.-]/g, "") || "0");
+      return bCents - aCents;
+    });
+}
+
+export type ToolCard = {
+  name: string;
+  category: string;
+  summary: string;
+  stats: DetailItem[];
+};
+
+export async function loadToolCards(
+  userId: string | null,
+): Promise<ToolCard[] | null> {
+  const db = getDb();
+  if (!db || !userId) return null;
+
+  const rows = await db
+    .select({
+      toolName: sessionEvents.toolName,
+      total: sql<number>`count(*)`,
+      successes: sql<number>`sum(case when ${sessionEvents.success} then 1 else 0 end)`,
+      averageMs: sql<number>`coalesce(avg(${sessionEvents.durationMs}), 0)`,
+      cost: sql<number>`coalesce(sum(${sessionEvents.estimatedCostCents}), 0)`,
+    })
+    .from(sessionEvents)
+    .innerJoin(sessions, eq(sessions.id, sessionEvents.sessionId))
+    .where(
+      and(
+        eq(sessions.userId, userId),
+        eq(sessionEvents.eventType, "tool_completed"),
+      ),
+    )
+    .groupBy(sessionEvents.toolName);
+
+  if (rows.length === 0) return [];
+
+  const totalCalls = rows.reduce((sum, row) => sum + Number(row.total), 0);
+
+  return rows
+    .map<ToolCard>((row) => {
+      const total = Number(row.total);
+      const successes = Number(row.successes);
+      const successRate = total > 0 ? successes / total : 0;
+      return {
+        name: row.toolName ?? "unknown",
+        category: classifyTool(row.toolName ?? ""),
+        summary: `${total} calls observed across this account.`,
+        stats: [
+          { label: "Associated cost", value: formatCents(Number(row.cost)) },
+          {
+            label: "Usage share",
+            value: formatPercent(totalCalls ? total / totalCalls : 0, 0),
+          },
+          { label: "Success rate", value: formatPercent(successRate, 0) },
+          {
+            label: "Average duration",
+            value: `${Math.round(Number(row.averageMs))}ms`,
+          },
+        ],
+      };
+    })
+    .sort((a, b) => {
+      const aShare = Number(a.stats[1].value.replace("%", ""));
+      const bShare = Number(b.stats[1].value.replace("%", ""));
+      return bShare - aShare;
+    });
+}
+
+export type DeviceCard = {
+  id: string;
+  name: string;
+  surfaceMix: string;
+  summary: string;
+  facts: DetailItem[];
+};
+
+export async function loadDeviceCards(
+  userId: string | null,
+): Promise<DeviceCard[] | null> {
+  const db = getDb();
+  if (!db || !userId) return null;
+
+  const userSessions = await db.query.sessions.findMany({
+    where: eq(sessions.userId, userId),
+  });
+  const deviceRows = await db.query.devices.findMany({
+    where: eq(devices.userId, userId),
+  });
+  if (deviceRows.length === 0) return [];
+
+  const mix = machineIntensity(userSessions);
+  const totalBurn = userSessions.reduce(
+    (sum, session) => sum + session.estimatedCostCents,
+    0,
+  );
+
+  return deviceRows
+    .map<DeviceCard>((device) => {
+      const bucket =
+        mix.find((m) => m.deviceId === device.id) ??
+        ({
+          deviceId: device.id,
+          costCents: 0,
+          activeSeconds: 0,
+          intensityCentsPerHour: 0,
+        } satisfies MachineIntensity);
+      const deviceSessions = userSessions.filter(
+        (s) => s.deviceId === device.id,
+      );
+      const remoteCount = deviceSessions.filter((s) => s.remoteControlled).length;
+      return {
+        id: device.id,
+        name: device.nickname,
+        surfaceMix: device.platform,
+        summary: device.lastSeenAt
+          ? `Last seen ${device.lastSeenAt.toISOString().slice(0, 10)}.`
+          : "No telemetry ingested yet.",
+        facts: [
+          { label: "Sessions", value: String(deviceSessions.length) },
+          {
+            label: "Share of burn",
+            value: formatPercent(
+              totalBurn > 0 ? bucket.costCents / totalBurn : 0,
+              0,
+            ),
+          },
+          { label: "Remote-controlled", value: `${remoteCount} sessions` },
+          {
+            label: "Intensity",
+            value: `${formatCents(bucket.intensityCentsPerHour)}/h active`,
+          },
+        ],
+      };
+    })
+    .sort(
+      (a, b) =>
+        Number(b.facts[1].value.replace("%", "")) -
+        Number(a.facts[1].value.replace("%", "")),
+    );
+}
+
+function classifyTool(name: string): string {
+  const lower = name.toLowerCase();
+  if (lower.includes("shell") || lower.includes("bash") || lower.includes("run"))
+    return "Execution";
+  if (lower.includes("edit") || lower.includes("patch") || lower.includes("write"))
+    return "Editing";
+  if (lower.includes("read") || lower.includes("grep") || lower.includes("glob"))
+    return "Discovery";
+  if (lower.includes("build") || lower.includes("lint") || lower.includes("test"))
+    return "Validation";
+  return "Other";
 }
 
 type ProjectOverview = {
