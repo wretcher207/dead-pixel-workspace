@@ -1,0 +1,52 @@
+import type { MidiMapPreset } from '../types'
+
+export const MIDI_MAP_PRESETS: MidiMapPreset[] = [
+  {
+    name: 'Odeholm Default (Wretcher Fix)',
+    map: {
+      KICK_R: 36, KICK_L: 35, SNARE: 38, SNARE_FLAM: 39, SNARE_RIM: 40, SNARE_GHOST: 38,
+      TOM_1: 47, TOM_2: 45, TOM_3: 43, TOM_4: 41,
+      HH_CLOSED_TIP: 51, HH_CLOSED_EDGE: 52, HH_OPEN_1: 50, HH_OPEN_2: 49, HH_OPEN_3: 48, HH_PEDAL: 53,
+      RIDE_TIP: 58, RIDE_BELL: 59, RIDE_CRASH: 60,
+      CRASH_L: 54, CRASH_R: 56, BIG_CRASH: 61,
+      CHINA_L: 63, CHINA_R: 65, STACK: 67,
+      SPLASH_L: 68, SPLASH_R: 70, BELL: 72,
+    },
+  },
+  {
+    name: 'RS Monarch',
+    map: {
+      KICK_R: 24, KICK_L: 24, SNARE: 26, SNARE_FLAM: 27, SNARE_RIM: 28, SNARE_GHOST: 30,
+      TOM_1: 38, TOM_2: 37, TOM_3: 36, TOM_4: 35,
+      HH_CLOSED_TIP: 41, HH_CLOSED_EDGE: 42, HH_OPEN_1: 45, HH_OPEN_2: 46, HH_OPEN_3: 47, HH_PEDAL: 40,
+      RIDE_TIP: 62, RIDE_BELL: 63, RIDE_CRASH: 61,
+      CRASH_L: 49, CRASH_R: 54, BIG_CRASH: 58,
+      CHINA_L: 56, CHINA_R: 56, STACK: 60,
+      SPLASH_L: 51, SPLASH_R: 51, BELL: 53,
+    },
+  },
+  {
+    name: 'Ultimate Heavy Drums (MDL Tone)',
+    map: {
+      KICK_R: 36, KICK_L: 35, SNARE: 38, SNARE_FLAM: 38, SNARE_RIM: 38, SNARE_GHOST: 38,
+      TOM_1: 48, TOM_2: 47, TOM_3: 45, TOM_4: 43,
+      HH_CLOSED_TIP: 62, HH_CLOSED_EDGE: 61, HH_OPEN_1: 59, HH_OPEN_2: 60, HH_OPEN_3: 60, HH_PEDAL: 44,
+      RIDE_TIP: 51, RIDE_BELL: 53, RIDE_CRASH: 51,
+      CRASH_L: 49, CRASH_R: 57, BIG_CRASH: 66,
+      CHINA_L: 71, CHINA_R: 52, STACK: 71,
+      SPLASH_L: 55, SPLASH_R: 69, BELL: 53,
+    },
+  },
+  {
+    name: 'Sleep Token II by MixWave',
+    map: {
+      KICK_R: 36, KICK_L: 35, SNARE: 38, SNARE_FLAM: 37, SNARE_RIM: 40, SNARE_GHOST: 25,
+      TOM_1: 50, TOM_2: 47, TOM_3: 43, TOM_4: 41,
+      HH_CLOSED_TIP: 75, HH_CLOSED_EDGE: 76, HH_OPEN_1: 77, HH_OPEN_2: 78, HH_OPEN_3: 64, HH_PEDAL: 44,
+      RIDE_TIP: 49, RIDE_BELL: 60, RIDE_CRASH: 59,
+      CRASH_L: 49, CRASH_R: 57, BIG_CRASH: 54,
+      CHINA_L: 95, CHINA_R: 95, STACK: 54,
+      SPLASH_L: 55, SPLASH_R: 55, BELL: 53,
+    },
+  },
+]
