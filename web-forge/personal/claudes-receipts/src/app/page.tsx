@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import {
   AppShell,
   DataList,
@@ -8,6 +9,7 @@ import {
   SectionBlock,
   Timeline,
 } from "@/components/receipts-ui";
+import { authOptions } from "@/lib/auth";
 import { siteNavigation } from "@/lib/navigation";
 import {
   dashboardHighlights,
@@ -16,8 +18,22 @@ import {
   sessionAutopsy,
   telemetryCoverage,
 } from "@/lib/receipts-data";
+import { loadDashboardData } from "@/lib/receipts-queries";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id ?? null;
+  const liveData = await loadDashboardData(userId);
+
+  const effectiveStats =
+    liveData && liveData.hasRealData ? liveData.overviewStats : overviewStats;
+  const effectiveHighlights =
+    liveData && liveData.hasRealData && liveData.highlights.length >= 3
+      ? liveData.highlights
+      : dashboardHighlights;
+  const demoMode = !liveData?.hasRealData;
   return (
     <AppShell currentPath="/" navigation={siteNavigation}>
       <PageHeader
@@ -25,27 +41,32 @@ export default function Home() {
         title="Claude's Receipts"
         description="A browser-accessible receipts engine for Claude Code. Expensive-looking. Metadata only. Mildly accusatory."
         videoSrc="/videos/hero-damage.mp4"
-        stats={overviewStats}
+        stats={effectiveStats}
       />
 
       <section className="layout-grid pt-8">
         <div className="section-frame section-frame-strong span-12">
           <div className="section-split">
             <div className="stack-lg">
-              <p className="eyebrow">Intelligence Wall</p>
+              <p className="eyebrow">
+                {demoMode ? "Demo Mode" : "Intelligence Wall"}
+              </p>
               <h2 className="section-title">
-                The home screen starts with the damage, not the marketing.
+                {demoMode
+                  ? "Sign in and pair a device to replace these numbers with yours."
+                  : "The home screen starts with the damage, not the marketing."}
               </h2>
             </div>
             <p className="copy-muted max-w-2xl">
-              Each panel is clickable and points toward the drill-downs defined
-              in the PRD: sessions, projects, tools, devices, and share flows.
+              {demoMode
+                ? "These panels are the shape the product takes when real telemetry lands. The helper app ships next."
+                : "Each panel is clickable and points toward the drill-downs defined in the PRD: sessions, projects, tools, devices, and share flows."}
             </p>
           </div>
         </div>
       </section>
 
-      <InsightPanels panels={dashboardHighlights} />
+      <InsightPanels panels={effectiveHighlights} />
 
       <SectionBlock
         id="autopsy"

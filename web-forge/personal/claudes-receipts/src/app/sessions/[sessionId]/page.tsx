@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
 import {
   AppShell,
   DataList,
@@ -7,8 +8,10 @@ import {
   SectionBlock,
   Timeline,
 } from "@/components/receipts-ui";
+import { authOptions } from "@/lib/auth";
 import { siteNavigation } from "@/lib/navigation";
-import { getSessionById, sessions } from "@/lib/receipts-data";
+import { getSessionById } from "@/lib/receipts-data";
+import { loadSessionDetail } from "@/lib/receipts-queries";
 
 type SessionPageProps = {
   params: Promise<{
@@ -16,24 +19,23 @@ type SessionPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return sessions.map((session) => ({
-    sessionId: session.id,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: SessionPageProps) {
   const { sessionId } = await params;
-  const session = getSessionById(sessionId);
-
+  const mock = getSessionById(sessionId);
   return {
-    title: session ? session.name : "Session",
+    title: mock ? mock.name : "Session",
   };
 }
 
 export default async function SessionDetailPage({ params }: SessionPageProps) {
   const { sessionId } = await params;
-  const session = getSessionById(sessionId);
+  const authSession = await getServerSession(authOptions);
+  const userId = authSession?.user?.id ?? null;
+
+  const live = await loadSessionDetail(userId, sessionId);
+  const session = live ?? getSessionById(sessionId);
 
   if (!session) {
     notFound();
