@@ -1,5 +1,7 @@
 export const runtimeSetup = {
-  isDatabaseConfigured: Boolean(process.env.DATABASE_URL),
+  isDatabaseConfigured: Boolean(
+    process.env.NETLIFY_DATABASE_URL ?? process.env.DATABASE_URL,
+  ),
   isGitHubAuthConfigured: Boolean(
     process.env.AUTH_GITHUB_ID &&
       process.env.AUTH_GITHUB_SECRET &&

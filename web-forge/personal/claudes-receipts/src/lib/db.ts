@@ -2,8 +2,14 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "@/db/schema";
 
+function resolveDbUrl() {
+  return process.env.NETLIFY_DATABASE_URL ?? process.env.DATABASE_URL ?? null;
+}
+
 function createDb() {
-  const connection = postgres(process.env.DATABASE_URL!, {
+  const url = resolveDbUrl();
+  if (!url) throw new Error("No database URL configured.");
+  const connection = postgres(url, {
     prepare: false,
   });
 
@@ -17,7 +23,7 @@ const globalForDb = globalThis as {
 };
 
 export function getDb() {
-  if (!process.env.DATABASE_URL) {
+  if (!resolveDbUrl()) {
     return null;
   }
 

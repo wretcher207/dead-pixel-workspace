@@ -1,7 +1,8 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { devices, projects, sessionEvents, sessions } from "@/db/schema";
 import { getDb } from "@/lib/db";
+import { estimateCostCents, resolveModelFamily } from "@/lib/metrics";
 import { ingestKeyMatches } from "@/lib/security";
 
 const ingestEventSchema = z.object({
@@ -12,6 +13,10 @@ const ingestEventSchema = z.object({
   toolName: z.string().min(1).optional(),
   success: z.boolean().optional(),
   durationMs: z.number().int().nonnegative().optional(),
+  inputTokens: z.number().int().nonnegative().optional(),
+  outputTokens: z.number().int().nonnegative().optional(),
+  cacheTokens: z.number().int().nonnegative().optional(),
+  model: z.string().min(1).optional(),
 });
 
 const ingestPayloadSchema = z.object({
@@ -103,6 +108,50 @@ export async function POST(request: Request) {
     parsed.data.events[parsed.data.events.length - 1].timestamp,
   );
 
+  let batchInputTokens = 0;
+  let batchOutputTokens = 0;
+  let batchCacheTokens = 0;
+  let batchCostCents = 0;
+  let latestModel: string | null = null;
+
+  const eventRows = parsed.data.events.map((event) => {
+    const inputTokens = event.inputTokens ?? 0;
+    const outputTokens = event.outputTokens ?? 0;
+    const cacheTokens = event.cacheTokens ?? 0;
+    const hasUsage = inputTokens > 0 || outputTokens > 0 || cacheTokens > 0;
+
+    let eventCostCents: number | undefined;
+    if (hasUsage) {
+      const family = resolveModelFamily(event.model);
+      eventCostCents = estimateCostCents(
+        { inputTokens, outputTokens, cacheTokens },
+        family,
+      );
+      batchInputTokens += inputTokens;
+      batchOutputTokens += outputTokens;
+      batchCacheTokens += cacheTokens;
+      batchCostCents += eventCostCents;
+    }
+
+    if (event.model) latestModel = event.model;
+
+    return {
+      id: event.eventId,
+      sessionId: parsed.data.sessionId,
+      eventType: event.eventType,
+      occurredAt: new Date(event.timestamp),
+      deviceId: device.id,
+      projectId,
+      toolName: event.toolName,
+      success: event.success,
+      durationMs: event.durationMs,
+      inputTokens: hasUsage ? inputTokens : undefined,
+      outputTokens: hasUsage ? outputTokens : undefined,
+      cacheTokens: hasUsage ? cacheTokens : undefined,
+      estimatedCostCents: eventCostCents,
+    };
+  });
+
   await db
     .update(devices)
     .set({
@@ -118,8 +167,13 @@ export async function POST(request: Request) {
       deviceId: device.id,
       projectId,
       surface: parsed.data.surface ?? "unknown",
+      modelSummary: latestModel,
       startedAt: firstEventAt,
       endedAt: lastEventAt,
+      inputTokens: batchInputTokens,
+      outputTokens: batchOutputTokens,
+      cacheTokens: batchCacheTokens,
+      estimatedCostCents: batchCostCents,
     })
     .onConflictDoUpdate({
       target: sessions.id,
@@ -128,22 +182,17 @@ export async function POST(request: Request) {
         projectId,
         surface: parsed.data.surface ?? "unknown",
         endedAt: lastEventAt,
+        modelSummary: latestModel
+          ? sql`COALESCE(${latestModel}, ${sessions.modelSummary})`
+          : sessions.modelSummary,
+        inputTokens: sql`${sessions.inputTokens} + ${batchInputTokens}`,
+        outputTokens: sql`${sessions.outputTokens} + ${batchOutputTokens}`,
+        cacheTokens: sql`${sessions.cacheTokens} + ${batchCacheTokens}`,
+        estimatedCostCents: sql`${sessions.estimatedCostCents} + ${batchCostCents}`,
       },
     });
 
-  await db.insert(sessionEvents).values(
-    parsed.data.events.map((event) => ({
-      id: event.eventId,
-      sessionId: parsed.data.sessionId,
-      eventType: event.eventType,
-      occurredAt: new Date(event.timestamp),
-      deviceId: device.id,
-      projectId,
-      toolName: event.toolName,
-      success: event.success,
-      durationMs: event.durationMs,
-    })),
-  ).onConflictDoNothing();
+  await db.insert(sessionEvents).values(eventRows).onConflictDoNothing();
 
   return Response.json({
     ok: true,

@@ -8,6 +8,10 @@ export type IngestEvent = {
   toolName?: string;
   success?: boolean;
   durationMs?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  cacheTokens?: number;
+  model?: string;
 };
 
 export type ParsedOutcome = {
@@ -73,6 +77,12 @@ export function parseRecord(
       eventType: "api_request_completed",
       sessionId,
       timestamp,
+      inputTokens: usage.input_tokens ?? 0,
+      outputTokens: usage.output_tokens ?? 0,
+      cacheTokens:
+        (usage.cache_creation_input_tokens ?? 0) +
+        (usage.cache_read_input_tokens ?? 0),
+      model: message.model ?? undefined,
     });
 
     if (Array.isArray(message.content)) {
@@ -90,7 +100,6 @@ export function parseRecord(
       }
     }
 
-    void usage;
     return events;
   }
 
