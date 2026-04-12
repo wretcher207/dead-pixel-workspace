@@ -11,7 +11,7 @@
 
   let { item, index, total }: Props = $props()
   let editing = $state(false)
-  let labelInput = $state(item.label)
+  let labelInput = $state('')
 
   function loadIntoConfigurator() {
     configuratorStore.set(structuredClone(item.config))
