@@ -684,6 +684,33 @@ export async function loadDeviceCards(
     );
 }
 
+export type ShareListItem = {
+  id: string;
+  slug: string;
+  visibility: string;
+  publishedAt: string | null;
+  url: string;
+};
+
+export async function loadUserShares(
+  userId: string | null,
+): Promise<ShareListItem[] | null> {
+  const db = getDb();
+  if (!db || !userId) return null;
+  const rows = await db.query.shares.findMany({
+    where: (shares, { eq: rowEq }) => rowEq(shares.userId, userId),
+    orderBy: (shares, { desc: rowDesc }) => [rowDesc(shares.publishedAt)],
+    limit: 20,
+  });
+  return rows.map((row) => ({
+    id: row.id,
+    slug: row.shareSlug,
+    visibility: row.visibility,
+    publishedAt: row.publishedAt ? row.publishedAt.toISOString().slice(0, 10) : null,
+    url: `/s/${row.shareSlug}`,
+  }));
+}
+
 function classifyTool(name: string): string {
   const lower = name.toLowerCase();
   if (lower.includes("shell") || lower.includes("bash") || lower.includes("run"))

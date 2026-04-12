@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, sql } from "drizzle-orm";
+import { desc, eq, gte, sql } from "drizzle-orm";
 import {
   rankSnapshots,
   sessionEvents,
