@@ -2,6 +2,7 @@
   import Header from './components/Header.svelte'
   import GrooveLibrary from './components/GrooveLibrary.svelte'
   import GridEditor from './components/GridEditor.svelte'
+  import Configurator from './components/Configurator.svelte'
 </script>
 
 <div class="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col">
@@ -18,9 +19,9 @@
       </div>
     </div>
     <div class="flex-[2] flex flex-col gap-4 min-w-0 overflow-y-auto">
-      <div class="bg-neutral-900 rounded-lg p-4 border border-neutral-800">
+      <div class="bg-neutral-900 rounded-lg p-4 border border-neutral-800 overflow-y-auto">
         <h2 class="text-sm font-bold text-neutral-400 uppercase tracking-wider mb-3">Configurator</h2>
-        <p class="text-neutral-500">Coming next...</p>
+        <Configurator />
       </div>
       <div class="bg-neutral-900 rounded-lg p-4 border border-neutral-800">
         <h2 class="text-sm font-bold text-neutral-400 uppercase tracking-wider mb-3">Session</h2>
