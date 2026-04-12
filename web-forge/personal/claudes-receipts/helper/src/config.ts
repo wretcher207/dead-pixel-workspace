@@ -6,6 +6,7 @@ export type HelperConfig = {
   endpoint: string;
   deviceId: string;
   ingestKey: string;
+  surface: string;
   cursorDir: string;
 };
 
@@ -33,6 +34,7 @@ export function readConfig(): HelperConfig | null {
       endpoint: parsed.endpoint,
       deviceId: parsed.deviceId,
       ingestKey: parsed.ingestKey,
+      surface: parsed.surface ?? "desktop",
       cursorDir: cursorDir(),
     };
   } catch {

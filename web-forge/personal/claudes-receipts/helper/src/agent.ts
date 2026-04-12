@@ -1,15 +1,20 @@
-import path from "node:path";
 import chokidar from "chokidar";
 import {
   claudeProjectsDir,
   type HelperConfig,
 } from "./config.js";
 import {
-  extractUsage,
   parseRecord,
   projectKeyFromPath,
   type IngestEvent,
 } from "./parse.js";
+import {
+  computeSessionEnd,
+  idleSessionIds,
+  recordEventTimestamp,
+  type SessionEndMetadata,
+  type SessionTimeline,
+} from "./session-tracker.js";
 import {
   readCursor,
   readNewLines,
@@ -23,15 +28,17 @@ const FLUSH_INTERVAL_MS = 15_000;
 type Pending = {
   events: IngestEvent[];
   projectKey: string | null;
-  surface: string;
 };
 
 export async function runAgent(config: HelperConfig): Promise<void> {
   const watchRoot = claudeProjectsDir();
   console.log(`[helper] watching ${watchRoot}`);
   console.log(`[helper] ingest target ${config.endpoint}`);
+  console.log(`[helper] surface ${config.surface}`);
 
   const pending = new Map<string, Pending>();
+  const timelines = new Map<string, SessionTimeline>();
+  const closedSessions = new Set<string>();
 
   const handleFile = async (filePath: string) => {
     if (!filePath.endsWith(".jsonl")) return;
@@ -40,12 +47,13 @@ export async function runAgent(config: HelperConfig): Promise<void> {
     const { lines, nextOffset } = await readNewLines(filePath, cursor.offset);
     if (lines.length === 0) return;
 
+    if (closedSessions.has(sessionId)) closedSessions.delete(sessionId);
+
     const bucket =
       pending.get(sessionId) ??
       ({
         events: [],
         projectKey: projectKeyFromPath(filePath),
-        surface: path.sep === "\\" ? "desktop-windows" : "desktop-unix",
       } satisfies Pending);
 
     for (const line of lines) {
@@ -56,16 +64,9 @@ export async function runAgent(config: HelperConfig): Promise<void> {
         continue;
       }
       const events = parseRecord(raw, sessionId);
-      bucket.events.push(...events);
-      const usage = extractUsage(raw);
-      if (usage) {
-        bucket.events.push({
-          eventId: `${sessionId}-${bucket.events.length}-tokens`,
-          eventType: "api_request_completed",
-          sessionId,
-          timestamp:
-            (raw.timestamp as string | undefined) ?? new Date().toISOString(),
-        });
+      for (const event of events) {
+        bucket.events.push(event);
+        recordEventTimestamp(timelines, sessionId, event.timestamp);
       }
     }
 
@@ -80,28 +81,53 @@ export async function runAgent(config: HelperConfig): Promise<void> {
   watcher.on("add", handleFile);
   watcher.on("change", handleFile);
 
+  const send = async (
+    sessionId: string,
+    bucket: Pending,
+    sessionEnd?: SessionEndMetadata,
+  ) => {
+    const payload = {
+      sessionId,
+      surface: config.surface,
+      projectKey: bucket.projectKey,
+      events: bucket.events,
+      sessionEnd,
+    };
+    const ok = await postBatch(config, payload);
+    if (!ok) enqueue(config, payload);
+  };
+
   const flush = async () => {
-    if (pending.size === 0) {
-      await flushQueue(config);
-      return;
-    }
     for (const [sessionId, bucket] of pending.entries()) {
       if (bucket.events.length === 0) {
         pending.delete(sessionId);
         continue;
       }
-      const payload = {
-        sessionId,
-        surface: bucket.surface,
-        projectKey: bucket.projectKey,
-        events: bucket.events,
-      };
-      const ok = await postBatch(config, payload);
-      if (!ok) {
-        enqueue(config, payload);
-      }
+      await send(sessionId, bucket);
       pending.delete(sessionId);
     }
+
+    const now = Date.now();
+    for (const sessionId of idleSessionIds(timelines, now)) {
+      if (closedSessions.has(sessionId)) continue;
+      const timeline = timelines.get(sessionId);
+      if (!timeline) continue;
+      const sessionEnd = computeSessionEnd(timeline);
+      const endedEvent: IngestEvent = {
+        eventId: `${sessionId}-session-ended`,
+        eventType: "session_ended",
+        sessionId,
+        timestamp: sessionEnd.endedAt,
+      };
+      await send(
+        sessionId,
+        { events: [endedEvent], projectKey: null },
+        sessionEnd,
+      );
+      closedSessions.add(sessionId);
+      timelines.delete(sessionId);
+    }
+
     await flushQueue(config);
   };
 

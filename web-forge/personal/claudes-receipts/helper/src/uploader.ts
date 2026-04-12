@@ -2,12 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import type { HelperConfig } from "./config.js";
 import type { IngestEvent } from "./parse.js";
+import type { SessionEndMetadata } from "./session-tracker.js";
 
 export type BatchPayload = {
   sessionId: string;
   surface: string;
   projectKey: string | null;
   events: IngestEvent[];
+  sessionEnd?: SessionEndMetadata;
 };
 
 const RETRY_DELAYS_MS = [1_000, 5_000, 15_000, 60_000, 300_000];
@@ -31,6 +33,7 @@ export async function postBatch(
           surface: payload.surface,
           projectKey: payload.projectKey ?? undefined,
           events: payload.events,
+          sessionEnd: payload.sessionEnd,
         }),
       });
       if (response.ok) return true;

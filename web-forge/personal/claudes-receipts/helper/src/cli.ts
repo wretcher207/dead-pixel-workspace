@@ -10,13 +10,14 @@ async function main() {
     const endpoint = flags.endpoint ?? "http://localhost:3000";
     const deviceId = flags.deviceId;
     const ingestKey = flags.ingestKey;
+    const surface = flags.surface ?? "desktop";
     if (!deviceId || !ingestKey) {
       console.error(
-        "Usage: helper register --endpoint <url> --device-id <uuid> --ingest-key <key>",
+        "Usage: helper register --endpoint <url> --device-id <uuid> --ingest-key <key> [--surface <label>]",
       );
       process.exit(1);
     }
-    writeConfig({ endpoint, deviceId, ingestKey });
+    writeConfig({ endpoint, deviceId, ingestKey, surface });
     console.log("[helper] configuration saved");
     return;
   }

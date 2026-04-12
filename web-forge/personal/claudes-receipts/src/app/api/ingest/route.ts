@@ -19,11 +19,19 @@ const ingestEventSchema = z.object({
   model: z.string().min(1).optional(),
 });
 
+const sessionEndSchema = z.object({
+  endedAt: z.string().min(1),
+  durationSeconds: z.number().int().nonnegative(),
+  activeSeconds: z.number().int().nonnegative(),
+  idleSeconds: z.number().int().nonnegative(),
+});
+
 const ingestPayloadSchema = z.object({
   sessionId: z.string().min(1),
   surface: z.string().min(1).optional(),
   projectKey: z.string().min(1).optional(),
   events: z.array(ingestEventSchema).min(1),
+  sessionEnd: sessionEndSchema.optional(),
 });
 
 export async function POST(request: Request) {
@@ -194,10 +202,24 @@ export async function POST(request: Request) {
 
   await db.insert(sessionEvents).values(eventRows).onConflictDoNothing();
 
+  if (parsed.data.sessionEnd) {
+    const end = parsed.data.sessionEnd;
+    await db
+      .update(sessions)
+      .set({
+        endedAt: new Date(end.endedAt),
+        durationSeconds: end.durationSeconds,
+        activeSeconds: end.activeSeconds,
+        idleSeconds: end.idleSeconds,
+      })
+      .where(eq(sessions.id, parsed.data.sessionId));
+  }
+
   return Response.json({
     ok: true,
     accepted: parsed.data.events.length,
     sessionId: parsed.data.sessionId,
+    sessionClosed: Boolean(parsed.data.sessionEnd),
     note: "Device authentication, session upsert, and event persistence all completed.",
   });
 }
