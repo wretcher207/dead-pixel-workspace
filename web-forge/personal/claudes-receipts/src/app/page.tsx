@@ -85,8 +85,8 @@ export default async function Home() {
       {summary?.hasRealData && (
         <section className="tw-section">
           <div className="layout-grid">
-            {summary.windows.map((w) => (
-              <div className="span-4 tw-col" key={w.label}>
+            {summary.windows.map((w, idx) => (
+              <div className={`span-4 tw-col${idx === 0 ? " tw-col-now" : ""}`} key={w.label}>
                 <p className="tw-label">{w.label}</p>
                 <dl className="tw-dl">
                   <div className="tw-row">
@@ -125,7 +125,7 @@ export default async function Home() {
           <section className="bd-section">
             <div className="layout-grid">
               {summary.topProjects7d.length > 0 && (
-                <div className="span-6 bd-card">
+                <div className="span-6 bd-card bd-card-dominant">
                   <p className="bd-eyebrow">Top projects — 7d</p>
                   <ul className="bd-list">
                     {summary.topProjects7d.map((p) => (

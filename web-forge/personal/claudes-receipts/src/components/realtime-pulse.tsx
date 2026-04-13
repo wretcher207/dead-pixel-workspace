@@ -96,12 +96,13 @@ function prettyEvent(item: FeedItem): string {
   return item.eventType.replace(/_/g, " ");
 }
 
-function eventColor(item: FeedItem): string {
-  if (item.eventType === "api_error" || item.success === false)
-    return "var(--danger)";
-  if (item.toolName === "Agent") return "var(--accent)";
-  if (item.eventType === "prompt_submitted") return "var(--foreground)";
-  return "var(--muted)";
+function feedBadgeType(item: FeedItem): string {
+  if (item.eventType === "api_error" || item.success === false) return "error";
+  if (item.toolName === "Agent") return "agent";
+  if (item.eventType === "prompt_submitted") return "prompt";
+  if (item.eventType === "api_request_completed") return "api";
+  if (item.eventType === "tool_completed") return "tool";
+  return "default";
 }
 
 export function RealtimePulse() {
@@ -189,7 +190,7 @@ export function RealtimePulse() {
       </header>
 
       {active && (
-        <div className={`rt-active ${isLive ? "" : "rt-active-idle"}`}>
+        <div className={`rt-active ${isLive ? "rt-active-live" : "rt-active-idle"}`}>
           <div className="rt-active-row">
             <div className="rt-active-stat">
               <p className="rt-k">Tokens (session)</p>
@@ -236,10 +237,10 @@ export function RealtimePulse() {
       )}
 
       <div className="rt-pulse">
-        {(["60s", "5m", "1h"] as const).map((win) => {
+        {(["60s", "5m", "1h"] as const).map((win, idx) => {
           const w = pulse[win];
           return (
-            <div className="rt-pulse-col" key={win}>
+            <div className={`rt-pulse-col${idx === 0 ? " rt-pulse-col-now" : ""}`} key={win}>
               <p className="rt-pulse-label">Last {win}</p>
               <dl className="rt-pulse-dl">
                 <PulseRow k="Tool calls" v={w.tools} />
@@ -255,30 +256,37 @@ export function RealtimePulse() {
         })}
       </div>
 
-      <div className="rt-grid">
-        <div className="rt-card">
+      {/* Chart — full width, dominant */}
+      <div className="rt-chart-section">
+        <div className="rt-chart-header">
           <p className="rt-card-eyebrow">Tokens / minute — last hour</p>
-          <div className="rt-spark">
-            {tokenSparkline.map((t, i) => {
-              const h = (t / maxSpark) * 100;
-              return (
-                <div
-                  key={i}
-                  className="rt-spark-bar"
-                  style={{
-                    height: `${Math.max(2, h).toFixed(1)}%`,
-                    opacity: t === 0 ? 0.18 : 0.4 + (h / 100) * 0.6,
-                  }}
-                  title={`${formatTokens(t)} tokens`}
-                />
-              );
-            })}
-          </div>
-          <p className="rt-card-detail">
-            peak {formatTokens(maxSpark)} / min · now {formatTokens(tokenSparkline[59] ?? 0)}
+          <p className="rt-chart-peak">
+            {formatTokens(maxSpark)} <span>peak / min</span>
           </p>
         </div>
+        <div className="rt-spark">
+          {tokenSparkline.map((t, i) => {
+            const h = (t / maxSpark) * 100;
+            return (
+              <div
+                key={i}
+                className="rt-spark-bar"
+                style={{
+                  height: `${Math.max(2, h).toFixed(1)}%`,
+                  opacity: t === 0 ? 0.18 : 0.4 + (h / 100) * 0.6,
+                }}
+                title={`${formatTokens(t)} tokens`}
+              />
+            );
+          })}
+        </div>
+        <p className="rt-chart-now">
+          now {formatTokens(tokenSparkline[59] ?? 0)} / min
+        </p>
+      </div>
 
+      {/* Tools / Agents / Compare — 3 col */}
+      <div className="rt-tools-row">
         <div className="rt-card">
           <p className="rt-card-eyebrow">Top tools — last hour</p>
           {topToolsHour.length === 0 ? (
@@ -362,20 +370,18 @@ export function RealtimePulse() {
           <ol className="rt-feed-list">
             {feed.map((item) => (
               <li key={item.id} className="rt-feed-row">
-                <span
-                  className="rt-feed-dot"
-                  style={{ background: eventColor(item) }}
-                />
-                <span className="rt-feed-time">
-                  {formatAge(item.occurredAt, nowMs)} ago
+                <span className={`rt-feed-badge rt-feed-badge-${feedBadgeType(item)}`}>
+                  {prettyEvent(item)}
                 </span>
-                <span className="rt-feed-type">{prettyEvent(item)}</span>
+                <span className="rt-feed-time">
+                  {formatAge(item.occurredAt, nowMs)}
+                </span>
                 <span className="rt-feed-project">
                   {item.project ?? "—"}
                 </span>
                 <span className="rt-feed-meta">
                   {item.durationMs ? `${item.durationMs}ms` : ""}
-                  {item.success === false ? " · failed" : ""}
+                  {item.success === false ? " · fail" : ""}
                 </span>
               </li>
             ))}
