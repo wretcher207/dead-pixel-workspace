@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ivory: #FAF8F4;
+  --cream: #F2EDE6;
+  --parchment: #E8DDD1;
+  --blush-light: #EFE0D9;
+  --blush: #D4B5A8;
+  --rose: #B8907A;
+  --rose-dark: #9A7260;
+  --sage: #8A9E8C;
+  --sand: #C9B49A;
+  --charcoal: #2A2522;
+  --warm-gray: #6B6260;
+  --mist: #9E9894;
+  --linen: #F5F0E8;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--ivory);
+  color: var(--charcoal);
+  font-family: 'Jost', system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--charcoal);
+  }
+
+  p {
+    font-family: 'Jost', system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--warm-gray);
+    line-height: 1.75;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background-color: #D4B5A8;
+    color: #2A2522;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--rose);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-14 md:py-20 lg:py-24;
+  }
+
+  .container-site {
+    @apply max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-12;
+  }
+
+  .text-display {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.75rem, 5.5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
+  .text-display-md {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  .text-section-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .label-text {
+    font-family: 'Jost', system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rose);
+  }
+
+  .body-lead {
+    font-family: 'Jost', system-ui, sans-serif;
+    font-size: clamp(1rem, 1.25vw, 1.125rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--warm-gray);
+  }
+
+  .card-base {
+    @apply bg-white rounded-2xl shadow-card border border-parchment/60;
+  }
+
+  .divider-rose {
+    @apply inline-block w-10 h-px bg-rose mb-6;
+  }
+}
+
+@layer utilities {
+  .bg-ivory-texture {
+    background-color: var(--ivory);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-stagger-1 { animation-delay: 0.1s; }
+  .animate-stagger-2 { animation-delay: 0.2s; }
+  .animate-stagger-3 { animation-delay: 0.3s; }
+  .animate-stagger-4 { animation-delay: 0.4s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
