@@ -1,160 +1,162 @@
 # Claude's Receipts — Session Handoff
 
-**Branch:** `feat/claudes-receipts` (8 commits ahead of `feat/drum-apparatus-web`, which is ahead of `main`)
-**Last session ended:** 2026-04-12 (evening, second session)
-**Status:** Milestones 1–3 complete from prior session. This session completed items 1–6 of the known gaps list. App is live at https://claudes-receipts.netlify.app.
+**Branch:** `feat/claudes-receipts`
+**Last session ended:** 2026-04-13 (morning)
+**Status:** Tauri shell Rust + React code complete. `claudes-receipts.exe` builds cleanly. NSIS installer bundling blocked. Dashboard live at https://claudes-receipts.netlify.app with new deep-link pairing button.
 
 ---
 
-## What lives on this branch
+## What's new since last handoff
 
-### 1. Next.js 16 dashboard (`./`)
+### Dashboard (Next.js 16 site)
+- **Homepage redesign.** Deployed. 4-section structure per David's spec: hero 60/40 grid, 3-panel intelligence row, 2-card signals, full-width session strip. Removed the full-viewport video hero. All new layout classes (`.span-4`, `.span-6`, `.home-hero*`, `.intel-card*`, `.signal-card*`, `.session-strip*`) added to `globals.css`.
+- **GitHub OAuth unblocked.** `NEXTAUTH_URL` set on Netlify production. David added the callback URL to the GitHub OAuth app. Sign-in works.
+- **Deep-link device registration.** `/api/devices/register` now returns `deepLinkUrl` (`claudes-receipts://auth?device-id=X&ingest-key=Y&endpoint=Z`). New `/devices` page embeds a `<DeviceRegister />` client component with a nickname/platform form and an "Open in App" button on success.
 
-- **App Router**, React 19, Tailwind v4, Drizzle ORM, NextAuth (GitHub), Zod
-- `AGENTS.md` warns: **Next.js 16 has breaking changes** — consult `node_modules/next/dist/docs/` before writing new route code
-- **All dashboard pages are `force-dynamic`** and server-rendered with `getServerSession(authOptions)`
-- Lint clean, `npm run build` green, deployed to production
+### Tauri shell (`tauri/`)
 
-#### Routes
-| Route | Status | Source |
+Windows desktop app that will replace the Node helper. Tauri v2 + Rust backend + React webview. 14 commits on the branch.
+
+**Rust modules (`tauri/src-tauri/src/`):**
+| File | Responsibility | Tests |
 | --- | --- | --- |
-| `/` | dynamic | `loadDashboardData(userId)` → mocks fallback |
-| `/sessions` | dynamic | `loadSessionsIndex(userId)` → mocks fallback |
-| `/sessions/[sessionId]` | dynamic | `loadSessionDetail(userId, id)` → mocks fallback |
-| `/projects` | dynamic | `loadProjectCards(userId)` → mocks fallback |
-| `/tools` | dynamic | `loadToolCards(userId)` → mocks fallback |
-| `/devices` | dynamic | `loadDeviceCards(userId)` → mocks fallback |
-| `/share` | dynamic | `loadUserShares(userId)` + `ShareCreator` client component |
-| `/s/[slug]` | dynamic, public | `loadShare(slug)` + redaction config |
-| `/s/[slug]/opengraph-image` | dynamic | ImageResponse — dark/gold 1200×630, live DB data |
-| `/login` | static | NextAuth GitHub button |
+| `config.rs` | `HelperConfig` serde struct, `%APPDATA%\claudes-receipts\config.json` | 1 |
+| `parser.rs` | JSONL record → `IngestEvent` struct | 4 |
+| `session.rs` | `SessionTimeline`, idle timeout (15 min), `SessionEndMetadata` matching API schema (seconds + ISO-8601) | 4 |
+| `uploader.rs` | `IngestPayload` (camelCase on wire), `post_batch`, offline `queue.jsonl`, `flush_queue` | 2 |
+| `watcher.rs` | `read_new_lines` (cursor-aware tail), `read_cursor`/`write_cursor`, `session_id_from_path` | 3 |
+| `state.rs` | `AgentState` enum (Unconfigured/Watching/Paused/AuthError), `SharedState = Arc<Mutex<AgentState>>` | — |
+| `agent.rs` | Async tokio task orchestrating watcher → parser → session → uploader. 15s flush ticker, auth failure exits agent with state update | — |
+| `commands.rs` | `#[tauri::command]` IPC: `get_agent_status`, `get_config`, `save_config`, `set_paused` | — |
+| `lib.rs` | App entry: 4 plugins (deep-link, autostart, notification, shell), tray with menu + left-click popup, deep-link URL parser, agent spawn | — |
 
-#### API routes
-| Endpoint | Auth | Purpose |
-| --- | --- | --- |
-| `POST /api/auth/[...nextauth]` | — | NextAuth handler |
-| `POST /api/devices/register` | session | Mints device + ingest key (hashed in DB) |
-| `POST /api/ingest` | device key | Upserts session + session_events |
-| `POST /api/rankings/rebuild` | session | Recomputes + persists `rank_snapshots` |
-| `POST /api/shares` | session | Creates private/public share with redaction config |
-| `GET /api/health` | — | Sanity |
+Total tests: **14 passing** (run with `cargo test -- --test-threads=1` to avoid APPDATA env-var races; `#[serial]`-tagged tests cover most but not `config::round_trips_config`).
 
-### 2. Metrics engine (`src/lib/metrics.ts`)
+**React webview (`tauri/src/`):**
+- `lib/types.ts` — `AgentState` discriminated union matching Rust serde output
+- `lib/tauri.ts` — typed `invoke()` wrappers
+- `App.tsx` — routes to `StatusPopup` or `SettingsWindow` by window label
+- `components/StatusPopup.tsx` — tray left-click popup. Polls `get_agent_status` every 5s, renders state badge, last flush, sessions count, pause/resume, dashboard link. Closes on focus loss (handled in Rust `on_window_event`).
+- `components/SettingsWindow.tsx` — 3 sections: Connection (endpoint editable, device ID + ingest key read-only, Re-pair button opens `/devices`), Agent (surface dropdown), System (start-on-login toggle via `tauri-plugin-autostart`).
 
-Pure functions. No DB dependency beyond type imports. Unchanged — see prior handoff.
-
-### 3. Rankings engine (`src/lib/rankings.ts`)
-
-All 10 PRD dimensions. `computeRankings` + `persistRankingSnapshots` + `loadLatestRankings`. Unchanged — see prior handoff.
-
-### 4. Share pages
-
-- **`/share`** (authenticated): creator widget + existing shares list
-- **`/s/[slug]`** (public): standalone editorial treatment, Fraunces serif, gold-on-charcoal
-- **`/s/[slug]/opengraph-image`** (new): dynamic OG image. Dark `#070706` bg, warm top gradient, left gold rule, two-column layout — branding/headline left, receipt stat card right. Pulls lifetime damage + 30-day burn from DB, respects `exactCosts` redaction. Loads Fraunces from Google Fonts at render time, falls back to Georgia. `generateMetadata` on `page.tsx` now wires `og:image` + `twitter:card`.
-
-### 5. Helper agent (`./helper/`)
-
-#### New this session
-- **Stale-session recovery** (`tail.ts` + `agent.ts`): `readNewLines` returns `mtimeMs`. `readLinesUpToCursor` re-reads full JSONL history for timeline rebuild. On `add`, files with `cursor.offset > 0` + `mtime > IDLE_TIMEOUT_MS` + no existing timeline get their full history replayed into `timelines`. Chokidar `ready` fires an immediate flush so stale sessions close on startup rather than waiting 15s.
-- **Auth failure detection** (`uploader.ts` + `agent.ts`): `postBatch` returns `PostResult = { ok: true } | { ok: false; authFailed: boolean }`. 401 is terminal — not retried, not queued. `flushQueue` returns `{ authFailed: boolean }`. Agent's `flush` checks every send + queue flush; on `authFailed` calls `handleAuthFailure()` which clears the interval, logs exact re-pairing instructions, and exits with code 1. Queue is preserved (not wiped) so data survives a re-register.
-
-#### Re-pairing flow (what `handleAuthFailure` prints)
-```
-[helper] CREDENTIAL FAILURE — ingest key rejected
-[helper] Endpoint: <endpoint>
-[helper] The device key may have been revoked or is invalid.
-[helper] To re-pair:
-[helper]   1. Sign in at <endpoint>
-[helper]   2. Navigate to Devices and register a new device
-[helper]   3. Run:  helper register --endpoint <endpoint> --device-id <new-id> --ingest-key <new-key>
-[helper]   4. Run:  helper run
-```
-
-### 6. Scheduled function (`netlify/functions/rankings-snapshot.ts`)
-
-Runs daily at 4am UTC via `schedule: "0 4 * * *"`. Queries all users, runs `computeRankings` + `persistRankingSnapshots` per user. Per-user failures are caught individually. 30-second Netlify scheduled function timeout — fine for v1 user count.
-
-### 7. Schema + seed
-
-Unchanged from prior session.
+**Icons:** Three placeholder PNGs in `src-tauri/icons/` (`watching.png`, `paused.png`, `warn.png`). All currently byte-identical 83-byte transparent squares. Real art swap is trivial — no code changes needed.
 
 ---
 
-## How it runs today
+## Current blockers
 
-1. **Live at:** https://claudes-receipts.netlify.app — deployed via `netlify deploy --build --prod`
-2. **GitHub OAuth:** `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` / `AUTH_SECRET` are set on the Netlify site (all contexts). Sign-in works once GitHub OAuth app callback URLs are confirmed.
-3. **DB:** Neon DB **claimed** — no longer anonymous, no longer at risk of expiry.
-4. To run locally: `netlify dev:exec -- npm run dev`
-5. To reseed: `netlify dev:exec -- npm run db:seed`
-6. To re-run migrations: `netlify dev:exec -- npx drizzle-kit migrate`
+### 1. NSIS bundler broken (blocks installer)
+`cargo tauri build` compiles `claudes-receipts.exe` cleanly (14 MB, at `tauri/src-tauri/target/release/claudes-receipts.exe`) but the NSIS step fails:
 
-**Pre-seeded test credentials** (local use only):
-- Workstation device id: `seed-dev-workstation` / key: `5JUkA6fYZ6UtQj1-RR0yS79yj985vBk_`
-- Laptop device id: `seed-dev-laptop` / key: `G95oKZBubgfCP2FjOR4nfORE_n_Ns-RF`
+```
+!insertmacro: macro "NSISCOMCALL" requires 4 parameter(s), passed 7!
+Error in macro IsShortcutTarget on macroline 11
+Error in script "...installer.nsi" on line 757
+```
+
+This is a Tauri 2.10.3 / NSIS 3.11 compatibility issue, not our code. Tauri downloads its own NSIS toolchain (`github.com/tauri-apps/binary-releases`), so it's reproducible across machines.
+
+**Likely fixes, in order of effort:**
+1. Switch `tauri.conf.json` → `bundle.targets` from `["nsis"]` to `["msi"]`. MSI uses WiX instead of NSIS. Simpler but larger installer.
+2. Pin an older Tauri CLI version (`cargo install tauri-cli --version "=2.9.x"`) if 2.9 shipped with working NSIS.
+3. Wait for Tauri upstream fix (check issues on tauri-apps/tauri for "NSISCOMCALL").
+
+Until then, the raw `.exe` can be run directly — just not installed.
+
+### 2. Session-end-only ingest payloads get 400
+Agent's idle-session detection posts `{events: [], session_end: {...}}` when a session crosses 15 min idle. The `/api/ingest` zod schema has `events: z.array(ingestEventSchema).min(1)` which rejects empty arrays.
+
+**Effect:** Session-end payloads fail on first send, land in offline queue, fail again on retry. Event telemetry still lands on the NEXT flush with real events, but "session_ended" metadata never posts.
+
+**Fix (choose one):**
+- Dashboard: relax schema to `events.min(0)` when `session_end` is present.
+- Agent: synthesize a `session_ended` event in the events array so `events.min(1)` passes.
+
+### 3. `sessions_tracked` counter has dead branch
+Cosmetic. The first `if saw_events && !timelines.contains_key(...)` branch in `agent.rs` never fires because `record_event_timestamp` inserts the key before the check. The fallback branch produces correct behavior. Clean up during next pass.
+
+### 4. Test isolation flaky without `--test-threads=1`
+`config::round_trips_config` isn't `#[serial]`-tagged and races with 5 other APPDATA-mutating tests. `cargo test` may intermittently fail. Fix: add `#[serial]` to that one test, or configure single-thread in `.cargo/config.toml`.
 
 ---
 
-## Known gaps / follow-ups
+## How to run locally
 
-### Done this session
-- ~~GitHub OAuth~~ — env vars set on Netlify (all + prod contexts)
-- ~~Stale-session recovery on agent restart~~ — startup sweep + immediate flush
-- ~~Share page OG image~~ — `opengraph-image.tsx` at `/s/[slug]`
-- ~~Rank snapshot cron~~ — `netlify/functions/rankings-snapshot.ts`, 4am UTC daily
-- ~~Deploy to production~~ — live at https://claudes-receipts.netlify.app
-- ~~Error recovery UX~~ — auth failure stops agent, prints re-pairing steps
+**Dashboard:**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
+netlify dev:exec -- npm run dev
+```
 
-### Still open
-1. **Rebase onto main** — branch was cut from `feat/drum-apparatus-web`. Once that branch lands, rebase.
-2. **Tauri shell** — settings UI, system tray, start-on-login. Node agent is the plumbing; Tauri wraps it.
-3. **Browser extension** — PRD §11.4. Stub in PRD only.
+**Tauri dev mode (opens both windows + tray):**
+```bash
+export PATH="$USERPROFILE/.cargo/bin:$PATH"
+cd tauri
+cargo tauri dev
+```
 
-### PRD open questions (unchanged)
-- Public rank snapshots: freeze at publish time or live? Currently live on every load.
-- Subscription baseline is `$20/mo` constant. When should users configure this?
-- SEO for public share pages — `noindex` or indexed? No directive currently set.
-- Idle timeout (15 min) and active-gap threshold (2 min) need tuning against real traffic.
+**Tauri release build:**
+```bash
+export PATH="$USERPROFILE/.cargo/bin:$PATH"
+cd tauri
+cargo tauri build
+# Raw exe produced at: tauri/src-tauri/target/release/claudes-receipts.exe
+# NSIS step currently fails — see Blocker #1.
+```
+
+**Run tests:**
+```bash
+export PATH="$USERPROFILE/.cargo/bin:$PATH"
+cd tauri/src-tauri
+cargo test -- --test-threads=1
+```
 
 ---
 
-## Commit trail
+## Commit trail (Tauri work)
 
 ```
-e59ec6d feat(claudes-receipts): GitHub OAuth, stale-session recovery, OG image, rank cron, deploy
-5f68086 feat(claudes-receipts): idle session-end detection + surface labeling
-231fb6c feat(claudes-receipts): wire token/cost telemetry + realistic seed
-3644abd docs: session handoff for claudes-receipts
-a9e9105 feat(claudes-receipts): v1 helper agent tails Claude Code JSONL
-c0708c9 feat(claudes-receipts): Receipt Mode — public + private share pages
-8eab029 feat(claudes-receipts): wire projects/tools/devices + rankings engine
-ac10154 feat(claudes-receipts): wire home and sessions to Drizzle queries
-175603b feat(claudes-receipts): first-pass Next.js 16 scaffold
+a8cc8ac + 0a5b0cb   dashboard: deep link pairing + homepage redesign committed
+ef6179b             SettingsWindow — connection, agent, system sections
+89223da             StatusPopup — tray left-click status surface
+fa046e0             React webview scaffold — types, IPC wrappers, App router
+b7104cd             main app — tray, plugins, window management, deep link handler
+b008f68             IPC commands — status, config, pause
+d551717             agent orchestration — watcher→parser→session→uploader
+59e5ed9             AgentState enum + SharedState type
+bd99a79             watcher — file tailing and cursor management
+0d15991             uploader — HTTP ingest + offline queue
+851d1ad             fix: session metadata matches ingest API schema
+95ee2f7             session tracker — idle timeout and end metadata
+70d8aa4             JSONL parser — IngestEvent extraction
+f085b69             config module — read/write HelperConfig
+e5e8397             scaffold Tauri v2 project
 ```
+
+---
+
+## Next session — suggested pickup
+
+**Critical path to a shipping app:**
+1. Run `claudes-receipts.exe` directly (from target/release) and verify the tray icon appears. If it works, the code is good and blocker #1 is purely packaging.
+2. Fix blocker #1 (NSIS → try MSI first). Swap `bundle.targets` in `tauri.conf.json`.
+3. Fix blocker #2 (ingest schema or synthetic event).
+4. Run the full pairing flow manually: sign in → register device on `/devices` → click "Open in App" → verify config written → start Claude Code session → verify it appears in dashboard.
+5. Swap placeholder icons for real art (3 PNGs at `tauri/src-tauri/icons/`).
+
+**Polish:**
+6. Clean up dead-code warnings (unused `AgentHandle.paused/shutdown`, unused `tray_tooltip/tray_icon` methods — these want to be wired to actually update the tray icon on state change).
+7. Remove the legacy Node helper at `helper/` once Tauri is in production.
+8. Add `--test-threads=1` to `.cargo/config.toml` or fix the `round_trips_config` test.
+9. Browser extension (PRD §11.4 — still just a stub).
 
 ---
 
 ## Key files to open first next session
 
-- `src/lib/receipts-queries.ts` — all DB read paths
-- `src/lib/metrics.ts` — pure metric math
-- `src/lib/rankings.ts` — percentile engine
-- `src/app/api/ingest/route.ts` — writes tokens/cost, applies `sessionEnd`
-- `helper/src/agent.ts` — chokidar watcher + flush loop + stale sweep + auth failure handling
-- `helper/src/uploader.ts` — `PostResult` type, auth failure propagation
-- `netlify/functions/rankings-snapshot.ts` — daily cron
-- `src/app/s/[slug]/opengraph-image.tsx` — OG image
-
----
-
-## Design decisions worth remembering
-
-- **Demo mode is first-class.** Every page gracefully falls back to mock data when `getDb()` returns null or the user has no rows. Don't break this when adding features.
-- **Dashboard UI primitives live in `receipts-ui.tsx`.** The `/s/[slug]` share page is the one intentional exception — it uses a separate CSS vocabulary.
-- **Metadata-only telemetry is a hard rule.** Helper's `parse.ts` never reads prompt/response content.
-- **Helper chose Node over Tauri for v1.** Tauri is a UI question, not a capability question.
-- **Session-end is idle-timeout, not event-driven.** 15 min of quiet + synthetic `session_ended`.
-- **`sessionEnd` is payload-level metadata, not an event.** Keeps events table clean.
-- **Auth failure is terminal, not retryable.** Queue is preserved; agent exits with instructions.
-- **Env vars prefer `NETLIFY_DATABASE_URL`, fall back to `DATABASE_URL`.** Run DB commands via `netlify dev:exec --`.
+- `tauri/src-tauri/src/lib.rs` — app entry, tray, plugin registration
+- `tauri/src-tauri/src/agent.rs` — async task, the most complex integration
+- `tauri/src-tauri/tauri.conf.json` — switch bundle.targets to `["msi"]` to work around NSIS
+- `src/app/api/ingest/route.ts` — relax `events.min(1)` for session-end payloads
+- `docs/superpowers/specs/2026-04-12-tauri-shell-design.md` — design spec
+- `docs/superpowers/plans/2026-04-12-tauri-shell.md` — implementation plan (all 15 tasks done)
