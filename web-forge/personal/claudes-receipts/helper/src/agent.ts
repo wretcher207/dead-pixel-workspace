@@ -110,8 +110,9 @@ export async function runAgent(config: HelperConfig): Promise<void> {
   };
 
   const watcher = chokidar.watch(`${watchRoot}/**/*.jsonl`, {
-    ignoreInitial: false,
-    awaitWriteFinish: { stabilityThreshold: 500, pollInterval: 100 },
+    ignoreInitial: true,
+    usePolling: true,
+    interval: 1_000,
   });
   watcher.on("add", handleFile);
   watcher.on("change", handleFile);

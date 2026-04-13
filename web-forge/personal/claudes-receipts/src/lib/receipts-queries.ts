@@ -16,7 +16,6 @@ import {
   formatPercent,
   machineIntensity,
   qualityLabelFor,
-  subscriptionValueDelta,
   type MachineIntensity,
   type ProjectBurn,
 } from "@/lib/metrics";
@@ -36,7 +35,6 @@ import type {
 } from "@/lib/types";
 
 const DAY_MS = 86_400_000;
-const SUBSCRIPTION_MONTHLY_CENTS = 20_00;
 
 type SessionRow = typeof sessions.$inferSelect;
 
@@ -102,10 +100,6 @@ export async function loadDashboardData(
     (sum, session) => sum + session.estimatedCostCents,
     0,
   );
-  const subscriptionDelta = subscriptionValueDelta(
-    thirtyDayCostCents,
-    SUBSCRIPTION_MONTHLY_CENTS,
-  );
 
   const projectBurns = aggregateCostByProject(userSessions);
   const machineMix = machineIntensity(userSessions);
@@ -138,25 +132,25 @@ export async function loadDashboardData(
 
   const overviewStats: HeaderStat[] = [
     {
-      label: "Lifetime Damage",
+      label: "Lifetime tokens",
       value: formatTokens(
         Number(lifetime.inputTokens) +
           Number(lifetime.outputTokens) +
           Number(lifetime.cacheTokens),
       ),
-      detail: "tokens observed across local and remote-controlled sessions",
+      detail: "total tokens observed across every session",
     },
     {
-      label: "30-Day Burn",
+      label: "30-day cost",
       value: formatCents(thirtyDayCostCents),
-      detail: "API-equivalent estimate, which is the only honest comparison",
+      detail: "API-equivalent estimate across local + remote sessions",
     },
     {
-      label: "Weekly Sessions",
+      label: "Sessions (7d)",
       value: String(weekSessions.length),
       detail: `${weekSessions.length ? formatCents(
         weekSessions.reduce((s, x) => s + x.estimatedCostCents, 0),
-      ) : "$0"} across the last seven days`,
+      ) : "$0"} spent this week`,
     },
   ];
 
@@ -217,18 +211,6 @@ export async function loadDashboardData(
       href: "/devices",
     });
   }
-
-  highlights.push({
-    label: "Subscription Delusion Delta",
-    title: subscriptionDelta >= 0 ? "Still positive." : "Underusing the subscription.",
-    summary:
-      "Notional API bill compared against a $20/month subscription baseline. Edit the baseline later.",
-    value: `${subscriptionDelta >= 0 ? "+" : ""}${formatCents(
-      thirtyDayCostCents - SUBSCRIPTION_MONTHLY_CENTS,
-    )}`,
-    detail: `${formatPercent(subscriptionDelta, 1)} vs subscription`,
-    href: "/share",
-  });
 
   const mostExpensiveDay = mostExpensiveDayFor(userSessions);
   if (mostExpensiveDay) {
@@ -760,6 +742,167 @@ export async function loadProjectsOverview(
         } satisfies ProjectBurn),
     }))
     .sort((a, b) => b.burn.burnCents - a.burn.burnCents);
+}
+
+export type TimeWindow = {
+  label: string;
+  sessions: number;
+  tokens: number;
+  costCents: number;
+  activeMinutes: number;
+};
+
+export type HomepageSummary = {
+  hasRealData: boolean;
+  windows: [TimeWindow, TimeWindow, TimeWindow]; // today, 7d, lifetime
+  topProjects7d: Array<{ name: string; costCents: number; sessions: number }>;
+  topAgents7d: Array<{ name: string; count: number }>;
+  recentSessions: Array<{
+    id: string;
+    project: string;
+    model: string | null;
+    startedAt: string;
+    durationSeconds: number | null;
+    costCents: number;
+    tokens: number;
+  }>;
+};
+
+export async function loadHomepageSummary(
+  userId: string | null,
+): Promise<HomepageSummary | null> {
+  const db = getDb();
+  if (!db || !userId) return null;
+
+  const now = new Date();
+  const todayStart = new Date(now);
+  todayStart.setUTCHours(0, 0, 0, 0);
+  const sevenDaysAgo = new Date(now.getTime() - 7 * DAY_MS);
+
+  const [todayRow, sevenRow, lifetimeRow, projectsRow, agentsRow, recentRows] =
+    await Promise.all([
+      db
+        .select({
+          sessions: sql<number>`count(distinct ${sessions.id})::int`,
+          tokens: sql<number>`coalesce(sum(${sessions.inputTokens} + ${sessions.outputTokens} + ${sessions.cacheTokens}), 0)::bigint`,
+          cost: sql<number>`coalesce(sum(${sessions.estimatedCostCents}), 0)::int`,
+          activeSec: sql<number>`coalesce(sum(${sessions.activeSeconds}), 0)::int`,
+        })
+        .from(sessions)
+        .where(and(eq(sessions.userId, userId), gte(sessions.startedAt, todayStart))),
+
+      db
+        .select({
+          sessions: sql<number>`count(distinct ${sessions.id})::int`,
+          tokens: sql<number>`coalesce(sum(${sessions.inputTokens} + ${sessions.outputTokens} + ${sessions.cacheTokens}), 0)::bigint`,
+          cost: sql<number>`coalesce(sum(${sessions.estimatedCostCents}), 0)::int`,
+          activeSec: sql<number>`coalesce(sum(${sessions.activeSeconds}), 0)::int`,
+        })
+        .from(sessions)
+        .where(and(eq(sessions.userId, userId), gte(sessions.startedAt, sevenDaysAgo))),
+
+      db
+        .select({
+          sessions: sql<number>`count(distinct ${sessions.id})::int`,
+          tokens: sql<number>`coalesce(sum(${sessions.inputTokens} + ${sessions.outputTokens} + ${sessions.cacheTokens}), 0)::bigint`,
+          cost: sql<number>`coalesce(sum(${sessions.estimatedCostCents}), 0)::int`,
+          activeSec: sql<number>`coalesce(sum(${sessions.activeSeconds}), 0)::int`,
+        })
+        .from(sessions)
+        .where(eq(sessions.userId, userId)),
+
+      db
+        .select({
+          name: sql<string>`coalesce(${projects.currentAlias}, ${projects.canonicalKey})`,
+          cost: sql<number>`coalesce(sum(${sessions.estimatedCostCents}), 0)::int`,
+          sessions: sql<number>`count(*)::int`,
+        })
+        .from(sessions)
+        .innerJoin(projects, eq(projects.id, sessions.projectId))
+        .where(and(eq(sessions.userId, userId), gte(sessions.startedAt, sevenDaysAgo)))
+        .groupBy(projects.id, projects.currentAlias, projects.canonicalKey)
+        .orderBy(sql`sum(${sessions.estimatedCostCents}) desc`)
+        .limit(5),
+
+      db
+        .select({
+          name: sql<string>`${sessionEvents.toolName}`,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(sessionEvents)
+        .innerJoin(sessions, eq(sessions.id, sessionEvents.sessionId))
+        .where(
+          and(
+            eq(sessions.userId, userId),
+            eq(sessionEvents.eventType, "tool_completed"),
+            eq(sessionEvents.toolName, "Agent"),
+            gte(sessionEvents.occurredAt, sevenDaysAgo),
+          ),
+        )
+        .groupBy(sessionEvents.toolName)
+        .orderBy(sql`count(*) desc`)
+        .limit(5),
+
+      db
+        .select({
+          id: sessions.id,
+          model: sessions.modelSummary,
+          startedAt: sessions.startedAt,
+          durationSeconds: sessions.durationSeconds,
+          costCents: sessions.estimatedCostCents,
+          inputTokens: sessions.inputTokens,
+          outputTokens: sessions.outputTokens,
+          cacheTokens: sessions.cacheTokens,
+          projectAlias: projects.currentAlias,
+          projectKey: projects.canonicalKey,
+        })
+        .from(sessions)
+        .leftJoin(projects, eq(projects.id, sessions.projectId))
+        .where(eq(sessions.userId, userId))
+        .orderBy(desc(sessions.startedAt))
+        .limit(6),
+    ]);
+
+  const toWindow = (
+    label: string,
+    row: { sessions: number; tokens: number; cost: number; activeSec: number } | undefined,
+  ): TimeWindow => ({
+    label,
+    sessions: Number(row?.sessions ?? 0),
+    tokens: Number(row?.tokens ?? 0),
+    costCents: Number(row?.cost ?? 0),
+    activeMinutes: Math.round(Number(row?.activeSec ?? 0) / 60),
+  });
+
+  const lifetimeHas = Number(lifetimeRow[0]?.sessions ?? 0) > 0;
+
+  return {
+    hasRealData: lifetimeHas,
+    windows: [
+      toWindow("Today", todayRow[0]),
+      toWindow("Last 7 days", sevenRow[0]),
+      toWindow("Lifetime", lifetimeRow[0]),
+    ],
+    topProjects7d: projectsRow.map((r) => ({
+      name: r.name ?? "unnamed",
+      costCents: Number(r.cost),
+      sessions: Number(r.sessions),
+    })),
+    topAgents7d: agentsRow.map((r) => ({
+      name: r.name ?? "Agent",
+      count: Number(r.count),
+    })),
+    recentSessions: recentRows.map((r) => ({
+      id: r.id,
+      project: r.projectAlias ?? r.projectKey ?? "—",
+      model: r.model,
+      startedAt: r.startedAt.toISOString(),
+      durationSeconds: r.durationSeconds,
+      costCents: r.costCents,
+      tokens:
+        Number(r.inputTokens) + Number(r.outputTokens) + Number(r.cacheTokens),
+    })),
+  };
 }
 
 function mostExpensiveDayFor(
