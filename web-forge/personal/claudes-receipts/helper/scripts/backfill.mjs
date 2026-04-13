@@ -32,6 +32,7 @@ async function post(payload) {
   return { status: r.status, body: r.status >= 400 ? await r.text() : null };
 }
 
+const ACTIVE_THRESHOLD_MS = 20 * 60_000;
 const files = walk(ROOT);
 console.log(`[backfill] found ${files.length} jsonl files`);
 
@@ -40,9 +41,12 @@ let totalSessions = 0;
 let failed = 0;
 let firstError = null;
 
+let skippedActive = 0;
 for (const file of files) {
   const sessionId = path.basename(file, ".jsonl");
   const projectKey = projectKeyFromPath(file);
+  const stat = fs.statSync(file);
+  const isLive = Date.now() - stat.mtimeMs < ACTIVE_THRESHOLD_MS;
   const raw = fs.readFileSync(file, "utf8");
   const lines = raw.split("\n").filter((l) => l.trim());
 
@@ -75,7 +79,13 @@ for (const file of files) {
     }
   }
 
-  // Session-end synthetic
+  // Skip synthetic session_ended for files still being actively written to.
+  // The live helper (or a subsequent backfill) will close them once idle.
+  if (isLive) {
+    skippedActive++;
+    continue;
+  }
+
   const last = events[events.length - 1].timestamp;
   const first = events[0].timestamp;
   const durSec = Math.max(
@@ -104,5 +114,5 @@ for (const file of files) {
   if (r2.status < 400) totalSessions++;
 }
 
-console.log(`[backfill] events posted: ${totalEvents}, sessions closed: ${totalSessions}, failures: ${failed}`);
+console.log(`[backfill] events posted: ${totalEvents}, sessions closed: ${totalSessions}, kept-live: ${skippedActive}, failures: ${failed}`);
 if (firstError) console.log(`[backfill] first error:`, firstError);

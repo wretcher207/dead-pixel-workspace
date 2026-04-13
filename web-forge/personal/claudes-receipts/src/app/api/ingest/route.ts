@@ -167,6 +167,11 @@ export async function POST(request: Request) {
     })
     .where(eq(devices.id, device.id));
 
+  // Only set ended_at when the helper explicitly signals end-of-session via
+  // sessionEnd metadata (handled below). Live event batches keep ended_at null
+  // so the realtime dashboard can show the session as active.
+  const hasSessionEnd = !!parsed.data.sessionEnd;
+
   await db
     .insert(sessions)
     .values({
@@ -177,7 +182,7 @@ export async function POST(request: Request) {
       surface: parsed.data.surface ?? "unknown",
       modelSummary: latestModel,
       startedAt: firstEventAt,
-      endedAt: lastEventAt,
+      endedAt: hasSessionEnd ? lastEventAt : null,
       inputTokens: batchInputTokens,
       outputTokens: batchOutputTokens,
       cacheTokens: batchCacheTokens,
@@ -189,7 +194,8 @@ export async function POST(request: Request) {
         deviceId: device.id,
         projectId,
         surface: parsed.data.surface ?? "unknown",
-        endedAt: lastEventAt,
+        // Do not clobber ended_at on update; the sessionEnd branch below is the
+        // single source of truth for marking a session closed.
         modelSummary: latestModel
           ? sql`COALESCE(${latestModel}, ${sessions.modelSummary})`
           : sessions.modelSummary,
