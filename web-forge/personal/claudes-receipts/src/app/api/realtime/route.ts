@@ -16,6 +16,15 @@ const MIN = 60_000;
 const HOUR = 3_600_000;
 const DAY = 86_400_000;
 
+function contextLimitFor(model: string | null): number {
+  if (!model) return 200_000;
+  const m = model.toLowerCase();
+  // Opus 4.6 and Sonnet 4.6 ship 1M-context variants. Haiku caps at 200k.
+  if (m.includes("opus-4") || m.includes("sonnet-4-6") || m.includes("sonnet-4-5"))
+    return 1_000_000;
+  return 200_000;
+}
+
 type PulseWindow = {
   tools: number;
   prompts: number;
@@ -342,20 +351,24 @@ async function handle(now: Date) {
 
     // Only consider "active" if last event within 5 min
     if (!lastEventAt || lastEventAt >= fiveMinAgo) {
-      const latestApiRequest = await db
-        .select({ inputTokens: sessionEvents.inputTokens })
+      // Context window = peak (input_tokens + cache_tokens) across all
+      // api_request_completed events in this session. Claude's API splits
+      // uncached new input from cached read/creation; both count against
+      // the context limit. Summing both gives the actual context size.
+      const contextPeak = await db
+        .select({
+          peak: sql<number>`coalesce(max(coalesce(${sessionEvents.inputTokens},0) + coalesce(${sessionEvents.cacheTokens},0)), 0)::int`,
+        })
         .from(sessionEvents)
         .where(
           and(
             eq(sessionEvents.sessionId, activeCandidate.id),
             eq(sessionEvents.eventType, "api_request_completed"),
           ),
-        )
-        .orderBy(desc(sessionEvents.occurredAt))
-        .limit(1);
+        );
 
-      const contextTokens = latestApiRequest[0]?.inputTokens ?? 0;
-      const contextLimit = 200_000;
+      const contextTokens = contextPeak[0]?.peak ?? 0;
+      const contextLimit = contextLimitFor(activeCandidate.model);
 
       active = {
         sessionId: activeCandidate.id,
