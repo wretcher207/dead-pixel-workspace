@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { AppShell, DataList, PageHeader, SectionBlock } from "@/components/receipts-ui";
+import { DeviceRegister } from "@/components/device-register";
 import { authOptions } from "@/lib/auth";
 import { deviceSummary, devices as deviceMocks } from "@/lib/receipts-data";
 import { siteNavigation } from "@/lib/navigation";
@@ -26,6 +27,12 @@ export default async function DevicesPage() {
         videoSrc="/videos/devices-floor.mp4"
         stats={deviceSummary}
       />
+
+      <section className="layout-grid section-gap">
+        <div className="span-12">
+          <DeviceRegister />
+        </div>
+      </section>
 
       <SectionBlock
         eyebrow="Machine Ledger"
