@@ -11,6 +11,7 @@ const primary: NavItem[] = [
   { href: "/projects", label: "Projects" },
   { href: "/builder", label: "Ritual Builder", requiresProject: true },
   { href: "/output", label: "Output Studio", requiresProject: true },
+  { href: "/principles", label: "Principles" },
   { href: "/settings", label: "Settings" },
 ];
 

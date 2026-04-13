@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { OutputBundle, OutputTabKey } from "@/lib/prompts";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Buttons";
+import { useTeachingMode } from "@/components/teaching/TeachingModeProvider";
 
 type OutputStudioProps = {
   projectName: string;
@@ -22,6 +23,28 @@ const TABS: { key: OutputTabKey; label: string }[] = [
   { key: "refine", label: "Refine" },
 ];
 
+// Teaching annotations per section label. When teaching mode is on,
+// a numbered margin note appears beside the editorial-label and the
+// annotation expands below the section body.
+const sectionAnnotations: Record<string, string> = {
+  "Prompt Specification":
+    "This top-level spec grounds the entire prompt. Without it, the AI fills in assumptions about the business, the audience, and the site structure. Every detail here prevents a hallucination downstream.",
+  "Layer 01 — Global Entry":
+    "The entry point is the only guaranteed view. 70% of visitors decide to stay or leave in the first 3 seconds. This layer defines what they see and what action is available before they scroll.",
+  "Layer 02 — Narrative Flow":
+    "Scroll-based storytelling. The order of sections isn't arbitrary; it follows the visitor's decision sequence: intrigue, credibility, specifics, action. Breaking this sequence loses people.",
+  "Layer 03 — The Studio Vault":
+    "A hidden depth layer rewards returning visitors and establishes expertise. Not every site needs one, but when the business has genuine depth (an archive, a process, a philosophy), surfacing it builds trust that a services page never can.",
+  "Layer 04 — Trust Surface":
+    "Trust signals that feel generic ('We follow all safety protocols') actively damage credibility. This layer specifies how to make trust feel personal and specific to this business.",
+  Constraints:
+    "Constraints are taste. 'No stock imagery, mobile-first, no animation' aren't limitations; they're the design decisions that prevent the output from feeling like every other AI-generated site.",
+  "Output Format":
+    "The format spec tells the AI exactly what to deliver. Without it, you get a wall of prose instead of a structured sitemap, per-page outlines, and a voice-and-tone statement.",
+  "Research Goal":
+    "Research prompts that don't specify a deliverable format produce unusable essays. This goal section ensures the AI returns structured competitive intelligence, not a book report.",
+};
+
 export function OutputStudio({
   projectName,
   analysisSummaryTitle,
@@ -32,6 +55,7 @@ export function OutputStudio({
   bundle,
 }: OutputStudioProps) {
   const [active, setActive] = useState<OutputTabKey>("build");
+  const { enabled: teachingOn } = useTeachingMode();
   const doc = bundle[active];
 
   return (
@@ -82,20 +106,42 @@ export function OutputStudio({
             </header>
 
             <div className="space-y-10 ritual-reveal ritual-reveal-2">
-              {doc.sections.map((s, i) => (
-                <section key={s.label} className="space-y-2.5">
-                  <p className="editorial-label">{s.label}</p>
-                  <p
-                    className={[
-                      "font-body text-[15px] leading-[1.75] text-on-surface/90",
-                      // Drop cap on the first prose section only — editorial detail.
-                      i === 0 ? "drop-cap" : "",
-                    ].join(" ")}
-                  >
-                    {s.body}
-                  </p>
-                </section>
-              ))}
+              {doc.sections.map((s, i) => {
+                const annotation = sectionAnnotations[s.label];
+                const noteIndex = annotation
+                  ? Object.keys(sectionAnnotations).indexOf(s.label) + 1
+                  : null;
+                return (
+                  <section key={s.label} className="space-y-2.5">
+                    <div className="flex items-baseline gap-3">
+                      <p className="editorial-label">{s.label}</p>
+                      {teachingOn && noteIndex && (
+                        <span className="font-label text-[9px] text-tertiary/60">
+                          [{noteIndex}]
+                        </span>
+                      )}
+                    </div>
+                    <p
+                      className={[
+                        "font-body text-[15px] leading-[1.75] text-on-surface/90",
+                        i === 0 ? "drop-cap" : "",
+                      ].join(" ")}
+                    >
+                      {s.body}
+                    </p>
+                    {teachingOn && annotation && (
+                      <aside className="mt-3 pl-4 border-l border-tertiary/30 space-y-1.5">
+                        <p className="editorial-label text-tertiary/80">
+                          Note [{noteIndex}]
+                        </p>
+                        <p className="helper-text text-on-surface">
+                          {annotation}
+                        </p>
+                      </aside>
+                    )}
+                  </section>
+                );
+              })}
             </div>
           </article>
 

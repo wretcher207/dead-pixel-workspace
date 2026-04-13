@@ -2,7 +2,9 @@ import Link from "next/link";
 import { TopMetaBar } from "@/components/app-shell/TopMetaBar";
 import { Button } from "@/components/ui/Buttons";
 import { Chip } from "@/components/ui/Chip";
+import { TeachingNote } from "@/components/teaching/TeachingNote";
 import { projects } from "@/lib/projects";
+import { getPrinciplesForProject } from "@/lib/principles";
 
 export default function ProjectsPage() {
   return (
@@ -96,6 +98,19 @@ export default function ProjectsPage() {
                   </span>
                 </div>
               </div>
+
+              {(() => {
+                const projectPrinciples = getPrinciplesForProject(p.slug);
+                if (projectPrinciples.length === 0) return null;
+                return (
+                  <TeachingNote label="What you'll learn">
+                    {projectPrinciples
+                      .slice(0, 3)
+                      .map((pr) => pr.rule)
+                      .join(" · ")}
+                  </TeachingNote>
+                );
+              })()}
 
               <div className="mt-6 pt-5 ghost-border-b flex items-center justify-between">
                 <div className="flex items-center gap-6">

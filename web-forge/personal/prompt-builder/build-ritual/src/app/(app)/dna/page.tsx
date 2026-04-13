@@ -1,9 +1,59 @@
 import Link from "next/link";
 import { TopMetaBar } from "@/components/app-shell/TopMetaBar";
 import { Button } from "@/components/ui/Buttons";
+import { Chip } from "@/components/ui/Chip";
 import { DraftProjectState } from "@/components/app-shell/DraftProjectState";
+import { TeachingNote } from "@/components/teaching/TeachingNote";
 import { getContext, resolveSlug } from "@/lib/project-context";
 import { getProject } from "@/lib/projects";
+import { type PrincipleCategory, CATEGORY_LABELS } from "@/lib/principles";
+
+// Maps DNA panel titles to teaching annotations.
+// Each entry carries categories (shown as chips) and a principle note
+// (shown as a TeachingNote when teaching mode is on).
+const panelTeaching: Record<
+  string,
+  { categories: PrincipleCategory[]; note: string; principleSlug?: string }
+> = {
+  "Brand Direction": {
+    categories: ["composition", "typography", "copy"],
+    note: "Brand direction isn't a mood board. It's the filter every downstream decision passes through. If 'monastic' is the direction, then every font choice, color choice, and animation level gets tested against that word.",
+    principleSlug: "asymmetric-composition",
+  },
+  "Audience Profile": {
+    categories: ["trust", "copy", "cta-flow"],
+    note: "The profile isn't demographic data. It's empathy data. Understanding that your visitor is anxious about pain or hygiene changes which trust signals you surface first and what CTA language you use.",
+    principleSlug: "owner-voice-leads",
+  },
+  "Conversion Strategy": {
+    categories: ["cta-flow", "mobile"],
+    note: "Two clicks to the primary CTA. That's the design constraint disguised as a business goal. Every page layout, navigation choice, and section order flows from this one rule.",
+    principleSlug: "two-clicks-to-cta",
+  },
+  "Content Reality": {
+    categories: ["copy", "assets"],
+    note: "This panel separates what you have from what you wish you had. Sites designed around imaginary content always feel hollow. The Build prompt respects what's actually available.",
+  },
+  "Asset Readiness": {
+    categories: ["assets"],
+    note: "Real photos beat generated ones every time. This panel makes sure the Visual prompt leads with what the owner actually has before falling back to AI-generated fills.",
+    principleSlug: "owner-photos-first",
+  },
+  "Technical Standards": {
+    categories: ["mobile", "accessibility"],
+    note: "44px tap targets, mobile-first layout, WCAG AA contrast. These aren't optional. They're the floor that every other design decision sits on top of.",
+    principleSlug: "tap-targets-44px",
+  },
+  Constraints: {
+    categories: ["copy", "trust"],
+    note: "Constraints aren't limitations. They're the taste filter. 'No marketing boilerplate' and 'owner's voice leads' are the constraints that make the output feel like a person, not a template.",
+    principleSlug: "no-cliche-verbs",
+  },
+  "Output Set": {
+    categories: ["composition"],
+    note: "The outputs you select determine which prompts get generated. Each one is a self-contained design document, not a miscellaneous pile of instructions.",
+  },
+};
 
 type SearchParams = Promise<{ project?: string }>;
 
@@ -81,28 +131,55 @@ export default async function DnaReviewPage({
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-10">
-            {ctx.dnaPanels.map((p) => (
-              <article
-                key={p.title}
-                className="bg-surface-container-low/60 rounded-sm px-7 py-7 space-y-4 ghost-border"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="editorial-label">{p.label}</p>
-                  <button className="font-label text-[10px] uppercase tracking-[0.22em] text-on-surface-variant hover:text-tertiary transition-colors">
-                    Edit
-                  </button>
-                </div>
-                <h4 className="font-headline italic text-[24px] text-on-surface leading-snug">
-                  {p.title}
-                </h4>
-                <p className="helper-text">{p.why}</p>
-                <div className="atmospheric-line" />
-                <p
-                  className="font-body text-[13.5px] leading-[1.75] text-on-surface"
-                  dangerouslySetInnerHTML={{ __html: p.body }}
-                />
-              </article>
-            ))}
+            {ctx.dnaPanels.map((p) => {
+              const teaching = panelTeaching[p.title];
+              return (
+                <article
+                  key={p.title}
+                  className="bg-surface-container-low/60 rounded-sm px-7 py-7 space-y-4 ghost-border"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="editorial-label">{p.label}</p>
+                    <button className="font-label text-[10px] uppercase tracking-[0.22em] text-on-surface-variant hover:text-tertiary transition-colors">
+                      Edit
+                    </button>
+                  </div>
+                  <h4 className="font-headline italic text-[24px] text-on-surface leading-snug">
+                    {p.title}
+                  </h4>
+                  {teaching && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {teaching.categories.map((cat) => (
+                        <Chip key={cat} tone="filled">
+                          {CATEGORY_LABELS[cat]}
+                        </Chip>
+                      ))}
+                    </div>
+                  )}
+                  <p className="helper-text">{p.why}</p>
+                  <div className="atmospheric-line" />
+                  <p
+                    className="font-body text-[13.5px] leading-[1.75] text-on-surface"
+                    dangerouslySetInnerHTML={{ __html: p.body }}
+                  />
+                  {teaching && (
+                    <TeachingNote label="Underlying Principle">
+                      {teaching.note}
+                      {teaching.principleSlug && (
+                        <span className="block mt-2">
+                          <Link
+                            href={`/principles/${teaching.principleSlug}`}
+                            className="font-label text-[10px] uppercase tracking-[0.22em] text-tertiary/70 hover:text-tertiary transition-colors"
+                          >
+                            View principle &rarr;
+                          </Link>
+                        </span>
+                      )}
+                    </TeachingNote>
+                  )}
+                </article>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-3 pt-4">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { TopMetaBar } from "@/components/app-shell/TopMetaBar";
 import { DraftProjectState } from "@/components/app-shell/DraftProjectState";
+import { TeachingNote } from "@/components/teaching/TeachingNote";
 import { Button } from "@/components/ui/Buttons";
 import { Chip } from "@/components/ui/Chip";
 import { getContext, resolveSlug } from "@/lib/project-context";
@@ -327,6 +328,24 @@ const sections: SectionDef[] = [
     ],
   },
 ];
+
+// Teaching notes — expanded rationale shown when Teaching Mode is on.
+// Keyed by section ID. Each explains _why_ this section exists as a
+// web-design concern, not just what to fill in.
+const teachingNotes: Record<string, string> = {
+  "business-reality":
+    "Business Reality isn't admin data. It's the raw material for every copy decision the site makes. The difference between 'body piercing studio' and 'APP-certified piercer working solo by appointment' changes the entire site's tone, CTA language, and trust strategy. Get this wrong and every downstream prompt hallucinates.",
+  audience:
+    "Most small business sites talk about themselves. The best ones talk to the visitor's anxiety. When you name the exact pain point ('surprise jewelry upsells,' 'vague sterilization info'), the site copy can address it directly instead of hoping generic reassurance works.",
+  brand:
+    "Tone isn't decoration. It's the filter that catches bad copy before it ships. If you define 'monastic, deliberate, archival' here, then a headline like 'Unlock Your Piercing Journey!' gets caught immediately. The cliche suppressor list is the most underrated field in the whole brief.",
+  "site-shape":
+    "Page count is a design decision, not an inventory exercise. A 3-page site with one clear path converts better than a 12-page site where visitors get lost. The page list you define here becomes the sitemap in the Build prompt and the navigation structure the developer implements.",
+  assets:
+    "The gap between 'what they have' and 'what the site needs' is where most projects stall. Being honest here means the DNA review can flag gaps before anyone starts building. A site designed around missing assets will always feel hollow.",
+  tech:
+    "These defaults rarely need changing, but when they do, it matters. Setting 'mobile-first' here means the Build prompt specifies a mobile-first CSS strategy. Setting 'asset-first design' means the Visual prompt arranges layout around existing photography instead of placeholder grids.",
+};
 
 const outputOptions = [
   {
@@ -656,6 +675,7 @@ function FormSection({
   section: SectionDef;
   useDefaults: boolean;
 }) {
+  const note = teachingNotes[section.id];
   return (
     <section id={section.id} className="space-y-7 scroll-mt-24">
       <div className="space-y-2 max-w-[58ch]">
@@ -666,6 +686,7 @@ function FormSection({
         <p className="font-body text-[14px] leading-[1.7] text-on-surface-variant">
           {section.intro}
         </p>
+        {note && <TeachingNote>{note}</TeachingNote>}
       </div>
 
       <div className="atmospheric-line" />
