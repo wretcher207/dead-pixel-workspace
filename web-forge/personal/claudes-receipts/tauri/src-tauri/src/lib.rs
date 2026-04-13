@@ -2,6 +2,7 @@ mod config;
 mod parser;
 mod session;
 mod uploader;
+mod watcher;
 
 pub fn run() {
     tauri::Builder::default()
