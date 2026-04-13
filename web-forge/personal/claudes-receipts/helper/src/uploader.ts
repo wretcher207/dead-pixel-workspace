@@ -15,10 +15,14 @@ export type BatchPayload = {
 const RETRY_DELAYS_MS = [1_000, 5_000, 15_000, 60_000, 300_000];
 const MAX_RETRIES = RETRY_DELAYS_MS.length;
 
+export type PostResult =
+  | { ok: true }
+  | { ok: false; authFailed: boolean };
+
 export async function postBatch(
   config: HelperConfig,
   payload: BatchPayload,
-): Promise<boolean> {
+): Promise<PostResult> {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
       const response = await fetch(`${config.endpoint}/api/ingest`, {
@@ -36,13 +40,21 @@ export async function postBatch(
           sessionEnd: payload.sessionEnd,
         }),
       });
-      if (response.ok) return true;
 
-      if (response.status === 401 || response.status === 400) {
-        const body = await response.text();
-        console.error(`[helper] ingest rejected ${response.status}: ${body}`);
-        return false;
+      if (response.ok) return { ok: true };
+
+      // 401 = credential failure — do not retry, do not queue
+      if (response.status === 401) {
+        return { ok: false, authFailed: true };
       }
+
+      // 400 = bad payload — our bug, not a transient error, don't retry
+      if (response.status === 400) {
+        const body = await response.text();
+        console.error(`[helper] ingest bad payload (400): ${body}`);
+        return { ok: false, authFailed: false };
+      }
+
       console.warn(`[helper] ingest retry: HTTP ${response.status}`);
     } catch (error) {
       console.warn(
@@ -53,7 +65,7 @@ export async function postBatch(
     const delay = RETRY_DELAYS_MS[Math.min(attempt, RETRY_DELAYS_MS.length - 1)];
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
-  return false;
+  return { ok: false, authFailed: false };
 }
 
 type QueueEntry = BatchPayload & { id: string };
@@ -68,26 +80,42 @@ export function enqueue(config: HelperConfig, payload: BatchPayload): void {
   fs.appendFileSync(queuePath(config), `${JSON.stringify(entry)}\n`);
 }
 
-export async function flushQueue(config: HelperConfig): Promise<void> {
+export async function flushQueue(
+  config: HelperConfig,
+): Promise<{ authFailed: boolean }> {
   const qPath = queuePath(config);
-  if (!fs.existsSync(qPath)) return;
+  if (!fs.existsSync(qPath)) return { authFailed: false };
+
   const lines = fs
     .readFileSync(qPath, "utf8")
     .split("\n")
     .filter((line) => line.trim().length > 0);
+
   const remaining: string[] = [];
+
   for (const line of lines) {
     try {
       const entry = JSON.parse(line) as QueueEntry;
-      const ok = await postBatch(config, entry);
-      if (!ok) remaining.push(line);
+      const result = await postBatch(config, entry);
+      if (!result.ok) {
+        // Auth failure — stop processing the queue, preserve remaining entries
+        if (result.authFailed) {
+          remaining.push(line, ...lines.slice(lines.indexOf(line) + 1));
+          fs.writeFileSync(qPath, `${remaining.join("\n")}\n`);
+          return { authFailed: true };
+        }
+        remaining.push(line);
+      }
     } catch {
       // drop unparseable entries
     }
   }
+
   if (remaining.length === 0) {
     fs.rmSync(qPath);
   } else {
     fs.writeFileSync(qPath, `${remaining.join("\n")}\n`);
   }
+
+  return { authFailed: false };
 }

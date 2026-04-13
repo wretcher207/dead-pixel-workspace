@@ -35,10 +35,10 @@ export function writeCursor(
 export async function readNewLines(
   filePath: string,
   offset: number,
-): Promise<{ lines: string[]; nextOffset: number }> {
+): Promise<{ lines: string[]; nextOffset: number; mtimeMs: number }> {
   const stat = await fs.promises.stat(filePath);
   if (stat.size <= offset) {
-    return { lines: [], nextOffset: offset };
+    return { lines: [], nextOffset: offset, mtimeMs: stat.mtimeMs };
   }
   const stream = fs.createReadStream(filePath, {
     start: offset,
@@ -51,7 +51,24 @@ export async function readNewLines(
   const buffer = Buffer.concat(chunks);
   const text = buffer.toString("utf8");
   const lines = text.split("\n").filter((line) => line.trim().length > 0);
-  return { lines, nextOffset: stat.size };
+  return { lines, nextOffset: stat.size, mtimeMs: stat.mtimeMs };
+}
+
+export async function readLinesUpToCursor(
+  filePath: string,
+  upToOffset: number,
+): Promise<string[]> {
+  if (upToOffset === 0) return [];
+  const stream = fs.createReadStream(filePath, {
+    start: 0,
+    end: upToOffset - 1,
+  });
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream) {
+    chunks.push(chunk as Buffer);
+  }
+  const text = Buffer.concat(chunks).toString("utf8");
+  return text.split("\n").filter((line) => line.trim().length > 0);
 }
 
 export function sessionIdFromPath(filePath: string): string {
