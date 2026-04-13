@@ -9,9 +9,9 @@ type NavItem = { href: string; label: string; requiresProject?: boolean };
 
 const primary: NavItem[] = [
   { href: "/projects", label: "Projects" },
-  { href: "/builder", label: "Ritual Builder", requiresProject: true },
-  { href: "/output", label: "Output Studio", requiresProject: true },
-  { href: "/principles", label: "Principles" },
+  { href: "/builder", label: "Brief Builder", requiresProject: true },
+  { href: "/output", label: "Prompts", requiresProject: true },
+  { href: "/learn", label: "Learn" },
   { href: "/settings", label: "Settings" },
 ];
 
@@ -49,7 +49,7 @@ export function SidebarNav() {
             Build Ritual
           </h1>
           <p className="font-label text-[10px] uppercase tracking-[0.3em] text-on-surface-variant/60 mt-2">
-            The Digital Atelier
+            Website Brief Studio
           </p>
         </div>
 

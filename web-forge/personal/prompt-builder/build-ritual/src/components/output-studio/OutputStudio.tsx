@@ -29,16 +29,22 @@ const TABS: { key: OutputTabKey; label: string }[] = [
 const sectionAnnotations: Record<string, string> = {
   "Prompt Specification":
     "This top-level spec grounds the entire prompt. Without it, the AI fills in assumptions about the business, the audience, and the site structure. Every detail here prevents a hallucination downstream.",
-  "Layer 01 — Global Entry":
-    "The entry point is the only guaranteed view. 70% of visitors decide to stay or leave in the first 3 seconds. This layer defines what they see and what action is available before they scroll.",
-  "Layer 02 — Narrative Flow":
-    "Scroll-based storytelling. The order of sections isn't arbitrary; it follows the visitor's decision sequence: intrigue, credibility, specifics, action. Breaking this sequence loses people.",
-  "Layer 03 — The Studio Vault":
-    "A hidden depth layer rewards returning visitors and establishes expertise. Not every site needs one, but when the business has genuine depth (an archive, a process, a philosophy), surfacing it builds trust that a services page never can.",
-  "Layer 04 — Trust Surface":
-    "Trust signals that feel generic ('We follow all safety protocols') actively damage credibility. This layer specifies how to make trust feel personal and specific to this business.",
+  Homepage:
+    "The homepage is the only guaranteed view. Research shows visitors form an opinion in 0.05 seconds, and 70% decide to stay or leave within 3 seconds. This section defines what they see and what action is available before they scroll.",
+  "Content Flow":
+    "The order of sections follows how visitors actually make decisions: first intrigue, then credibility, then specifics, then action. Breaking this sequence loses people. Studies show 58% of slideshows get ignored after the first slide, so we stack content vertically instead.",
+  Services:
+    "Service pages work hardest when they show real work, not descriptions. Each category pairs photos with starting prices and availability. Visitors who see specific work examples convert at 2-3x the rate of those who just read a services list.",
+  "Depth & Portfolio":
+    "A hidden depth layer rewards returning visitors and establishes expertise. When the business has genuine depth (an archive, a process, a philosophy), surfacing it builds trust that a services page never can.",
+  "About the Owner":
+    "People buy from people, not businesses. The owner's voice and story are the strongest trust signal a small business has. Generic 'meet the team' sections get skipped. Authentic personal narrative gets read.",
+  "Trust & Credibility":
+    "Trust signals that feel generic ('We follow all safety protocols') actively damage credibility. This section specifies how to make trust feel personal and specific to this business. 28% of homepages omit testimonials entirely, which is a missed opportunity.",
+  Booking:
+    "The booking experience is where design meets revenue. If the flow from first visit to completed booking takes longer than 45 seconds on mobile, something needs tightening. Embedded booking tools need to feel native, not bolted on.",
   Constraints:
-    "Constraints are taste. 'No stock imagery, mobile-first, no animation' aren't limitations; they're the design decisions that prevent the output from feeling like every other AI-generated site.",
+    "Constraints are taste. 'No stock imagery, mobile-first, no animation' aren't limitations. They're the design decisions that prevent the output from feeling like every other AI-generated site.",
   "Output Format":
     "The format spec tells the AI exactly what to deliver. Without it, you get a wall of prose instead of a structured sitemap, per-page outlines, and a voice-and-tone statement.",
   "Research Goal":

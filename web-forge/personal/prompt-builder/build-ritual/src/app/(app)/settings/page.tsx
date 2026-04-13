@@ -113,10 +113,10 @@ const groups: {
 export default function SettingsPage() {
   return (
     <>
-      <TopMetaBar environment="Configuration" title="Settings" />
+      <TopMetaBar environment="Settings" title="Settings" />
       <section className="flex-1 px-12 py-10 flex flex-col space-y-14 overflow-y-auto max-w-4xl warm-wash">
         <header className="space-y-3">
-          <p className="editorial-label">Workspace · Preferences</p>
+          <p className="editorial-label">Preferences</p>
           <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
             Settings
           </h3>

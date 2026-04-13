@@ -48,19 +48,19 @@ export const thornAndThimble: OutputBundle = {
         body: "Construct a multi-layered navigation system that reflects the artisanal nature of the studio. The primary interaction should feel deliberate and rhythmic. Reject generic service-page hierarchy. Every click should reward the visitor with material detail, not marketing copy.",
       },
       {
-        label: "Layer 01 — Global Entry",
+        label: "Homepage",
         body: "Implement a high-contrast landing experience using a 3-column asymmetric grid. Focus on Bangor-specific context through a dedicated Origin sub-header. Primary CTA: Book Consultation. Secondary CTA: Read Before Your Appointment.",
       },
       {
-        label: "Layer 02 — Narrative Flow",
+        label: "Content Flow",
         body: "Utilize a staggered reveal for the studio portfolio. Each entry should be preceded by a metadata summary in Manrope, followed by a large-scale visual anchor in Newsreader. No hover-lift card tricks.",
       },
       {
-        label: "Layer 03 — The Studio Vault",
+        label: "Depth & Portfolio",
         body: "A hidden archival section accessible only via a restrained footer link, showcasing process sketches and raw material studies in a minimalist list format. This is the invitation to go deeper; do not surface it on the main nav.",
       },
       {
-        label: "Layer 04 — Trust Surface",
+        label: "Trust & Credibility",
         body: "Aftercare, sterilization practice, and jewelry sourcing live as first-class pages, not footer links. Libby's voice leads. No industry-standard safety boilerplate.",
       },
       {
@@ -198,19 +198,19 @@ export const theNailSuite: OutputBundle = {
         body: "Build a single-page dominant layout with a secondary Services route for depth. Hero is the interior itself — Seedance loop of the space at golden hour, nobody in frame. Booking must be reachable from anywhere on the page in one tap. Phone number must be a tap-to-call link, not a display element.",
       },
       {
-        label: "Layer 01 — Global Entry",
+        label: "Homepage",
         body: "Full-bleed interior hero loop, muted autoplay. Over it: 'The Nail Suite — Dexter, Maine' in Newsreader, and a single CTA: 'Reserve a Chair'. No nav clutter. Instagram feed preview lives below the fold, not above.",
       },
       {
-        label: "Layer 02 — Service Catalog",
+        label: "Services",
         body: "Four categories: Manicure / Pedicure / Enhancement / Gel-X. Each with a starting-at price, a 2-photo micro-gallery of Larissa's actual work, and a chair-specific availability note ('Chair One — Larissa' / 'Chair Two — Available').",
       },
       {
-        label: "Layer 03 — Who's Behind the Chair",
+        label: "About the Owner",
         body: "Single scrolling section: Larissa's own words about why she opened the studio in Dexter specifically. Portrait + hand detail. No 'meet the team' header. Speak like the person in the room, not the business behind them.",
       },
       {
-        label: "Layer 04 — Booking",
+        label: "Booking",
         body: "Embedded Vagaro or Square booking. If the embed feels clinical against the rest of the site, wrap it in a dedicated dark frame and add a '— or call/text 207-xxx-xxxx' fallback immediately beneath.",
       },
       {

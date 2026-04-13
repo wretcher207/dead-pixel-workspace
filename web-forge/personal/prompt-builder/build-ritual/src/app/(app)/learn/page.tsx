@@ -16,8 +16,8 @@ export default function PrinciplesPage() {
   return (
     <>
       <TopMetaBar
-        environment="Reference"
-        title="Principles Library"
+        environment="Learn"
+        title="Design Principles"
         meta={[
           { label: "Principles", value: String(principles.length) },
           { label: "Categories", value: String(categories.length) },
@@ -26,14 +26,14 @@ export default function PrinciplesPage() {
 
       <section className="flex-1 px-12 py-10 space-y-20 overflow-y-auto warm-wash">
         <header className="space-y-3 max-w-[58ch] ritual-reveal ritual-reveal-1">
-          <p className="editorial-label">Curriculum</p>
+          <p className="editorial-label">Learn</p>
           <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
-            Principles Library
+            Design Principles
           </h3>
           <p className="font-body text-[15px] leading-[1.7] text-on-surface-variant">
-            Every rule encoded in the prompts. These aren&rsquo;t abstract best
-            practices. Each one comes from building real sites for real
-            businesses, and each one has a reason you can argue with.
+            The rules we follow when building sites. Each one comes from
+            real projects and real data. They&rsquo;re baked into every
+            prompt this tool generates.
           </p>
         </header>
 
@@ -60,7 +60,7 @@ function CategorySection({ category }: { category: PrincipleCategory }) {
         {items.map((p) => (
           <Link
             key={p.slug}
-            href={`/principles/${p.slug}`}
+            href={`/learn/${p.slug}`}
             className="group block"
           >
             <article className="bg-surface-container-low/60 hover:bg-surface-container-low px-7 py-6 rounded-sm ghost-border space-y-4 transition-colors duration-300">

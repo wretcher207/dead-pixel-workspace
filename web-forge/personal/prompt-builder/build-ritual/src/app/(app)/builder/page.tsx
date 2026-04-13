@@ -334,17 +334,17 @@ const sections: SectionDef[] = [
 // web-design concern, not just what to fill in.
 const teachingNotes: Record<string, string> = {
   "business-reality":
-    "Business Reality isn't admin data. It's the raw material for every copy decision the site makes. The difference between 'body piercing studio' and 'APP-certified piercer working solo by appointment' changes the entire site's tone, CTA language, and trust strategy. Get this wrong and every downstream prompt hallucinates.",
+    "This section is the raw material for every copy decision the site makes. Research shows visitors form a first impression in 0.05 seconds. The difference between 'body piercing studio' and 'APP-certified piercer working solo by appointment' changes the entire site's tone, CTA language, and trust strategy.",
   audience:
-    "Most small business sites talk about themselves. The best ones talk to the visitor's anxiety. When you name the exact pain point ('surprise jewelry upsells,' 'vague sterilization info'), the site copy can address it directly instead of hoping generic reassurance works.",
+    "Most small business sites talk about themselves. The best ones talk to the visitor's anxiety. 28% of homepages skip trust signals entirely. When you name the exact pain point ('surprise jewelry upsells,' 'vague sterilization info'), the site copy can address it directly instead of hoping generic reassurance works.",
   brand:
-    "Tone isn't decoration. It's the filter that catches bad copy before it ships. If you define 'monastic, deliberate, archival' here, then a headline like 'Unlock Your Piercing Journey!' gets caught immediately. The cliche suppressor list is the most underrated field in the whole brief.",
+    "Tone isn't decoration. It's the filter that catches bad copy before it ships. If you define 'monastic, deliberate, archival' here, then a headline like 'Unlock Your Piercing Journey!' gets caught immediately. Data shows specific language converts 12% better than generic marketing speak.",
   "site-shape":
-    "Page count is a design decision, not an inventory exercise. A 3-page site with one clear path converts better than a 12-page site where visitors get lost. The page list you define here becomes the sitemap in the Build prompt and the navigation structure the developer implements.",
+    "Page count is a design decision, not an inventory exercise. Users expect to reach any important page within 3 clicks from the homepage. A 3-page site with one clear path converts better than a 12-page site where visitors get lost. The page list here becomes the sitemap in the Build prompt.",
   assets:
-    "The gap between 'what they have' and 'what the site needs' is where most projects stall. Being honest here means the DNA review can flag gaps before anyone starts building. A site designed around missing assets will always feel hollow.",
+    "The gap between 'what they have' and 'what the site needs' is where most projects stall. Studies show visuals paired with text get 65% retention vs. 10% for text alone. Being honest here means the AI review can flag gaps before anyone starts building.",
   tech:
-    "These defaults rarely need changing, but when they do, it matters. Setting 'mobile-first' here means the Build prompt specifies a mobile-first CSS strategy. Setting 'asset-first design' means the Visual prompt arranges layout around existing photography instead of placeholder grids.",
+    "53% of mobile users leave if a page takes more than 3 seconds to load. Each extra second costs 7% in conversions. Setting 'mobile-first' here means the Build prompt specifies a mobile-first CSS strategy. Core Web Vitals are both a UX metric and a Google ranking factor.",
 };
 
 const outputOptions = [
@@ -547,14 +547,14 @@ function BuilderPageBody() {
         {/* ─── Central Workspace ─── */}
         <section className="flex-1 px-12 py-10 space-y-16 overflow-y-auto warm-wash">
           <header className="space-y-3 max-w-[58ch]">
-            <p className="editorial-label">Workspace · Project Brief</p>
+            <p className="editorial-label">Step 1 of 3</p>
             <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
-              Ritual Builder
+              Brief Builder
             </h3>
             <p className="font-body text-[15px] leading-[1.7] text-on-surface-variant">
               Fill this in the order that makes sense to you. Skip what you
-              don&rsquo;t know yet &mdash; gaps get flagged in the DNA review
-              before any prompts are generated. Your answers save as you go.
+              don&rsquo;t know yet. The AI review will flag any gaps before
+              prompts are generated.
             </p>
           </header>
 
@@ -601,10 +601,10 @@ function BuilderPageBody() {
           <div className="flex items-center gap-3 pt-2">
             <Button variant="ghost">Save Draft</Button>
             <Link href={`/dna${query}`}>
-              <Button variant="secondary">Review DNA</Button>
+              <Button variant="secondary">Review Brief</Button>
             </Link>
             <Link href={`/output${query}`}>
-              <Button variant="primary">Generate Outputs</Button>
+              <Button variant="primary">Generate Prompts</Button>
             </Link>
           </div>
         </section>

@@ -28,7 +28,7 @@ export default async function PrincipleDetailPage({
   return (
     <>
       <TopMetaBar
-        environment="Principle"
+        environment="Learn"
         title={CATEGORY_LABELS[principle.category]}
         meta={[
           { label: "Projects", value: String(principle.appliesTo.length) },
@@ -120,7 +120,7 @@ export default async function PrincipleDetailPage({
                 {related.map((r) => (
                   <Link
                     key={r.slug}
-                    href={`/principles/${r.slug}`}
+                    href={`/learn/${r.slug}`}
                     className="group flex items-center gap-3 bg-surface-container-low/40 hover:bg-surface-container-low px-4 py-3 rounded-sm ghost-border transition-colors duration-300"
                   >
                     <Chip tone="filled">
@@ -137,7 +137,7 @@ export default async function PrincipleDetailPage({
 
           {/* Back */}
           <div className="max-w-3xl pt-4">
-            <Link href="/principles">
+            <Link href="/learn">
               <Button variant="ghost">&larr; All Principles</Button>
             </Link>
           </div>
@@ -178,7 +178,7 @@ export default async function PrincipleDetailPage({
                 {related.map((r) => (
                   <li key={r.slug}>
                     <Link
-                      href={`/principles/${r.slug}`}
+                      href={`/learn/${r.slug}`}
                       className="font-body text-[13px] text-on-surface-variant hover:text-tertiary transition-colors duration-200"
                     >
                       {r.rule}

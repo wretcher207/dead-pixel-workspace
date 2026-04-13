@@ -71,7 +71,7 @@ export default async function DnaReviewPage({
     return (
       <>
         <TopMetaBar
-          environment="Interpretation"
+          environment="Review"
           title={project.name}
           meta={[
             { label: project.projectType, value: project.location },
@@ -110,7 +110,7 @@ export default async function DnaReviewPage({
   return (
     <>
       <TopMetaBar
-        environment="Interpretation"
+        environment="Review"
         title={ctx.name}
         meta={ctx.topbarMeta}
       />
@@ -118,15 +118,15 @@ export default async function DnaReviewPage({
       <div className="flex-1 flex overflow-hidden">
         <section className="flex-1 px-12 py-10 flex flex-col space-y-12 overflow-y-auto warm-wash">
           <header className="space-y-3 max-w-3xl">
-            <p className="editorial-label">Distilled Brief</p>
+            <p className="editorial-label">Step 2 of 3</p>
             <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
-              Project DNA
+              Brief Review
             </h3>
             <p className="font-body text-[15px] leading-[1.7] text-on-surface-variant max-w-[58ch]">
-              This is what the AI understood from your brief. Read through it
-              before generating prompts &mdash; if any panel is off, edit it
-              here rather than re-doing the whole Builder. What&rsquo;s written
-              below is what the AI will see.
+              This is what the AI understood from your brief. Read through
+              each panel and make sure it got things right. If something
+              is off, edit it here instead of going back to the brief.
+              What you see below is exactly what the AI will use.
             </p>
           </header>
 
@@ -168,7 +168,7 @@ export default async function DnaReviewPage({
                       {teaching.principleSlug && (
                         <span className="block mt-2">
                           <Link
-                            href={`/principles/${teaching.principleSlug}`}
+                            href={`/learn/${teaching.principleSlug}`}
                             className="font-label text-[10px] uppercase tracking-[0.22em] text-tertiary/70 hover:text-tertiary transition-colors"
                           >
                             View principle &rarr;
@@ -184,10 +184,10 @@ export default async function DnaReviewPage({
 
           <div className="flex items-center gap-3 pt-4">
             <Link href={`/builder${query}`}>
-              <Button variant="secondary">Back to Builder</Button>
+              <Button variant="secondary">Back to Brief</Button>
             </Link>
             <Link href={`/output${query}`}>
-              <Button variant="primary">Generate Outputs</Button>
+              <Button variant="primary">Generate Prompts</Button>
             </Link>
           </div>
         </section>
