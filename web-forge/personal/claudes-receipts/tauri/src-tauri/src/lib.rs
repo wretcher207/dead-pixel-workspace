@@ -1,4 +1,5 @@
 mod agent;
+mod commands;
 mod config;
 mod parser;
 mod session;

@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HelperConfig {
     pub endpoint: String,
     pub device_id: String,
