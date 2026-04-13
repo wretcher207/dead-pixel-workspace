@@ -1,4 +1,5 @@
 mod config;
+mod parser;
 
 pub fn run() {
     tauri::Builder::default()
