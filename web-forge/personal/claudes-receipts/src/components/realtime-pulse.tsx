@@ -150,7 +150,9 @@ export function RealtimePulse() {
         <header className="rt-header">
           <span className="rt-dot rt-dot-idle" />
           <span className="rt-title">Realtime</span>
-          <span className="rt-status">connecting…</span>
+          <span className="rt-status">
+            {err ? `fetch failed: ${err}` : "connecting…"}
+          </span>
         </header>
       </section>
     );

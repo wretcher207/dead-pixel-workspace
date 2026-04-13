@@ -107,6 +107,24 @@ function emptyPayload(now: Date): RealtimePayload {
 
 export async function GET() {
   const now = new Date();
+  try {
+    return await handle(now);
+  } catch (e) {
+    const err = e as Error;
+    return Response.json(
+      {
+        ...emptyPayload(now),
+        error: {
+          message: err.message,
+          stack: err.stack?.split("\n").slice(0, 6).join("\n"),
+        },
+      },
+      { status: 500, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+}
+
+async function handle(now: Date) {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id ?? null;
   const db = getDb();
@@ -198,15 +216,11 @@ export async function GET() {
         ),
       ),
 
-    // Today/yesterday/last-week cost
+    // Compare buckets: fetch rows, bucket in JS to avoid CASE param-type inference issues
     db
       .select({
-        bucket: sql<string>`case
-          when ${sessions.startedAt} >= ${todayStart} then 'today'
-          when ${sessions.startedAt} >= ${yesterdayStart} and ${sessions.startedAt} < ${todayStart} then 'yesterday'
-          when ${sessions.startedAt} >= ${lastWeekStart} and ${sessions.startedAt} < ${lastWeekEnd} then 'lastweek'
-          else 'other' end`,
-        cost: sql<number>`coalesce(sum(${sessions.estimatedCostCents}), 0)::int`,
+        startedAt: sessions.startedAt,
+        cost: sessions.estimatedCostCents,
       })
       .from(sessions)
       .where(
@@ -214,8 +228,7 @@ export async function GET() {
           eq(sessions.userId, userId),
           gte(sessions.startedAt, lastWeekStart),
         ),
-      )
-      .groupBy(sql`1`),
+      ),
 
     // Top tools in last hour (excluding Agent)
     db
@@ -402,8 +415,22 @@ export async function GET() {
     activeSec: 0,
   };
 
-  const compareMap = new Map<string, number>();
-  for (const row of compareRows) compareMap.set(row.bucket, Number(row.cost));
+  const compareMap = new Map<string, number>([
+    ["today", 0],
+    ["yesterday", 0],
+    ["lastweek", 0],
+  ]);
+  for (const row of compareRows) {
+    const t = row.startedAt.getTime();
+    const cost = Number(row.cost);
+    if (t >= todayStart.getTime()) {
+      compareMap.set("today", (compareMap.get("today") ?? 0) + cost);
+    } else if (t >= yesterdayStart.getTime() && t < todayStart.getTime()) {
+      compareMap.set("yesterday", (compareMap.get("yesterday") ?? 0) + cost);
+    } else if (t >= lastWeekStart.getTime() && t < lastWeekEnd.getTime()) {
+      compareMap.set("lastweek", (compareMap.get("lastweek") ?? 0) + cost);
+    }
+  }
 
   // Sparkline: 60 minute buckets, oldest -> newest
   const sparkline = new Array(60).fill(0);
