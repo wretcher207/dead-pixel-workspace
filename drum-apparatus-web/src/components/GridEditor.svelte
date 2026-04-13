@@ -1,6 +1,8 @@
 <script lang="ts">
   import { configuratorStore } from '../lib/stores/configurator'
+  import { addCustomGroove } from '../lib/stores/library'
   import { KIT_GROUPS } from '../lib/constants/kit-pieces'
+  import { stepsToNotation } from '../lib/midi-engine'
   import type { KitPiece } from '../lib/types'
   import GridRow from './GridRow.svelte'
   import TextNotation from './TextNotation.svelte'
@@ -30,7 +32,7 @@
 
       return {
         ...state,
-        pattern: { ...state.pattern, steps: currentSteps },
+        pattern: { ...state.pattern, steps: currentSteps, kickNotation: undefined, snareNotation: undefined },
       }
     })
   }
@@ -51,9 +53,17 @@
 
       return {
         ...state,
-        pattern: { ...state.pattern, steps: currentSteps },
+        pattern: { ...state.pattern, steps: currentSteps, kickNotation: undefined, snareNotation: undefined },
       }
     })
+  }
+
+  function saveAsCustom() {
+    const name = prompt('Name this custom groove:')
+    if (!name) return
+    const state = $configuratorStore
+    const { kick, snare } = stepsToNotation(state.pattern.steps, state.timeSignature.steps)
+    addCustomGroove({ name, kick, snare })
   }
 </script>
 
@@ -63,7 +73,7 @@
     <span class="w-28 flex-shrink-0"></span>
     <div class="flex gap-px">
       {#each Array(steps) as _, i}
-        <div class="w-6 text-center text-[10px] {i % 4 === 0 ? 'text-neutral-400 font-bold' : 'text-neutral-700'}">
+        <div class="w-6 text-center text-[10px] {i % 4 === 0 ? 'text-[var(--color-dp-text-muted)] font-bold' : 'text-[var(--color-dp-text-dim)]'}">
           {i % 4 === 0 ? (i / 4 + 1) : '.'}
         </div>
       {/each}
@@ -74,7 +84,7 @@
   {#each KIT_GROUPS as group}
     <button
       onclick={() => toggleGroup(group.group)}
-      class="flex items-center gap-2 text-xs font-bold text-neutral-500 uppercase tracking-wider py-0.5 hover:text-neutral-300 transition-colors"
+      class="flex items-center gap-2 text-xs font-bold text-[var(--color-dp-text-muted)] font-['Space_Grotesk'] uppercase tracking-[-0.02em] py-0.5 hover:opacity-80 transition-opacity duration-200"
     >
       <span class="text-[10px]">{expandedGroups.has(group.group) ? '▼' : '▶'}</span>
       {group.label}
@@ -93,13 +103,22 @@
     {/if}
   {/each}
 
-  <!-- Text notation toggle -->
-  <button
-    onclick={() => showTextNotation = !showTextNotation}
-    class="text-xs text-neutral-500 hover:text-neutral-300 mt-2 transition-colors"
-  >
-    {showTextNotation ? '▼' : '▶'} Text Notation
-  </button>
+  <!-- Toolbar -->
+  <div class="flex items-center gap-3 mt-2">
+    <button
+      onclick={() => showTextNotation = !showTextNotation}
+      class="text-xs text-[var(--color-dp-text-muted)] hover:opacity-80 transition-opacity duration-200"
+    >
+      {showTextNotation ? '▼' : '▶'} Text Notation
+    </button>
+
+    <button
+      onclick={saveAsCustom}
+      class="text-xs px-2 py-1 bg-[var(--color-dp-elevated)] text-[var(--color-dp-text-muted)] hover:bg-[var(--color-dp-primary)] hover:text-[var(--color-dp-base)] transition-[background-color,color] duration-200"
+    >
+      Save as Custom
+    </button>
+  </div>
 
   {#if showTextNotation}
     <TextNotation />

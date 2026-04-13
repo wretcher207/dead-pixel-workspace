@@ -1,0 +1,2 @@
+cd guitar-tuner/app
+npm run dev

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor — Dead Pixel Toolbox</title>
+  <meta name="description" content="Compress JPEG, PNG, and WebP images entirely in your browser. No uploads, no server. Adjust quality, resize, batch process, and download.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* ---- Drop Zone ---- */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg-surface);
+      position: relative;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .drop-zone-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .drop-zone-text {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .drop-zone-hint {
+      font-size: 0.8rem;
+      color: var(--text-faint);
+    }
+
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    /* ---- Settings Panel ---- */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+    }
+
+    .slider-value {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      min-width: 36px;
+      text-align: right;
+    }
+
+    .format-select {
+      width: auto;
+      min-width: 120px;
+    }
+
+    /* ---- Batch List ---- */
+    .batch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    .batch-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      transition: border-color var(--transition);
+    }
+
+    .batch-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .batch-item.active {
+      border-color: var(--accent-dim);
+      background: var(--bg-card-hover);
+    }
+
+    .batch-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--bg-input);
+      cursor: pointer;
+    }
+
+    .batch-info {
+      min-width: 0;
+    }
+
+    .batch-name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .batch-sizes {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .batch-saved {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .batch-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* ---- Preview ---- */
+    .preview-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-image-wrap {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-image-wrap img {
+      max-width: 100%;
+      max-height: 400px;
+      display: block;
+    }
+
+    .preview-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(0,0,0,0.7);
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .preview-size {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.7);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .empty-preview {
+      color: var(--text-faint);
+      font-size: 0.82rem;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    /* ---- Batch Controls Row ---- */
+    .batch-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .batch-controls .btn {
+      flex-shrink: 0;
+    }
+
+    .image-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      margin-left: auto;
+    }
+
+    /* ---- Progress Bar ---- */
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar.visible {
+      display: block;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 200ms ease;
+    }
+
+    /* ---- Remove Button ---- */
+    .btn-remove {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-faint);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+    }
+
+    .btn-remove:hover {
+      color: var(--danger);
+      border-color: var(--danger);
+      background: rgba(255,68,102,0.08);
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="/toolbox-site/">All Tools</a>
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="tool-container">
+      <!-- Header -->
+      <div class="tool-header fade-in">
+        <div class="tool-breadcrumb">
+          <a href="/toolbox-site/">Home</a>
+          <span>/</span>
+          <span>Image Compressor</span>
+        </div>
+        <h1 class="tool-title">Image Compressor</h1>
+        <p class="tool-description">Compress JPEG, PNG, and WebP images right in your browser. Nothing leaves your machine. Adjust quality, resize, and batch process entire folders.</p>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="drop-zone fade-in fade-in-1" id="dropZone">
+        <div class="drop-zone-icon">&#9681;</div>
+        <div class="drop-zone-text">Drop images here or click to browse</div>
+        <div class="drop-zone-hint">JPEG, PNG, WebP &mdash; multiple files supported</div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progressBar" style="margin-top: 16px;">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <!-- Settings -->
+      <div class="panel fade-in fade-in-2" style="margin-top: 20px;" id="settingsPanel">
+        <div class="panel-header">
+          <span class="panel-label">Compression Settings</span>
+        </div>
+        <div class="settings-grid">
+          <div class="setting-group">
+            <label for="qualitySlider">Quality</label>
+            <div class="slider-row">
+              <input type="range" id="qualitySlider" min="1" max="100" value="75">
+              <span class="slider-value" id="qualityValue">75</span>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label for="formatSelect">Output Format</label>
+            <select id="formatSelect" class="format-select">
+              <option value="auto">Same as original</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label for="maxWidth">Max Width (px)</label>
+            <input type="number" id="maxWidth" placeholder="No limit" min="1">
+          </div>
+          <div class="setting-group">
+            <label for="maxHeight">Max Height (px)</label>
+            <input type="number" id="maxHeight" placeholder="No limit" min="1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Batch Controls -->
+      <div class="batch-controls fade-in fade-in-2" style="margin-top: 16px; display: none;" id="batchControls">
+        <button class="btn btn-primary" id="compressAllBtn">Compress All</button>
+        <button class="btn btn-secondary" id="downloadAllBtn" disabled>Download All</button>
+        <button class="btn btn-ghost" id="clearAllBtn">Clear</button>
+        <span class="image-count" id="imageCount"></span>
+      </div>
+
+      <!-- Split Preview -->
+      <div class="split-layout fade-in fade-in-3" style="margin-top: 20px; display: none;" id="previewSection">
+        <div class="panel preview-panel">
+          <div class="panel-header">
+            <span class="panel-label">Original</span>
+          </div>
+          <div class="preview-image-wrap" id="originalPreview">
+            <div class="empty-preview">Select an image to preview</div>
+          </div>
+        </div>
+        <div class="panel preview-panel">
+          <div class="panel-header">
+            <span class="panel-label">Compressed</span>
+          </div>
+          <div class="preview-image-wrap" id="compressedPreview">
+            <div class="empty-preview">Compress to see result</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid fade-in fade-in-3" style="margin-top: 20px; display: none;" id="statsGrid">
+        <div class="stat-item">
+          <div class="stat-value" id="statOriginal">--</div>
+          <div class="stat-label">Original</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="statCompressed">--</div>
+          <div class="stat-label">Compressed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="statSaved">--</div>
+          <div class="stat-label">Saved</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="statDimensions">--</div>
+          <div class="stat-label">Dimensions</div>
+        </div>
+      </div>
+
+      <!-- Batch List -->
+      <div class="panel fade-in fade-in-4" style="margin-top: 20px; display: none;" id="batchPanel">
+        <div class="panel-header">
+          <span class="panel-label">Files</span>
+          <span class="badge" id="batchBadge">0</span>
+        </div>
+        <div class="batch-list" id="batchList"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+
+  <script src="../../js/shared.js"></script>
+  <script>
+    (() => {
+      // ---- State ----
+      const images = []; // { file, originalUrl, originalSize, compressedBlob, compressedUrl, compressedSize, name, type, width, height }
+      let activeIndex = -1;
+
+      // ---- DOM ----
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const qualitySlider = document.getElementById('qualitySlider');
+      const qualityValue = document.getElementById('qualityValue');
+      const formatSelect = document.getElementById('formatSelect');
+      const maxWidthInput = document.getElementById('maxWidth');
+      const maxHeightInput = document.getElementById('maxHeight');
+      const compressAllBtn = document.getElementById('compressAllBtn');
+      const downloadAllBtn = document.getElementById('downloadAllBtn');
+      const clearAllBtn = document.getElementById('clearAllBtn');
+      const batchControls = document.getElementById('batchControls');
+      const imageCount = document.getElementById('imageCount');
+      const previewSection = document.getElementById('previewSection');
+      const originalPreview = document.getElementById('originalPreview');
+      const compressedPreview = document.getElementById('compressedPreview');
+      const statsGrid = document.getElementById('statsGrid');
+      const batchPanel = document.getElementById('batchPanel');
+      const batchList = document.getElementById('batchList');
+      const batchBadge = document.getElementById('batchBadge');
+      const progressBar = document.getElementById('progressBar');
+      const progressFill = document.getElementById('progressFill');
+
+      // ---- Helpers ----
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      }
+
+      function getOutputType(original) {
+        const fmt = formatSelect.value;
+        return fmt === 'auto' ? original : fmt;
+      }
+
+      function getExtension(mimeType) {
+        const map = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' };
+        return map[mimeType] || '.bin';
+      }
+
+      // ---- File Handling ----
+      function handleFiles(fileList) {
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        const newFiles = Array.from(fileList).filter(f => validTypes.includes(f.type));
+
+        if (newFiles.length === 0) {
+          showToast('No supported images found');
+          return;
+        }
+
+        newFiles.forEach(file => {
+          const url = URL.createObjectURL(file);
+          images.push({
+            file,
+            name: file.name,
+            type: file.type,
+            originalUrl: url,
+            originalSize: file.size,
+            compressedBlob: null,
+            compressedUrl: null,
+            compressedSize: null,
+            width: 0,
+            height: 0
+          });
+        });
+
+        updateUI();
+
+        if (activeIndex === -1) {
+          selectImage(images.length - newFiles.length);
+        }
+
+        showToast(newFiles.length + ' image' + (newFiles.length > 1 ? 's' : '') + ' added');
+      }
+
+      // ---- Drop Zone Events ----
+      dropZone.addEventListener('click', () => fileInput.click());
+
+      dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+      });
+
+      dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
+      });
+
+      fileInput.addEventListener('change', () => {
+        handleFiles(fileInput.files);
+        fileInput.value = '';
+      });
+
+      // ---- Quality Slider ----
+      qualitySlider.addEventListener('input', () => {
+        qualityValue.textContent = qualitySlider.value;
+      });
+
+      // ---- Compression ----
+      function compressImage(entry) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.naturalWidth;
+            let h = img.naturalHeight;
+            const maxW = parseInt(maxWidthInput.value) || Infinity;
+            const maxH = parseInt(maxHeightInput.value) || Infinity;
+
+            // Scale down to fit within max dimensions
+            if (w > maxW || h > maxH) {
+              const ratio = Math.min(maxW / w, maxH / h);
+              w = Math.round(w * ratio);
+              h = Math.round(h * ratio);
+            }
+
+            entry.width = w;
+            entry.height = h;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+
+            const outputType = getOutputType(entry.type);
+            const quality = parseInt(qualitySlider.value) / 100;
+
+            if (outputType === 'image/png') {
+              // PNG doesn't support quality param — use scale-down trick for lossy-ish compression
+              const scale = quality < 0.5 ? quality + 0.5 : 1;
+              if (scale < 1) {
+                const smallCanvas = document.createElement('canvas');
+                const sw = Math.max(1, Math.round(w * scale));
+                const sh = Math.max(1, Math.round(h * scale));
+                smallCanvas.width = sw;
+                smallCanvas.height = sh;
+                const sctx = smallCanvas.getContext('2d');
+                sctx.drawImage(canvas, 0, 0, sw, sh);
+
+                // Draw back up to original size
+                ctx.clearRect(0, 0, w, h);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(smallCanvas, 0, 0, w, h);
+              }
+
+              canvas.toBlob(blob => {
+                if (!blob) return reject(new Error('Compression failed'));
+                if (entry.compressedUrl) URL.revokeObjectURL(entry.compressedUrl);
+                entry.compressedBlob = blob;
+                entry.compressedUrl = URL.createObjectURL(blob);
+                entry.compressedSize = blob.size;
+                resolve(entry);
+              }, 'image/png');
+            } else {
+              canvas.toBlob(blob => {
+                if (!blob) return reject(new Error('Compression failed'));
+                if (entry.compressedUrl) URL.revokeObjectURL(entry.compressedUrl);
+                entry.compressedBlob = blob;
+                entry.compressedUrl = URL.createObjectURL(blob);
+                entry.compressedSize = blob.size;
+                resolve(entry);
+              }, outputType, quality);
+            }
+          };
+          img.onerror = () => reject(new Error('Failed to load image'));
+          img.src = entry.originalUrl;
+        });
+      }
+
+      async function compressAll() {
+        compressAllBtn.disabled = true;
+        compressAllBtn.textContent = 'Compressing...';
+        progressBar.classList.add('visible');
+        progressFill.style.width = '0%';
+
+        for (let i = 0; i < images.length; i++) {
+          try {
+            await compressImage(images[i]);
+          } catch (err) {
+            console.error('Failed to compress', images[i].name, err);
+          }
+          progressFill.style.width = ((i + 1) / images.length * 100) + '%';
+        }
+
+        compressAllBtn.disabled = false;
+        compressAllBtn.textContent = 'Compress All';
+        downloadAllBtn.disabled = false;
+
+        updateUI();
+        if (activeIndex >= 0) selectImage(activeIndex);
+
+        const totalOrig = images.reduce((s, e) => s + e.originalSize, 0);
+        const totalComp = images.reduce((s, e) => s + (e.compressedSize || e.originalSize), 0);
+        const pct = totalOrig > 0 ? Math.round((1 - totalComp / totalOrig) * 100) : 0;
+        showToast('Done! Saved ' + pct + '% total');
+
+        setTimeout(() => progressBar.classList.remove('visible'), 1000);
+      }
+
+      compressAllBtn.addEventListener('click', compressAll);
+
+      // ---- Download ----
+      function downloadSingle(entry) {
+        if (!entry.compressedBlob) return;
+        const baseName = entry.name.replace(/\.[^.]+$/, '');
+        const ext = getExtension(getOutputType(entry.type));
+        const a = document.createElement('a');
+        a.href = entry.compressedUrl;
+        a.download = baseName + '-compressed' + ext;
+        a.click();
+      }
+
+      downloadAllBtn.addEventListener('click', () => {
+        images.forEach(entry => {
+          if (entry.compressedBlob) downloadSingle(entry);
+        });
+        showToast('Downloading ' + images.filter(e => e.compressedBlob).length + ' files');
+      });
+
+      // ---- Clear ----
+      clearAllBtn.addEventListener('click', () => {
+        images.forEach(e => {
+          if (e.originalUrl) URL.revokeObjectURL(e.originalUrl);
+          if (e.compressedUrl) URL.revokeObjectURL(e.compressedUrl);
+        });
+        images.length = 0;
+        activeIndex = -1;
+        downloadAllBtn.disabled = true;
+        updateUI();
+        showToast('Cleared');
+      });
+
+      // ---- Select / Preview ----
+      function selectImage(idx) {
+        if (idx < 0 || idx >= images.length) return;
+        activeIndex = idx;
+        const entry = images[idx];
+
+        // Original preview
+        originalPreview.innerHTML = '';
+        const origImg = document.createElement('img');
+        origImg.src = entry.originalUrl;
+        origImg.alt = 'Original';
+        originalPreview.appendChild(origImg);
+
+        const origLabel = document.createElement('span');
+        origLabel.className = 'preview-label';
+        origLabel.textContent = 'Original';
+        originalPreview.appendChild(origLabel);
+
+        const origSize = document.createElement('span');
+        origSize.className = 'preview-size';
+        origSize.textContent = formatBytes(entry.originalSize);
+        originalPreview.appendChild(origSize);
+
+        // Compressed preview
+        if (entry.compressedUrl) {
+          compressedPreview.innerHTML = '';
+          const compImg = document.createElement('img');
+          compImg.src = entry.compressedUrl;
+          compImg.alt = 'Compressed';
+          compressedPreview.appendChild(compImg);
+
+          const compLabel = document.createElement('span');
+          compLabel.className = 'preview-label';
+          compLabel.textContent = 'Compressed';
+          compressedPreview.appendChild(compLabel);
+
+          const compSize = document.createElement('span');
+          compSize.className = 'preview-size';
+          compSize.textContent = formatBytes(entry.compressedSize);
+          compressedPreview.appendChild(compSize);
+
+          // Stats
+          const saved = entry.originalSize - entry.compressedSize;
+          const pct = entry.originalSize > 0 ? Math.round((saved / entry.originalSize) * 100) : 0;
+          document.getElementById('statOriginal').textContent = formatBytes(entry.originalSize);
+          document.getElementById('statCompressed').textContent = formatBytes(entry.compressedSize);
+          document.getElementById('statSaved').textContent = (pct >= 0 ? '-' : '+') + Math.abs(pct) + '%';
+          document.getElementById('statDimensions').textContent = entry.width + 'x' + entry.height;
+          statsGrid.style.display = '';
+        } else {
+          compressedPreview.innerHTML = '<div class="empty-preview">Compress to see result</div>';
+          statsGrid.style.display = 'none';
+        }
+
+        // Highlight active in batch list
+        batchList.querySelectorAll('.batch-item').forEach((el, i) => {
+          el.classList.toggle('active', i === idx);
+        });
+      }
+
+      // ---- UI Update ----
+      function updateUI() {
+        const hasImages = images.length > 0;
+
+        batchControls.style.display = hasImages ? '' : 'none';
+        previewSection.style.display = hasImages ? '' : 'none';
+        batchPanel.style.display = hasImages ? '' : 'none';
+
+        if (!hasImages) {
+          statsGrid.style.display = 'none';
+        }
+
+        imageCount.textContent = images.length + ' image' + (images.length !== 1 ? 's' : '');
+        batchBadge.textContent = images.length;
+
+        // Render batch list
+        batchList.innerHTML = '';
+        images.forEach((entry, idx) => {
+          const item = document.createElement('div');
+          item.className = 'batch-item' + (idx === activeIndex ? ' active' : '');
+
+          const thumb = document.createElement('img');
+          thumb.className = 'batch-thumb';
+          thumb.src = entry.originalUrl;
+          thumb.alt = entry.name;
+          thumb.addEventListener('click', () => selectImage(idx));
+
+          const info = document.createElement('div');
+          info.className = 'batch-info';
+
+          const name = document.createElement('div');
+          name.className = 'batch-name';
+          name.textContent = entry.name;
+
+          const sizes = document.createElement('div');
+          sizes.className = 'batch-sizes';
+          sizes.textContent = formatBytes(entry.originalSize);
+
+          if (entry.compressedSize !== null) {
+            const saved = entry.originalSize - entry.compressedSize;
+            const pct = entry.originalSize > 0 ? Math.round((saved / entry.originalSize) * 100) : 0;
+            const arrow = document.createTextNode(' \u2192 ' + formatBytes(entry.compressedSize) + ' ');
+            sizes.appendChild(arrow);
+            const badge = document.createElement('span');
+            badge.className = 'batch-saved';
+            badge.textContent = (pct >= 0 ? '-' : '+') + Math.abs(pct) + '%';
+            sizes.appendChild(badge);
+          }
+
+          info.appendChild(name);
+          info.appendChild(sizes);
+
+          const actions = document.createElement('div');
+          actions.className = 'batch-actions';
+
+          if (entry.compressedBlob) {
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'btn btn-sm btn-secondary';
+            dlBtn.textContent = 'Save';
+            dlBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              downloadSingle(entry);
+            });
+            actions.appendChild(dlBtn);
+          }
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'btn-remove';
+          removeBtn.textContent = '\u00d7';
+          removeBtn.title = 'Remove';
+          removeBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            if (entry.originalUrl) URL.revokeObjectURL(entry.originalUrl);
+            if (entry.compressedUrl) URL.revokeObjectURL(entry.compressedUrl);
+            images.splice(idx, 1);
+            if (activeIndex >= images.length) activeIndex = images.length - 1;
+            updateUI();
+            if (activeIndex >= 0) selectImage(activeIndex);
+          });
+          actions.appendChild(removeBtn);
+
+          item.appendChild(thumb);
+          item.appendChild(info);
+          item.appendChild(actions);
+          batchList.appendChild(item);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

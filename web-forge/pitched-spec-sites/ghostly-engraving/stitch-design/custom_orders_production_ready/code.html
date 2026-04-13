@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;600;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#d1ca56",
+                        "secondary-fixed": "#ebddff",
+                        "inverse-on-surface": "#2e303b",
+                        "surface-container-high": "#282934",
+                        "secondary": "#d1bdf6",
+                        "surface": "#11131d",
+                        "primary-fixed-dim": "#d2bbff",
+                        "background": "#11131d",
+                        "secondary-fixed-dim": "#d1bdf6",
+                        "primary": "#d2bbff",
+                        "on-surface": "#e1e1f0",
+                        "tertiary": "#d1cb57",
+                        "on-primary-fixed": "#250059",
+                        "inverse-primary": "#6a4fa0",
+                        "surface-container-highest": "#32343f",
+                        "on-surface-variant": "#cbc4d2",
+                        "on-primary": "#3b1e6f",
+                        "primary-fixed": "#eaddff",
+                        "on-secondary-fixed-variant": "#4e3e6e",
+                        "on-secondary": "#372856",
+                        "surface-dim": "#11131d",
+                        "tertiary-fixed": "#eee76f",
+                        "surface-tint": "#d2bbff",
+                        "secondary-container": "#4e3e6e",
+                        "primary-container": "#9e82d7",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e1e1f0",
+                        "surface-container": "#1d1f2a",
+                        "on-tertiary": "#343200",
+                        "surface-variant": "#32343f",
+                        "surface-container-lowest": "#0c0e18",
+                        "on-tertiary-fixed": "#1e1c00",
+                        "on-error": "#690005",
+                        "surface-container-low": "#191b26",
+                        "error-container": "#93000a",
+                        "outline": "#958e9b",
+                        "on-primary-fixed-variant": "#523787",
+                        "error": "#ffb4ab",
+                        "on-background": "#e1e1f0",
+                        "tertiary-container": "#b5af3e",
+                        "on-secondary-fixed": "#221240",
+                        "on-primary-container": "#341667",
+                        "outline-variant": "#494550",
+                        "surface-bright": "#373844",
+                        "on-tertiary-container": "#444100",
+                        "on-tertiary-fixed-variant": "#4c4900",
+                        "on-secondary-container": "#c0ace4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Manrope", sans-serif;
+            background-color: #11131d;
+            color: #e1e1f0
+        }
+        h1, h2, h3, h4 {
+            font-family: "Noto Serif", serif;
+            letter-spacing: 0.05em
+        }
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 200, "GRAD" 0, "opsz" 24
+        }
+        .cosmic-grain {
+            position: relative
+        }
+        .cosmic-grain::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBYl2c-askC4vBtIaEh7p5i1KZ6GwBx33jWBN-858UNIO746FfINy_qRBH-yiPrMfkhet4JfsN6Dgu29biyLnopm42JlptSohiyfAiFyWIKX85PsZbF3ZBCxlqN0NQxkd6m28eCOpYYEbYW4CpmXg7NjmV8IoqXoTCjR0nKvQYhruV0L7Tyo1OF0BRN6-f_PWQQUj7Ve-NE8UirC35X8ndZOnurH58_LhRzPZSY3nBv7BdRsFzAnDSl9908GJ_aM1YxcuJLmoRVfs8L);
+            opacity: 0.03;
+            pointer-events: none
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 w-full z-50 bg-slate-950/70 backdrop-blur-xl border-b border-white/15 shadow-[0px_8px_16px_rgba(11,13,23,0.4)]">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif tracking-tighter text-slate-100 italic">The Celestial Atelier</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-slate-300 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">Shop</a>
+<a class="text-violet-300 font-semibold border-b border-violet-300 pb-1 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">Custom Orders</a>
+<a class="text-slate-300 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">Business Gifts</a>
+<a class="text-slate-300 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">Gallery</a>
+<a class="text-slate-300 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">About</a>
+<a class="text-slate-300 hover:tracking-[0.1em] transition-all duration-500 ease-in-out" href="#">Contact</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-semibold hover:shadow-[0px_0px_15px_rgba(210,187,255,0.4)] transition-all duration-300 active:scale-95">
+                Request a Quote
+            </button>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Section 1: Page Hero -->
+<section class="relative h-[520px] flex items-center overflow-hidden cosmic-grain">
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent z-10"></div>
+<div class="absolute inset-0">
+<img alt="Bespoke laser engraved black metal tumblers with intricate geometric patterns" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeCN5gq-rX_LSg0CsFsefmjmDxt1Y4tcwSCnDzwSTr80FpXXbrZTS0n_Js3VpKtxxG-md4FYMCGyfQtqfAJK0NoLhiMFjkvps8jaz5RInduyondfROZQyQnMZXZKXS8crD4Jrun9_98NdRg6I4QdxL1pnHs9Ltn8WvOuOSH5z_KyVHBZo9aASr85NB_iqoZKrxmd3ZXhQI3pG_-7Oyw98NG3btT6AXK001RUKGZ9tu9eRX_btvHCnrhg8508jruqHpf6R5MttArMNZ"/>
+</div>
+<div class="relative z-20 max-w-7xl mx-auto px-8 w-full">
+<div class="max-w-2xl">
+<h1 class="text-5xl md:text-7xl font-bold text-on-surface mb-6 leading-tight">Your Vision. <br/><span class="text-primary italic">Our Craft.</span></h1>
+<p class="text-lg text-slate-300 mb-8 font-light tracking-wide">From single bespoke keepsakes to volume corporate runs, we translate your digital identity into physical form with spectral laser precision.</p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold tracking-widest uppercase text-sm hover:bg-primary-fixed-dim transition-colors shadow-2xl">
+                            Start Your Custom Project
+                        </button>
+<button class="border border-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-bold tracking-widest uppercase text-sm hover:bg-white/10 transition-colors">
+                            View Work Gallery
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: How It Works -->
+<section class="py-24 bg-surface-container-low px-8">
+<div class="max-w-7xl mx-auto">
+<div class="mb-16 text-center">
+<h2 class="text-3xl font-bold text-on-surface uppercase tracking-widest">The Creative Journey</h2>
+<div class="h-1 w-20 bg-primary mx-auto mt-4 rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<!-- Step 1 -->
+<div class="relative bg-surface p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500 border border-white/5">
+<div class="flex items-center justify-between mb-6">
+<span class="text-primary-container text-4xl font-serif">01</span>
+<span class="material-symbols-outlined text-secondary text-3xl">lightbulb</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">Submit Design</h3>
+<p class="text-sm text-slate-400 leading-relaxed">Tell us about your project, material choice, and quantity needed through our specialized form.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative bg-surface p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500 border border-white/5">
+<div class="flex items-center justify-between mb-6">
+<span class="text-primary-container text-4xl font-serif">02</span>
+<span class="material-symbols-outlined text-secondary text-3xl">draw</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">Review Proof</h3>
+<p class="text-sm text-slate-400 leading-relaxed">Our designers create a precision digital mockup for your final approval before any etching begins.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative bg-surface p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500 border border-white/5">
+<div class="flex items-center justify-between mb-6">
+<span class="text-primary-container text-4xl font-serif">03</span>
+<span class="material-symbols-outlined text-secondary text-3xl">precision_manufacturing</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">Laser Etching</h3>
+<p class="text-sm text-slate-400 leading-relaxed">Using industrial-grade CO2 and Fiber lasers, we meticulously engrave your custom pieces.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative bg-surface p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500 border border-white/5">
+<div class="flex items-center justify-between mb-6">
+<span class="text-primary-container text-4xl font-serif">04</span>
+<span class="material-symbols-outlined text-secondary text-3xl">package_2</span>
+</div>
+<h3 class="text-xl font-bold mb-3 text-on-surface">Fast Delivery</h3>
+<p class="text-sm text-slate-400 leading-relaxed">Carefully hand-packed and dispatched from our Maine studio directly to your global destination.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Curated Materials -->
+<section class="py-24 max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-4xl font-bold mb-8 text-on-surface">Curated Materials</h2>
+<p class="text-slate-400 mb-10 text-lg leading-relaxed">Every surface tells a story. We’ve selected a range of high-quality substrates optimized for high-contrast, permanent laser markings.</p>
+<ul class="space-y-4">
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">forest</span>
+<span class="text-lg font-light tracking-wide">Artisan Walnut, Oak &amp; Bamboo</span>
+</li>
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">precision_manufacturing</span>
+<span class="text-lg font-light tracking-wide">Powder-Coated &amp; Anodized Metals</span>
+</li>
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">layers</span>
+<span class="text-lg font-light tracking-wide">Cast Acrylic &amp; Industrial Plastics</span>
+</li>
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">wine_bar</span>
+<span class="text-lg font-light tracking-wide">Blown Glass &amp; Crystal Stemware</span>
+</li>
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">mountain_flag</span>
+<span class="text-lg font-light tracking-wide">Natural Slate &amp; River Stone</span>
+</li>
+<li class="flex items-center space-x-4 p-4 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors border border-white/5">
+<span class="material-symbols-outlined text-secondary text-2xl">workspace_premium</span>
+<span class="text-lg font-light tracking-wide">Genuine &amp; Vegan Leather Goods</span>
+</li>
+</ul>
+</div>
+<div class="h-full min-h-[600px] rounded-3xl overflow-hidden relative shadow-[0_0_50px_rgba(210,187,255,0.1)] border border-white/10">
+<img alt="Close up detail of a high precision laser engraving into a dark wood surface with burning embers" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXXlQqe9F50BCreYGG4j5c02sEpkkpWD4htzfGH65HPr4Ey-Cv9YZ2u0tIA7tWuVY-wjBq6Ec3jQvtilG0p2U5nepbl6abd4gBEJs7f9WAJoFuSF-Drm0-mDi95787gdB6Z0eb_2Rim_xw-0wJz9kEggy3VT0s1sBvhgmxFgok-N_2iafUnJd3Iz9hw0WdpoqVdX1LcpsAmMesOOKpI3DXb0W8thWhg4RjZXyPRAHaoH03WjZ21cYMBQ4djl4bnfLmXXWYTvLEeD9c"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+</div>
+</section>
+<!-- Section 4: Product Category Examples -->
+<section class="py-24 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 mb-12">
+<h2 class="text-3xl font-bold uppercase tracking-widest text-primary/80">Inspiration Gallery</h2>
+</div>
+<div class="flex space-x-6 overflow-x-auto px-8 pb-8 no-scrollbar">
+<!-- Gift -->
+<div class="flex-none w-80 h-[500px] bg-surface-container rounded-2xl overflow-hidden relative group border border-white/5">
+<img alt="Personalized wooden gift box with name engraving" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2zPKO1jTuDV9Nh4qOyJUIhEZz7-dGyDJIPHuVASXx1-ppZiArXIHD3QB86AE6TIDUXh3eMGo2-Y8EojMJUODkwAyjtTcUvVgIic0kWZdpR5TlXqBDWftLutjStJrkELlbIiX0gZffb-m0izS-2cJ4ioaW_SZBcPRpgBmw8FT28msT1JOVA1VC2YldGrFSIZ63FKcGfW6I0GbXlYcrv9v0RyYy0GVs93RuBuVxtiD4kLbbbPLFmz6t77RJeJcd0WfHwJ30yHGlTxko"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-xl font-bold text-white mb-2">Bespoke Gifts</h4>
+<p class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">Custom names, dates, and messages on artisan materials.</p>
+</div>
+</div>
+<!-- Wedding -->
+<div class="flex-none w-80 h-[500px] bg-surface-container rounded-2xl overflow-hidden relative group border border-white/5">
+<img alt="Engraved champagne glasses for a wedding" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpUsDsyo3vMcYRYvxXHp_MvE2i-Rgw4N4NW6MMLb6u6axhP_-FMcA-ZizGKSZvc427rV1B1K9FFL__pGtnNSFZaibrMVpygL0nl7QMt90w9EYJ5lY_KjgUpP0cqKy7YfaLeyTj9Xpbw9vBujqdqpjbVtDhuQSCvKqrOcbRZmOsNLy5mW0y6Wyef1rJkrA64i8KA3XVtrqkKo-StaymkH5yCIdzlHq_4dSVVVCeMZK7d22WjzK9ASSY_LneBioEO3-erDHS1oLASSmK"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-xl font-bold text-white mb-2">Wedding &amp; Ceremony</h4>
+<p class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">Personalized champagne flutes, guestbooks, and decor.</p>
+</div>
+</div>
+<!-- Business -->
+<div class="flex-none w-80 h-[500px] bg-surface-container rounded-2xl overflow-hidden relative group border border-white/5">
+<img alt="Corporate notebooks with laser engraved logo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD9RPeaziuomR1dzAlRNhOwhyc3S-kYZ_4t1QEEAQaPas7jYJ5g1KjXWknpKPOY09llnIaKKGS_xxXkkuc-JAulFC_8W2EMlsVChBUmF1J1bclIRejgmGBZFPJXbPO4LlB4b7OuBLgrluXq_KfrFqM5IGhK2fgRBMwUZEv3WANL1TQ3UF6yG6Ea6aOKV6jzHj6NnHPRa4vxp_seal_o7q7aFd4ITFNDaiHZ92TGY0b_NFzRAROxG-MaIfFrLNslIKH777q6JR2bg0B"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-xl font-bold text-white mb-2">Brand Identity</h4>
+<p class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">Logo engraving for client gifts and office accessories.</p>
+</div>
+</div>
+<!-- Decor -->
+<div class="flex-none w-80 h-[500px] bg-surface-container rounded-2xl overflow-hidden relative group border border-white/5">
+<img alt="Detailed wooden laser-cut wall map" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB65adsgwkJQeAxPVPxG6GiQdWFCD939pug8DIhcG6Krdec5JQCKDtbNsmEVt7HD_uZMobWOaR2OW3ui4EfUbSJSsITx1DztH0c3Oa4waQJUhREOGsVIKaZYRELVt7U5de6kekb8H2TPZ8osiRnRATjSrq3RTuh1Bd_nyUL3T7dyDmt-Kmsjmhmr_IHe0Yt-dJg8hyp7sYQd0nszJ4nIv5uf0fkcmJ-3k5JUQpX2mKiigCYyDQegHtNRfXigd7Tk5f1X6yrPOlqCjqQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-xl font-bold text-white mb-2">Architectural Decor</h4>
+<p class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">Intricate wall art, maps, and signage for modern interiors.</p>
+</div>
+</div>
+<!-- Memorial -->
+<div class="flex-none w-80 h-[500px] bg-surface-container rounded-2xl overflow-hidden relative group border border-white/5">
+<img alt="Engraved memorial slate stone" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlWuOPJ5eZ-jzhHRFuoUzsh7MqlnU3-PyVuGExPZQoYHFKxLctVGtcS6c6T26XqYB_yGZJOume4mPG5YG_Bax3pcap6eAh-3ab4N3swC-B9ziSX6DeVfLvCutvSJ3A8zuLo6N7CCpIA2GMTMLOrRue5xmk5vkcN33F9EeNKzGO8_IrpUuiCsdpZpVn7Vjwgerlf4M4phy0YSp3qnnex_3VNYZRswEbijf9VVOzZHZVGVkFjo9DlAGDyGGf29SCZHrOSFdX2aB3_KFC"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-xl font-bold text-white mb-2">Honorary Keepsakes</h4>
+<p class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity">Permanent engravings on stone and slate to last a lifetime.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: File & Artwork Guidelines -->
+<section class="py-24 max-w-7xl mx-auto px-8 bg-surface-container rounded-[3rem] my-24 border border-white/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-surface p-6 rounded-2xl flex flex-col items-center justify-center border border-primary/20 shadow-lg">
+<span class="text-primary font-bold text-lg">SVG</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Vector</span>
+</div>
+<div class="bg-surface p-6 rounded-2xl flex flex-col items-center justify-center border border-primary/20 shadow-lg">
+<span class="text-primary font-bold text-lg">PNG</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Raster</span>
+</div>
+<div class="bg-surface p-6 rounded-2xl flex flex-col items-center justify-center border border-primary/20 shadow-lg">
+<span class="text-primary font-bold text-lg">AI</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Adobe</span>
+</div>
+<div class="bg-surface p-6 rounded-2xl flex flex-col items-center justify-center border border-primary/20 shadow-lg">
+<span class="text-primary font-bold text-lg">PDF</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Document</span>
+</div>
+<div class="bg-surface p-6 rounded-2xl flex flex-col items-center justify-center border border-primary/20 shadow-lg">
+<span class="text-primary font-bold text-lg">DXF</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">AutoCAD</span>
+</div>
+<div class="bg-primary/5 p-6 rounded-2xl flex flex-col items-center justify-center border border-dashed border-primary/30 group cursor-pointer hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">add_circle</span>
+</div>
+</div>
+<div>
+<h2 class="text-3xl font-bold mb-6">Artwork Preparation</h2>
+<p class="text-slate-400 mb-8 leading-relaxed">For the highest fidelity engraving, we recommend vector-based files (SVG, AI, or DXF). High-resolution raster images (300dpi PNG/JPG) are also accepted for photographic etchings. Our master technicians review every file and will reach out if adjustments are required to ensure a flawless burn.</p>
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-xl font-bold flex items-center space-x-3 hover:brightness-110 transition-all shadow-xl">
+<span class="material-symbols-outlined">upload_file</span>
+<span>Upload Your Files</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 6: Pricing Transparency -->
+<section class="py-12 text-center max-w-3xl mx-auto px-8">
+<h2 class="text-3xl font-bold mb-4">Artisanal Pricing</h2>
+<p class="text-slate-400 leading-relaxed">No hidden fees, no surprises. Every quote provides a comprehensive breakdown including material selection, laser setup, and fulfillment—ensuring full transparency for projects of any scale.</p>
+<div class="mt-12 flex items-center justify-center space-x-4 opacity-40">
+<div class="h-px w-24 bg-gradient-to-r from-transparent to-primary"></div>
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<div class="h-px w-24 bg-gradient-to-l from-transparent to-primary"></div>
+</div>
+</section>
+<!-- Section 7: FAQ Accordion -->
+<section class="py-24 max-w-4xl mx-auto px-8">
+<h2 class="text-3xl font-bold text-center mb-16 uppercase tracking-widest">Frequently Asked Questions</h2>
+<div class="space-y-4">
+<div class="bg-surface-container-low border-l-4 border-primary p-6 rounded-r-xl">
+<h3 class="font-bold flex justify-between items-center cursor-pointer">
+<span>What is the standard production timeline?</span>
+<span class="material-symbols-outlined">expand_less</span>
+</h3>
+<p class="mt-4 text-slate-400 text-sm leading-relaxed">Most custom orders are completed within 5-7 business days following digital proof approval. Expedited production for tight deadlines is available upon request during the quoting process.</p>
+</div>
+<div class="bg-surface-container-low border-l-4 border-transparent p-6 rounded-r-xl hover:bg-surface-container transition-colors">
+<h3 class="font-bold flex justify-between items-center cursor-pointer">
+<span>Do you support high-volume corporate orders?</span>
+<span class="material-symbols-outlined">expand_more</span>
+</h3>
+</div>
+<div class="bg-surface-container-low border-l-4 border-transparent p-6 rounded-r-xl hover:bg-surface-container transition-colors">
+<h3 class="font-bold flex justify-between items-center cursor-pointer">
+<span>Can I ship my own items for personalization?</span>
+<span class="material-symbols-outlined">expand_more</span>
+</h3>
+</div>
+<div class="bg-surface-container-low border-l-4 border-transparent p-6 rounded-r-xl hover:bg-surface-container transition-colors">
+<h3 class="font-bold flex justify-between items-center cursor-pointer">
+<span>What is your policy on engraving errors?</span>
+<span class="material-symbols-outlined">expand_more</span>
+</h3>
+</div>
+<div class="bg-surface-container-low border-l-4 border-transparent p-6 rounded-r-xl hover:bg-surface-container transition-colors">
+<h3 class="font-bold flex justify-between items-center cursor-pointer">
+<span>Can you engrave full-color photography?</span>
+<span class="material-symbols-outlined">expand_more</span>
+</h3>
+</div>
+</div>
+</section>
+<!-- Section 8: Quote Request Form -->
+<section class="py-32 relative overflow-hidden">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-primary/5 rounded-full blur-[150px]"></div>
+<div class="relative z-10 max-w-4xl mx-auto px-8">
+<div class="bg-surface-container-lowest border border-white/10 p-12 rounded-[2.5rem] shadow-2xl backdrop-blur-md">
+<div class="text-center mb-12">
+<h2 class="text-4xl font-bold mb-4">Start Your Custom Piece</h2>
+<p class="text-slate-400">Share your project vision below. Our artisans typically respond with a detailed quote within one business day.</p>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold tracking-wider text-primary">Full Name</label>
+<input class="w-full bg-surface border border-white/10 rounded-lg p-4 focus:border-primary focus:ring-0 transition-all outline-none text-on-surface" placeholder="Elias Thorne" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold tracking-wider text-primary">Email Address</label>
+<input class="w-full bg-surface border border-white/10 rounded-lg p-4 focus:border-primary focus:ring-0 transition-all outline-none text-on-surface" placeholder="elias@atelier.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold tracking-wider text-primary">Project Category</label>
+<select class="w-full bg-surface border border-white/10 rounded-lg p-4 focus:border-primary focus:ring-0 transition-all outline-none text-on-surface appearance-none">
+<option>Bespoke Personalized Gift</option>
+<option>Corporate / Brand Identity</option>
+<option>Wedding / Event Stationery</option>
+<option>Architectural / Signage</option>
+<option>Other Specialized Project</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold tracking-wider text-primary">Preferred Material</label>
+<select class="w-full bg-surface border border-white/10 rounded-lg p-4 focus:border-primary focus:ring-0 transition-all outline-none text-on-surface appearance-none">
+<option>Hardwood (Walnut/Oak)</option>
+<option>Anodized Metal</option>
+<option>Cast Acrylic</option>
+<option>Crystal / Glass</option>
+<option>Slate / Natural Stone</option>
+</select>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-sm font-semibold tracking-wider text-primary">Project Scope &amp; Details</label>
+<textarea class="w-full bg-surface border border-white/10 rounded-lg p-4 focus:border-primary focus:ring-0 transition-all outline-none text-on-surface" placeholder="Please describe the artwork dimensions, quantity, and any specific deadlines..." rows="4"></textarea>
+</div>
+<div class="md:col-span-2">
+<div class="border-2 border-dashed border-white/10 rounded-xl p-8 text-center bg-surface/50 group hover:border-primary/40 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-slate-500 mb-2 group-hover:text-primary transition-colors">cloud_upload</span>
+<p class="text-sm text-slate-500">Drag &amp; drop artwork assets or <span class="text-primary cursor-pointer font-bold">browse files</span></p>
+</div>
+</div>
+<div class="md:col-span-2 pt-4">
+<button class="w-full bg-primary text-on-primary py-5 rounded-xl font-bold text-lg tracking-widest uppercase hover:bg-primary-fixed-dim transition-all shadow-[0px_10px_30px_rgba(210,187,255,0.2)]">
+                                Request Your Free Quote
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</section>
+<!-- Section 9: Trust Bar -->
+<section class="py-12 bg-surface-container-lowest border-y border-white/5">
+<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex items-center justify-center space-x-3 text-slate-400">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<span class="text-xs uppercase tracking-[0.2em]">100% Quality Satisfaction</span>
+</div>
+<div class="flex items-center justify-center space-x-3 text-slate-400">
+<span class="material-symbols-outlined text-secondary">visibility</span>
+<span class="text-xs uppercase tracking-[0.2em]">Free Digital Proofing</span>
+</div>
+<div class="flex items-center justify-center space-x-3 text-slate-400">
+<span class="material-symbols-outlined text-secondary">home_pin</span>
+<span class="text-xs uppercase tracking-[0.2em]">Crafted in New England</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-20 px-8 bg-slate-950 border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+<div class="space-y-6">
+<div class="font-serif italic text-2xl text-slate-100">The Celestial Atelier</div>
+<p class="font-sans text-sm tracking-wide text-slate-500 leading-relaxed">Defining the intersection of ancient craftsmanship and modern laser technology. Precision-etched in the heart of Maine.</p>
+<div class="flex space-x-4">
+<a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">camera</span></a>
+<a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div>
+<h4 class="text-violet-200 font-bold mb-6 uppercase tracking-widest text-sm">Services</h4>
+<ul class="space-y-3">
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Custom Engraving</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Corporate Branding</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Bulk Wholesale</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Event Solutions</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-violet-200 font-bold mb-6 uppercase tracking-widest text-sm">Studio</h4>
+<ul class="space-y-3">
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Our Story</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Material Guide</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">FAQ</a></li>
+<li><a class="font-sans text-sm tracking-wide text-slate-500 hover:text-violet-300 transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-violet-200 font-bold mb-6 uppercase tracking-widest text-sm">Join the Atelier</h4>
+<p class="font-sans text-sm tracking-wide text-slate-500 mb-6">Receive exclusive updates on new materials and limited releases.</p>
+<div class="flex">
+<input class="bg-surface-container-low border border-white/10 rounded-l-lg p-3 text-sm w-full outline-none focus:border-primary transition-colors" placeholder="Email Address" type="email"/>
+<button class="bg-primary text-on-primary px-6 rounded-r-lg hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-sans text-xs tracking-widest text-slate-600 uppercase">© 2024 The Celestial Atelier. Hand-Engraved Precision.</p>
+<div class="flex space-x-8">
+<a class="text-xs tracking-widest text-slate-600 uppercase hover:text-slate-400" href="#">Terms</a>
+<a class="text-xs tracking-widest text-slate-600 uppercase hover:text-slate-400" href="#">Privacy</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -25,12 +25,12 @@
   <button
     onclick={downloadZip}
     disabled={$sessionStore.items.length === 0 || exporting}
-    class="px-4 py-2 text-sm font-bold bg-amber-600 hover:bg-amber-500 disabled:bg-neutral-800 disabled:text-neutral-600 text-neutral-950 rounded transition-colors"
+    class="px-4 py-2 text-sm font-bold font-['Space_Grotesk'] bg-[var(--color-dp-primary)] hover:opacity-90 active:translate-y-px disabled:bg-[var(--color-dp-elevated)] disabled:text-[var(--color-dp-text-dim)] text-[var(--color-dp-base)] transition-opacity"
   >
     {exporting ? 'Exporting...' : `Export All (.zip) — ${$sessionStore.items.length} pattern${$sessionStore.items.length !== 1 ? 's' : ''}`}
   </button>
 
-  <span class="text-xs text-neutral-600">
+  <span class="text-xs text-[var(--color-dp-text-dim)]">
     or click a session item to export individually
   </span>
 </div>

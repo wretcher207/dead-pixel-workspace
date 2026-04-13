@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Palette Generator — Dead Pixel Toolbox</title>
+  <meta name="description" content="Generate harmonious 5-color palettes with multiple harmony modes. Export as CSS variables, Tailwind config, or SCSS.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .swatch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .swatch-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .swatch-card.locked {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 1px var(--warning) inset;
+    }
+
+    .swatch-color {
+      width: 100%;
+      aspect-ratio: 1;
+      cursor: pointer;
+      position: relative;
+      transition: all var(--transition);
+    }
+
+    .swatch-color:hover::after {
+      content: 'COPY';
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.45);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #fff;
+    }
+
+    .swatch-info {
+      padding: 12px;
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .swatch-values {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .swatch-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 12px 10px;
+    }
+
+    .lock-btn {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 14px;
+    }
+
+    .lock-btn:hover {
+      color: var(--text-muted);
+      border-color: var(--border);
+      background: var(--bg-input);
+    }
+
+    .lock-btn.active {
+      color: var(--warning);
+      border-color: var(--warning);
+      background: rgba(255, 170, 34, 0.08);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .shortcut-hint {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .shortcut-hint kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .export-section {
+      margin-top: 8px;
+    }
+
+    .export-section .tabs {
+      margin-bottom: 16px;
+      display: inline-flex;
+    }
+
+    .export-output {
+      position: relative;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="page-wrapper tool-container">
+    <div class="tool-header fade-in">
+      <div class="tool-breadcrumb">
+        <a href="../../">Home</a>
+        <span>/</span>
+        <span>Color Palette</span>
+      </div>
+      <h1 class="tool-title">Color Palette Generator</h1>
+      <p class="tool-description">Generate harmonious 5-color palettes using color theory. Lock colors you like, switch harmony modes, and export for your project.</p>
+    </div>
+
+    <!-- Mode Tabs -->
+    <div class="toolbar fade-in fade-in-1">
+      <div class="toolbar-left">
+        <div class="tabs" id="modeTabs">
+          <button class="tab active" data-mode="random">Random</button>
+          <button class="tab" data-mode="analogous">Analogous</button>
+          <button class="tab" data-mode="complementary">Complementary</button>
+          <button class="tab" data-mode="triadic">Triadic</button>
+          <button class="tab" data-mode="monochromatic">Mono</button>
+        </div>
+        <button class="btn btn-primary" id="generateBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          Generate
+        </button>
+      </div>
+      <span class="shortcut-hint"><kbd>Space</kbd> to generate</span>
+    </div>
+
+    <!-- Palette Swatches -->
+    <div class="palette-grid fade-in fade-in-2" id="paletteGrid"></div>
+
+    <!-- Export Panel -->
+    <div class="panel export-section fade-in fade-in-3">
+      <div class="panel-header">
+        <span class="panel-label">Export</span>
+      </div>
+      <div class="tabs" id="exportTabs">
+        <button class="tab active" data-format="css">CSS Variables</button>
+        <button class="tab" data-format="tailwind">Tailwind</button>
+        <button class="tab" data-format="scss">SCSS</button>
+      </div>
+      <div class="export-output">
+        <div class="output-area" id="exportOutput"></div>
+        <button class="btn btn-icon btn-sm copy-btn" id="copyExportBtn" title="Copy export code">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../../js/shared.js"></script>
+  <script>
+    // ---- Inject shared header/footer ----
+    document.getElementById('header').innerHTML = getHeaderHTML('Color Palette');
+    document.getElementById('footer').innerHTML = getFooterHTML();
+
+    // ---- State ----
+    let currentMode = 'random';
+    let exportFormat = 'css';
+    const palette = [
+      { h: 0, s: 70, l: 55, locked: false },
+      { h: 0, s: 70, l: 55, locked: false },
+      { h: 0, s: 70, l: 55, locked: false },
+      { h: 0, s: 70, l: 55, locked: false },
+      { h: 0, s: 70, l: 55, locked: false },
+    ];
+
+    // ---- Color Math ----
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function hslToRgb(h, s, l) {
+      h /= 360; s /= 100; l /= 100;
+      let r, g, b;
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+      return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
+    }
+
+    function hslToHex(h, s, l) {
+      const [r, g, b] = hslToRgb(h, s, l);
+      return rgbToHex(r, g, b);
+    }
+
+    function normalizeHue(h) {
+      return ((h % 360) + 360) % 360;
+    }
+
+    // ---- Palette Generation ----
+    function generatePalette() {
+      const baseH = randInt(0, 359);
+      const baseS = randInt(55, 90);
+      const baseL = randInt(40, 65);
+
+      const generators = {
+        random() {
+          return palette.map((c, i) => {
+            if (c.locked) return c;
+            return {
+              h: randInt(0, 359),
+              s: randInt(45, 95),
+              l: randInt(35, 70),
+              locked: false
+            };
+          });
+        },
+
+        analogous() {
+          const spread = randInt(20, 40);
+          return palette.map((c, i) => {
+            if (c.locked) return c;
+            const offset = (i - 2) * spread;
+            return {
+              h: normalizeHue(baseH + offset),
+              s: clamp(baseS + randInt(-10, 10), 40, 95),
+              l: clamp(baseL + randInt(-12, 12), 30, 75),
+              locked: false
+            };
+          });
+        },
+
+        complementary() {
+          return palette.map((c, i) => {
+            if (c.locked) return c;
+            const isComplement = i >= 3;
+            const hue = isComplement ? normalizeHue(baseH + 180 + randInt(-15, 15)) : normalizeHue(baseH + randInt(-15, 15));
+            return {
+              h: hue,
+              s: clamp(baseS + randInt(-10, 10), 40, 95),
+              l: clamp(baseL + (i - 2) * 8 + randInt(-5, 5), 30, 75),
+              locked: false
+            };
+          });
+        },
+
+        triadic() {
+          const angles = [0, 120, 240];
+          return palette.map((c, i) => {
+            if (c.locked) return c;
+            const angleIndex = i < 2 ? 0 : i < 4 ? 1 : 2;
+            const hue = normalizeHue(baseH + angles[angleIndex] + randInt(-10, 10));
+            return {
+              h: hue,
+              s: clamp(baseS + randInt(-10, 10), 40, 95),
+              l: clamp(baseL + randInt(-15, 15), 30, 75),
+              locked: false
+            };
+          });
+        },
+
+        monochromatic() {
+          return palette.map((c, i) => {
+            if (c.locked) return c;
+            return {
+              h: normalizeHue(baseH + randInt(-3, 3)),
+              s: clamp(baseS + (i - 2) * 8 + randInt(-5, 5), 20, 95),
+              l: clamp(25 + i * 12 + randInt(-4, 4), 18, 85),
+              locked: false
+            };
+          });
+        }
+      };
+
+      const newColors = generators[currentMode]();
+      newColors.forEach((c, i) => {
+        palette[i] = { ...c, locked: palette[i].locked };
+        if (palette[i].locked) {
+          palette[i].h = palette[i].h; // preserve locked values
+        }
+      });
+
+      render();
+    }
+
+    // ---- Rendering ----
+    function render() {
+      renderSwatches();
+      renderExport();
+    }
+
+    function renderSwatches() {
+      const grid = document.getElementById('paletteGrid');
+      grid.innerHTML = palette.map((c, i) => {
+        const hex = hslToHex(c.h, c.s, c.l);
+        const [r, g, b] = hslToRgb(c.h, c.s, c.l);
+        const lockedClass = c.locked ? ' locked' : '';
+        const lockActiveClass = c.locked ? ' active' : '';
+        const lockIcon = c.locked
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+          : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
+
+        return `
+          <div class="swatch-card${lockedClass}">
+            <div class="swatch-color" style="background: ${hex}" data-index="${i}" data-hex="${hex}" title="Click to copy ${hex}"></div>
+            <div class="swatch-info">
+              <div class="swatch-hex">${hex.toUpperCase()}</div>
+              <div class="swatch-values">
+                rgb(${r}, ${g}, ${b})<br>
+                hsl(${Math.round(c.h)}, ${Math.round(c.s)}%, ${Math.round(c.l)}%)
+              </div>
+            </div>
+            <div class="swatch-actions">
+              <button class="lock-btn${lockActiveClass}" data-index="${i}" title="${c.locked ? 'Unlock' : 'Lock'} this color">
+                ${lockIcon}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getColorName(index) {
+      const names = ['primary', 'secondary', 'accent', 'surface', 'highlight'];
+      return names[index];
+    }
+
+    function renderExport() {
+      const output = document.getElementById('exportOutput');
+      const colors = palette.map((c, i) => ({
+        name: getColorName(i),
+        hex: hslToHex(c.h, c.s, c.l).toUpperCase(),
+        h: Math.round(c.h),
+        s: Math.round(c.s),
+        l: Math.round(c.l),
+      }));
+
+      let code = '';
+
+      if (exportFormat === 'css') {
+        code = ':root {\n';
+        colors.forEach(c => {
+          code += `  --color-${c.name}: ${c.hex};\n`;
+        });
+        code += '}';
+      } else if (exportFormat === 'tailwind') {
+        code = `module.exports = {\n  theme: {\n    extend: {\n      colors: {\n`;
+        colors.forEach((c, i) => {
+          const comma = i < colors.length - 1 ? ',' : '';
+          code += `        '${c.name}': '${c.hex}'${comma}\n`;
+        });
+        code += `      }\n    }\n  }\n}`;
+      } else if (exportFormat === 'scss') {
+        colors.forEach(c => {
+          code += `$color-${c.name}: ${c.hex};\n`;
+        });
+        code = code.trimEnd();
+      }
+
+      output.textContent = code;
+    }
+
+    // ---- Event Handlers ----
+
+    // Mode tabs
+    document.getElementById('modeTabs').addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      document.querySelectorAll('#modeTabs .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentMode = tab.dataset.mode;
+      generatePalette();
+    });
+
+    // Export tabs
+    document.getElementById('exportTabs').addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      document.querySelectorAll('#exportTabs .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      exportFormat = tab.dataset.format;
+      renderExport();
+    });
+
+    // Generate button
+    document.getElementById('generateBtn').addEventListener('click', generatePalette);
+
+    // Copy export
+    document.getElementById('copyExportBtn').addEventListener('click', () => {
+      copyToClipboard(document.getElementById('exportOutput').textContent);
+    });
+
+    // Swatch click to copy hex + Lock toggle (event delegation)
+    document.getElementById('paletteGrid').addEventListener('click', (e) => {
+      // Lock button
+      const lockBtn = e.target.closest('.lock-btn');
+      if (lockBtn) {
+        const idx = parseInt(lockBtn.dataset.index, 10);
+        palette[idx].locked = !palette[idx].locked;
+        renderSwatches();
+        return;
+      }
+
+      // Swatch click to copy
+      const swatch = e.target.closest('.swatch-color');
+      if (swatch) {
+        copyToClipboard(swatch.dataset.hex.toUpperCase());
+        return;
+      }
+    });
+
+    // Spacebar shortcut
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+        e.preventDefault();
+        generatePalette();
+      }
+    });
+
+    // ---- Init ----
+    generatePalette();
+  </script>
+</body>
+</html>

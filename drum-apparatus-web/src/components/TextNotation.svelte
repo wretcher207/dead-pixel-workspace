@@ -23,23 +23,23 @@
   }
 </script>
 
-<div class="flex flex-col gap-2 p-2 bg-neutral-800/50 rounded border border-neutral-800">
-  <label class="text-xs text-neutral-500">
-    Kick: <span class="text-neutral-600">(K=hard k=soft -=rest)</span>
+<div class="flex flex-col gap-2 p-3 bg-[var(--color-dp-sunken)]" style="box-shadow: inset 0 1px 3px rgba(0,0,0,0.1)">
+  <label class="text-xs text-[var(--color-dp-text-muted)]">
+    Kick: <span class="text-[var(--color-dp-text-dim)]">(K=hard k=soft -=rest)</span>
     <input
       type="text"
       value={kick}
       oninput={(e) => updateFromNotation((e.target as HTMLInputElement).value, snare)}
-      class="block w-full mt-1 bg-neutral-800 text-neutral-100 font-mono text-sm px-2 py-1 rounded border border-neutral-700 focus:outline-none focus:border-neutral-500"
+      class="block w-full mt-1 bg-[var(--color-dp-base)] text-[var(--color-dp-text)] font-mono text-sm px-2 py-1 focus:outline-none focus:bg-[var(--color-dp-floating)]"
     />
   </label>
-  <label class="text-xs text-neutral-500">
-    Snare: <span class="text-neutral-600">(S=hard s=soft g=ghost f=flam -=rest)</span>
+  <label class="text-xs text-[var(--color-dp-text-muted)]">
+    Snare: <span class="text-[var(--color-dp-text-dim)]">(S=hard s=soft g=ghost f=flam -=rest)</span>
     <input
       type="text"
       value={snare}
       oninput={(e) => updateFromNotation(kick, (e.target as HTMLInputElement).value)}
-      class="block w-full mt-1 bg-neutral-800 text-neutral-100 font-mono text-sm px-2 py-1 rounded border border-neutral-700 focus:outline-none focus:border-neutral-500"
+      class="block w-full mt-1 bg-[var(--color-dp-base)] text-[var(--color-dp-text)] font-mono text-sm px-2 py-1 focus:outline-none focus:bg-[var(--color-dp-floating)]"
     />
   </label>
 </div>

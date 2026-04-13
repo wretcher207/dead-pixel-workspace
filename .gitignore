@@ -36,3 +36,7 @@ yarn-error.log*
 # Misc
 *.tgz
 .cache/
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+web-forge/personal/claudes-receipts/CON
+*.download

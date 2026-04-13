@@ -32,7 +32,7 @@
       const idx = MIDI_MAP_PRESETS.findIndex(p => p.name === (e.target as HTMLSelectElement).value)
       if (idx >= 0) selectPreset(idx)
     }}
-    class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700 focus:outline-none focus:border-neutral-500"
+    class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
   >
     {#each MIDI_MAP_PRESETS as preset}
       <option value={preset.name}>{preset.name}</option>
@@ -41,7 +41,7 @@
 
   <button
     onclick={() => expanded = !expanded}
-    class="text-xs text-neutral-500 hover:text-neutral-300 transition-colors text-left"
+    class="text-xs text-[var(--color-dp-text-muted)] hover:text-[var(--color-dp-text)] transition-colors text-left"
   >
     {expanded ? '▼' : '▶'} Edit Map
   </button>
@@ -50,7 +50,7 @@
     <div class="grid grid-cols-2 gap-x-4 gap-y-1">
       {#each KIT_GROUPS as group}
         {#each group.pieces as piece}
-          <label class="flex items-center justify-between text-xs text-neutral-400">
+          <label class="flex items-center justify-between text-xs text-[var(--color-dp-text-dim)]">
             <span class="truncate">{KIT_PIECE_LABELS[piece]}</span>
             <input
               type="number"
@@ -58,7 +58,7 @@
               max="127"
               value={$configuratorStore.midiMap.map[piece]}
               oninput={(e) => updateNote(piece, parseInt((e.target as HTMLInputElement).value) || 0)}
-              class="w-14 bg-neutral-800 text-neutral-100 text-sm text-center px-1 py-0.5 rounded border border-neutral-700 focus:outline-none focus:border-neutral-500"
+              class="w-14 bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm text-center px-1 py-0.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
             />
           </label>
         {/each}

@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{META_TITLE}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}">
+<meta name="keywords" content="{{META_KEYWORDS}}">
+<link rel="canonical" href="{{CANONICAL_URL}}">
+<meta property="og:title" content="{{META_TITLE}}">
+<meta property="og:description" content="{{META_DESCRIPTION}}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{CANONICAL_URL}}">
+<meta property="og:image" content="assets/general/studio.jpg">
+<meta property="og:image:alt" content="{{OG_IMAGE_ALT}}">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="{{BUSINESS_NAME}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{META_TITLE}}">
+<meta name="twitter:description" content="{{META_DESCRIPTION}}">
+<meta name="twitter:image" content="assets/general/studio.jpg">
+<meta name="geo.region" content="US-{{STATE}}">
+<meta name="geo.placename" content="{{CITY}}, {{STATE_FULL}}">
+<meta name="geo.position" content="{{LATITUDE}};{{LONGITUDE}}">
+<meta name="ICBM" content="{{LATITUDE}}, {{LONGITUDE}}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<!-- ===== JSON-LD: Local Business Schema ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{SCHEMA_BUSINESS_TYPE}}",
+  "@id": "{{CANONICAL_URL}}#business",
+  "name": "{{BUSINESS_NAME}}",
+  "alternateName": "{{BUSINESS_ALT_NAME}}",
+  "description": "{{META_DESCRIPTION}}",
+  "url": "{{CANONICAL_URL}}",
+  "telephone": "{{PHONE_E164}}",
+  "image": "{{LOGO_PATH}}",
+  "logo": "{{LOGO_PATH}}",
+  "priceRange": "{{PRICE_RANGE}}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ADDRESS}}",
+    "addressLocality": "{{CITY}}",
+    "addressRegion": "{{STATE}}",
+    "postalCode": "{{ZIP}}",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": {{LATITUDE}},
+    "longitude": {{LONGITUDE}}
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{RATING_VALUE}}",
+    "reviewCount": "{{REVIEW_COUNT}}",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "sameAs": [
+    "{{INSTAGRAM_URL}}",
+    "{{FACEBOOK_URL}}"
+  ]
+}
+</script>
+
+<!-- ===== JSON-LD: FAQ Schema ===== -->
+<!-- Update these Q&A pairs to match the FAQ section below -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_1}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_1}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_2}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_2}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_3}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_3}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_4}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_4}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_5}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_5}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_6}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_6}}"
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+/* ===========================================
+   COLOR PALETTE — Change these for each client
+   Primary (warm mauve):    #B8A09A
+   Background (cream):      #F5F0EB / #FBF8F5
+   Accent (teal):           #7A9E9F
+   Headings (warm brown):   #6B4F3E
+   Text (charcoal):         #2C2C2C
+
+   Accent hover:            #6A8E8F
+   Location bar bg:         #EDE5DD
+   Card border:             rgba(184, 160, 154, 0.15)
+   Star color:              #D4A574
+   CTA banner bg:           #B8A09A
+   Footer bg:               #2C2C2C
+   =========================================== */
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: #2C2C2C;
+  background-color: #FBF8F5;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+  color: #6B4F3E;
+  line-height: 1.3;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-padding {
+  padding: 5rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 2.2rem;
+  border-radius: 50px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #7A9E9F;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #6A8E8F;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122, 158, 159, 0.35);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #6B4F3E;
+  border: 2px solid #6B4F3E;
+}
+
+.btn-secondary:hover {
+  background-color: #6B4F3E;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(251, 248, 245, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(184, 160, 154, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.header.scrolled {
+  box-shadow: 0 2px 20px rgba(107, 79, 62, 0.08);
+}
+
+.header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.header-logo img {
+  height: 64px;
+  width: auto;
+  border-radius: 4px;
+}
+
+.header-logo span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6B4F3E;
+  letter-spacing: 0.5px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-nav a {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6B4F3E;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: #7A9E9F;
+  transition: width 0.3s ease;
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+.header-nav a.book-link {
+  background-color: #7A9E9F;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.header-nav a.book-link::after {
+  display: none;
+}
+
+.header-nav a.book-link:hover {
+  background-color: #6A8E8F;
+  transform: translateY(-1px);
+}
+
+.header-social {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-social a {
+  color: #6B4F3E;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.header-social a:hover {
+  color: #7A9E9F;
+  transform: translateY(-2px);
+}
+
+.header-social svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #6B4F3E;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile nav overlay */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(251, 248, 245, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: #6B4F3E;
+  font-weight: 500;
+}
+
+.mobile-nav a:hover {
+  color: #7A9E9F;
+}
+
+.mobile-nav .mobile-social {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.mobile-nav .mobile-social a {
+  font-size: 1rem;
+}
+
+.mobile-nav .mobile-social svg {
+  width: 24px;
+  height: 24px;
+  fill: #6B4F3E;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(44, 44, 44, 0.25) 0%,
+    rgba(44, 44, 44, 0.5) 50%,
+    rgba(44, 44, 44, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  color: #fff;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.hero-content .hero-tagline {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-content .btn-primary {
+  font-size: 1rem;
+  padding: 1rem 2.8rem;
+}
+
+/* ===== LOCATION / CONTACT (below hero) ===== */
+.location-bar {
+  background-color: #EDE5DD;
+  padding: 4rem 0;
+}
+
+.location-heading {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem;
+  font-weight: 300;
+  color: #6B4F3E;
+  margin-bottom: 2.5rem;
+  letter-spacing: 2px;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.location-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.location-icon {
+  width: 56px;
+  height: 56px;
+  background-color: #6B4F3E;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #F5F0EB;
+}
+
+.location-item p {
+  color: #6B4F3E;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.location-item a {
+  color: #6B4F3E;
+}
+
+.location-item a:hover {
+  color: #7A9E9F;
+}
+
+/* ===== SERVICES ===== */
+.services-section {
+  background-color: #FBF8F5;
+}
+
+.services-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.services-intro p {
+  font-size: 1.05rem;
+  color: #555;
+}
+
+/* Service image grid */
+.services-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 4rem;
+}
+
+.services-image-grid .grid-img {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.services-image-grid .grid-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.services-image-grid .grid-img:hover img {
+  transform: scale(1.05);
+}
+
+/* Service category blocks */
+.service-category {
+  display: block;
+  margin-bottom: 3rem;
+}
+
+.service-category-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.service-category-header p {
+  max-width: 700px;
+  margin: 0.8rem auto 0;
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.service-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(107, 79, 62, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(184, 160, 154, 0.15);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(107, 79, 62, 0.12);
+}
+
+.service-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.4rem;
+  gap: 1rem;
+}
+
+.service-card h3 {
+  font-size: 1.4rem;
+  color: #6B4F3E;
+  margin-bottom: 0;
+}
+
+.service-card .service-tier {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7A9E9F;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.service-card .service-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.service-card .service-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #6B4F3E;
+}
+
+.service-card .service-duration {
+  font-size: 0.85rem;
+  color: #999;
+  padding-left: 1rem;
+  border-left: 1px solid #ddd;
+}
+
+.service-card .service-desc {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ===== ABOUT ===== */
+.about-section {
+  background-color: #F5F0EB;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.about-image {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(107, 79, 62, 0.1);
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-text h2 {
+  margin-bottom: 1.5rem;
+}
+
+.about-text p {
+  color: #555;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+/* ===== SHOP ===== */
+.shop-section {
+  background-color: #FBF8F5;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.shop-text h2 {
+  margin-bottom: 1.5rem;
+}
+
+.shop-text p {
+  color: #555;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.shop-image {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(107, 79, 62, 0.1);
+}
+
+.shop-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-section {
+  background: linear-gradient(135deg, #EDE5DD 0%, #F5F0EB 100%);
+}
+
+.testimonials-section h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(107, 79, 62, 0.06);
+  border: 1px solid rgba(184, 160, 154, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+}
+
+.testimonial-quote {
+  position: relative;
+  padding-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-quote::before {
+  content: '\201C';
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  color: #B8A09A;
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.testimonial-quote p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.testimonial-author {
+  font-weight: 700;
+  color: #6B4F3E;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(184, 160, 154, 0.2);
+}
+
+.testimonial-stars {
+  color: #D4A574;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.3rem;
+}
+
+/* ===== FAQ ===== */
+.faq-section {
+  background-color: #FBF8F5;
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(184, 160, 154, 0.25);
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1.5rem 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #6B4F3E;
+  line-height: 1.4;
+}
+
+.faq-question:hover {
+  color: #7A9E9F;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #B8A09A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.faq-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke: #6B4F3E;
+  stroke-width: 2;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .faq-icon {
+  background-color: #7A9E9F;
+  border-color: #7A9E9F;
+}
+
+.faq-item.open .faq-icon svg {
+  stroke: #fff;
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-answer-inner {
+  padding: 0 0 1.5rem;
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+}
+
+/* ===== CONTACT / FIND US ===== */
+.contact-section {
+  background: linear-gradient(135deg, #6B4F3E 0%, #8B6F5E 100%);
+  color: #F5F0EB;
+}
+
+.contact-section h2 {
+  color: #F5F0EB;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-info-item svg {
+  width: 22px;
+  height: 22px;
+  fill: #B8A09A;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.contact-info-item p {
+  margin-bottom: 0;
+  color: #EDE5DD;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.contact-info-item a {
+  color: #EDE5DD;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-info-item a:hover {
+  color: #fff;
+}
+
+.contact-cta {
+  margin-top: 2rem;
+}
+
+.contact-cta .btn-primary {
+  background-color: #7A9E9F;
+}
+
+.contact-cta .btn-primary:hover {
+  background-color: #8DB1B2;
+}
+
+.contact-map {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  min-height: 320px;
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background-color: #2C2C2C;
+  color: rgba(245, 240, 235, 0.7);
+  padding: 3rem 0 1.5rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #F5F0EB;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgba(245, 240, 235, 0.6);
+}
+
+.footer-center {
+  text-align: center;
+}
+
+.footer-center p {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.footer-social a {
+  color: rgba(245, 240, 235, 0.6);
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #7A9E9F;
+}
+
+.footer-social svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1.5rem 0;
+  border-top: 1px solid rgba(245, 240, 235, 0.1);
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(245, 240, 235, 0.4);
+}
+
+.footer-bottom a {
+  color: rgba(245, 240, 235, 0.5);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom a:hover {
+  color: #7A9E9F;
+}
+
+/* ===== BACK TO TOP ===== */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 6rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #6B4F3E;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(107, 79, 62, 0.3);
+  z-index: 990;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  background-color: #7A9E9F;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+/* ===== CHATBOT ===== */
+.chat-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7A9E9F, #6A8E8F);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(122, 158, 159, 0.4);
+  z-index: 998;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(122, 158, 159, 0.5);
+}
+
+.chat-fab svg {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+}
+
+.chat-panel {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  width: 340px;
+  max-width: calc(100vw - 2rem);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(107, 79, 62, 0.15);
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(184, 160, 154, 0.2);
+}
+
+.chat-panel.open {
+  display: flex;
+}
+
+.chat-panel-header {
+  background: linear-gradient(135deg, #7A9E9F, #6A8E8F);
+  color: #fff;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-panel-header span {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.chat-close:hover {
+  opacity: 1;
+}
+
+.chat-panel-body {
+  padding: 1.5rem;
+}
+
+.chat-panel-body p {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.chat-panel-body a {
+  color: #7A9E9F;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== CTA Banner ===== */
+.cta-banner {
+  text-align: center;
+  padding: 3rem 0;
+  background-color: #B8A09A;
+}
+
+.cta-banner p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.cta-banner .btn {
+  background-color: #fff;
+  color: #6B4F3E;
+  font-weight: 700;
+}
+
+.cta-banner .btn:hover {
+  background-color: #6B4F3E;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .header-nav,
+  .header-social {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.6rem;
+  }
+
+  .location-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .location-heading {
+    font-size: 2.4rem;
+  }
+
+  .services-image-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .service-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    max-height: 400px;
+  }
+
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-image {
+    order: -1;
+    max-height: 400px;
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content .hero-tagline {
+    font-size: 1rem;
+  }
+
+  .services-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .section-padding {
+    padding: 3.5rem 0;
+  }
+
+  .location-heading {
+    font-size: 2rem;
+  }
+
+  .chat-panel {
+    right: 1rem;
+    bottom: 5.5rem;
+    width: calc(100vw - 2rem);
+  }
+
+  .back-to-top {
+    right: 5rem;
+    bottom: 1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="top">
+  <div class="header-inner">
+    <a href="#top" class="header-logo">
+      <img src="{{LOGO_PATH}}" alt="{{BUSINESS_NAME}} logo" width="48" height="48">
+      <span>{{BUSINESS_NAME}}</span>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#services">Services</a>
+      <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="book-link">Book Now</a>
+      <a href="#about">About</a>
+      <!-- Add or remove nav links as needed -->
+    </nav>
+
+    <div class="header-social">
+      <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="{{FACEBOOK_URL}}" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="mailto:{{EMAIL}}" aria-label="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#services" class="mobile-nav-link">Services</a>
+  <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="mobile-nav-link">Book Now</a>
+  <a href="#about" class="mobile-nav-link">About</a>
+  <a href="#testimonials" class="mobile-nav-link">Reviews</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+  <div class="mobile-social">
+    <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="{{FACEBOOK_URL}}" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+    <a href="mailto:{{EMAIL}}" aria-label="Email">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="{{HERO_IMAGE_PATH}}" alt="{{HERO_IMAGE_ALT}}" width="1200" height="800">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>{{HEADLINE}}</h1>
+    <p class="hero-tagline">{{SUBHEAD}}</p>
+    <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="btn btn-primary">Book Now</a>
+  </div>
+</section>
+
+<!-- ===== LOCATION BAR ===== -->
+<section class="location-bar" id="location-bar">
+  <div class="container">
+    <div class="location-heading">{{CITY}}</div>
+    <div class="location-grid">
+      <div class="location-item fade-in">
+        <div class="location-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+        </div>
+        <p><strong>{{HOURS_LABEL}}</strong><br>{{HOURS_DETAIL}}</p>
+      </div>
+      <div class="location-item fade-in">
+        <div class="location-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <p><strong>{{ADDRESS}}</strong><br>{{CITY}}, {{STATE_FULL}} {{ZIP}}</p>
+      </div>
+      <div class="location-item fade-in">
+        <div class="location-icon">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </div>
+        <p><a href="tel:{{PHONE_E164}}"><strong>{{PHONE}}</strong></a><br><a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener">@{{INSTAGRAM_HANDLE}}</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services-section section-padding" id="services">
+  <div class="container">
+    <div class="services-intro fade-in">
+      <h2>{{SERVICES_HEADING}}</h2>
+      <p>{{SERVICES_INTRO}}</p>
+    </div>
+
+    <!-- Service Image Grid — 3 photos from the business -->
+    <div class="services-image-grid fade-in">
+      <div class="grid-img">
+        <img src="assets/services/{{SERVICE_IMAGE_1}}" alt="{{SERVICE_IMAGE_1_ALT}}" loading="lazy" width="600" height="450">
+      </div>
+      <div class="grid-img">
+        <img src="assets/services/{{SERVICE_IMAGE_2}}" alt="{{SERVICE_IMAGE_2_ALT}}" loading="lazy" width="600" height="450">
+      </div>
+      <div class="grid-img">
+        <img src="assets/services/{{SERVICE_IMAGE_3}}" alt="{{SERVICE_IMAGE_3_ALT}}" loading="lazy" width="600" height="450">
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SERVICE CATEGORY 1
+         Duplicate this entire block for additional categories.
+         ============================================================ -->
+    <div class="service-category" id="tab-category-1">
+      <div class="service-category-header fade-in">
+        <h2>{{SERVICE_CATEGORY_1_NAME}}</h2>
+        <p>{{SERVICE_CATEGORY_1_DESCRIPTION}}</p>
+      </div>
+      <div class="service-cards">
+
+        <!-- SERVICE CARD: Copy this block for each service in this category -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_1_1_TIER}}</div>
+          <h3>{{SERVICE_1_1_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_1_1_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_1_1_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_1_1_DESCRIPTION}}</p>
+        </div>
+
+        <!-- SERVICE CARD -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_1_2_TIER}}</div>
+          <h3>{{SERVICE_1_2_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_1_2_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_1_2_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_1_2_DESCRIPTION}}</p>
+        </div>
+
+        <!-- SERVICE CARD -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_1_3_TIER}}</div>
+          <h3>{{SERVICE_1_3_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_1_3_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_1_3_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_1_3_DESCRIPTION}}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SERVICE CATEGORY 2
+         Delete this block if only one category is needed.
+         ============================================================ -->
+    <div class="service-category" id="tab-category-2">
+      <div class="service-category-header fade-in">
+        <h2>{{SERVICE_CATEGORY_2_NAME}}</h2>
+        <p>{{SERVICE_CATEGORY_2_DESCRIPTION}}</p>
+      </div>
+      <div class="service-cards">
+
+        <!-- SERVICE CARD: Copy this block for each service in this category -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_2_1_TIER}}</div>
+          <h3>{{SERVICE_2_1_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_2_1_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_2_1_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_2_1_DESCRIPTION}}</p>
+        </div>
+
+        <!-- SERVICE CARD -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_2_2_TIER}}</div>
+          <h3>{{SERVICE_2_2_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_2_2_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_2_2_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_2_2_DESCRIPTION}}</p>
+        </div>
+
+        <!-- SERVICE CARD -->
+        <div class="service-card fade-in">
+          <div class="service-tier">{{SERVICE_2_3_TIER}}</div>
+          <h3>{{SERVICE_2_3_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_2_3_PRICE}}</span>
+            <span class="service-duration">{{SERVICE_2_3_DURATION}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_2_3_DESCRIPTION}}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SERVICE CATEGORY 3 (optional)
+         Delete this block if not needed.
+         ============================================================ -->
+    <div class="service-category" id="tab-category-3">
+      <div class="service-category-header fade-in">
+        <h2>{{SERVICE_CATEGORY_3_NAME}}</h2>
+      </div>
+      <div class="service-cards">
+
+        <!-- SERVICE CARD: Copy this block for each service in this category -->
+        <div class="service-card fade-in">
+          <h3>{{SERVICE_3_1_NAME}}</h3>
+          <div class="service-meta">
+            <span class="service-price">{{SERVICE_3_1_PRICE}}</span>
+          </div>
+          <p class="service-desc">{{SERVICE_3_1_DESCRIPTION}}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Book CTA after services -->
+    <div style="text-align: center; margin-top: 3rem;" class="fade-in">
+      <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="btn btn-primary">Book Your Appointment</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about-section section-padding" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image fade-in">
+        <img src="assets/general/{{ABOUT_IMAGE}}" alt="{{ABOUT_IMAGE_ALT}}" loading="lazy" width="800" height="600">
+      </div>
+      <div class="about-text fade-in">
+        <h2>{{ABOUT_HEADING}}</h2>
+        <p>{{ABOUT_P1}}</p>
+        <p>{{ABOUT_P2}}</p>
+        <p>{{ABOUT_P3}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SHOP / SECONDARY SECTION (optional — delete if not needed) ===== -->
+<section class="shop-section section-padding" id="shop">
+  <div class="container">
+    <div class="shop-grid">
+      <div class="shop-text fade-in">
+        <h2>{{SHOP_HEADING}}</h2>
+        <p>{{SHOP_DESCRIPTION}}</p>
+      </div>
+      <div class="shop-image fade-in">
+        <img src="assets/general/{{SHOP_IMAGE}}" alt="{{SHOP_IMAGE_ALT}}" loading="lazy" width="800" height="600">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials-section section-padding" id="testimonials">
+  <div class="container">
+    <h2 class="fade-in">What People Are Saying</h2>
+    <div class="testimonials-grid">
+
+      <!-- TESTIMONIAL CARD: Copy this block for each testimonial -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_1}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_1}}</div>
+      </div>
+
+      <!-- TESTIMONIAL CARD -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_2}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_2}}</div>
+      </div>
+
+      <!-- TESTIMONIAL CARD -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_3}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_3}}</div>
+      </div>
+
+      <!-- TESTIMONIAL CARD -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_4}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_4}}</div>
+      </div>
+
+      <!-- TESTIMONIAL CARD -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_5}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_5}}</div>
+      </div>
+
+      <!-- TESTIMONIAL CARD -->
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-quote">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>{{TESTIMONIAL_TEXT_6}}</p>
+        </div>
+        <div class="testimonial-author">-- {{TESTIMONIAL_AUTHOR_6}}</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section section-padding" id="faq">
+  <div class="container">
+    <h2 class="fade-in">Frequently Asked Questions</h2>
+    <div class="faq-list fade-in">
+
+      <!-- FAQ ITEM: Copy this block for each question -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_1}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_1}}</div>
+        </div>
+      </div>
+
+      <!-- FAQ ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_2}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_2}}</div>
+        </div>
+      </div>
+
+      <!-- FAQ ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_3}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_3}}</div>
+        </div>
+      </div>
+
+      <!-- FAQ ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_4}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_4}}</div>
+        </div>
+      </div>
+
+      <!-- FAQ ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_5}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_5}}</div>
+        </div>
+      </div>
+
+      <!-- FAQ ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          {{FAQ_QUESTION_6}}
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">{{FAQ_ANSWER_6}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner">
+  <div class="container">
+    <p>{{CTA_TEXT}}</p>
+    <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="btn">{{CTA_BUTTON_TEXT}}</a>
+  </div>
+</section>
+
+<!-- ===== CONTACT / FIND US ===== -->
+<section class="contact-section section-padding" id="contact">
+  <div class="container">
+    <h2>Come Find Us</h2>
+    <div class="contact-grid">
+      <div class="contact-info fade-in">
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <p>{{ADDRESS}}<br>{{CITY}}, {{STATE_FULL}} {{ZIP}}</p>
+        </div>
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+          <p>{{HOURS_LABEL}}</p>
+        </div>
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <p><a href="tel:{{PHONE_E164}}">{{PHONE}}</a></p>
+        </div>
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <p><a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener">@{{INSTAGRAM_HANDLE}}</a></p>
+        </div>
+        <div class="contact-cta">
+          <a href="{{BOOKING_URL}}" target="_blank" rel="noopener" class="btn btn-primary">Book Now</a>
+        </div>
+      </div>
+      <div class="contact-map fade-in">
+        <!-- Replace this iframe src with the client's Google Maps embed URL -->
+        <iframe src="{{GOOGLE_MAPS_EMBED_URL}}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{BUSINESS_NAME}} location map - {{ADDRESS}}, {{CITY}}, {{STATE_FULL}}"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-brand-name">{{BUSINESS_NAME}}</span>
+      <span class="footer-tagline">{{TAGLINE}}</span>
+    </div>
+    <div class="footer-center">
+      <p>{{ADDRESS}}, {{CITY}}, {{STATE}} {{ZIP}}</p>
+      <p><a href="tel:{{PHONE_E164}}">{{PHONE}}</a></p>
+    </div>
+    <div class="footer-social">
+      <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="{{FACEBOOK_URL}}" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="mailto:{{EMAIL}}" aria-label="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 {{BUSINESS_NAME}}. All rights reserved. &nbsp;|&nbsp; Site by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a></p>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<!-- Chat FAB -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat assistant">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/><path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+</button>
+
+<!-- Chat Panel -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel-header">
+    <span>{{BUSINESS_NAME}}</span>
+    <button class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="chat-panel-body">
+    <p>{{CHAT_MESSAGE}}</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // === Header scroll effect ===
+  var header = document.querySelector('.header');
+  var backToTop = document.getElementById('backToTop');
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+
+    if (window.scrollY > 600) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+
+  // === Back to top ===
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // === Hamburger menu ===
+  var hamburger = document.getElementById('hamburger');
+  var mobileNav = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+
+  // Close mobile nav on link click
+  var mobileLinks = mobileNav.querySelectorAll('a');
+  mobileLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      hamburger.classList.remove('active');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // === FAQ Accordion ===
+  var faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(function(item) {
+    var btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', function() {
+      var isOpen = item.classList.contains('open');
+
+      // Close all
+      faqItems.forEach(function(i) {
+        i.classList.remove('open');
+        i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+
+      // Toggle current
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // === Chat Panel ===
+  var chatFab = document.getElementById('chatFab');
+  var chatPanel = document.getElementById('chatPanel');
+  var chatClose = document.getElementById('chatClose');
+
+  chatFab.addEventListener('click', function() {
+    chatPanel.classList.toggle('open');
+  });
+
+  chatClose.addEventListener('click', function() {
+    chatPanel.classList.remove('open');
+  });
+
+  // Close chat on outside click
+  document.addEventListener('click', function(e) {
+    if (!chatPanel.contains(e.target) && !chatFab.contains(e.target)) {
+      chatPanel.classList.remove('open');
+    }
+  });
+
+  // === Intersection Observer for fade-in ===
+  var observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -60px 0px',
+    threshold: 0.1
+  };
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  var fadeElements = document.querySelectorAll('.fade-in');
+  fadeElements.forEach(function(el) {
+    observer.observe(el);
+  });
+
+})();
+</script>
+
+</body>
+</html>

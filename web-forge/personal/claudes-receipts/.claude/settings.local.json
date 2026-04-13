@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(remember)",
+      "Bash(node:*)",
+      "Bash(netlify env:set AUTH_GITHUB_ID \"Ov23liKPf5brKV3uiHjU\" --site claudes-receipts)",
+      "Bash(netlify env:set AUTH_GITHUB_SECRET \"408d8a8dc46062073d32cadb44d836a6bcfb9301\" --site claudes-receipts)",
+      "Bash(netlify env:set AUTH_SECRET \"ZAF7QAi6Yd28TPRc8QsJiWsbJKbkC1avNQS3UcBKr-Y\" --site claudes-receipts)",
+      "Bash(netlify env:set --help)",
+      "Bash(netlify env:set AUTH_GITHUB_ID \"Ov23liKPf5brKV3uiHjU\" --force)",
+      "Bash(netlify env:set AUTH_GITHUB_SECRET \"408d8a8dc46062073d32cadb44d836a6bcfb9301\" --force --secret)",
+      "Bash(netlify env:set AUTH_SECRET \"ZAF7QAi6Yd28TPRc8QsJiWsbJKbkC1avNQS3UcBKr-Y\" --force --secret)",
+      "Bash(netlify env:set AUTH_GITHUB_SECRET \"408d8a8dc46062073d32cadb44d836a6bcfb9301\" --force --secret --context production)",
+      "Bash(netlify env:set AUTH_SECRET \"ZAF7QAi6Yd28TPRc8QsJiWsbJKbkC1avNQS3UcBKr-Y\" --force --secret --context production)",
+      "Bash(netlify env:list)",
+      "Bash(netlify env:list --context production --json)",
+      "Bash(netlify env:set AUTH_GITHUB_SECRET \"408d8a8dc46062073d32cadb44d836a6bcfb9301\" --force --context dev)",
+      "Bash(netlify env:set AUTH_SECRET \"ZAF7QAi6Yd28TPRc8QsJiWsbJKbkC1avNQS3UcBKr-Y\" --force --context dev)",
+      "Bash(npx tsc:*)",
+      "Bash(xargs -I {} node -e \"const p = require\\('{}'\\); console.log\\(p.version\\)\")",
+      "Bash(npm install:*)",
+      "Bash(netlify status:*)",
+      "Bash(netlify dev:exec -- npm run build)",
+      "Bash(netlify deploy:*)",
+      "Skill(commit-commands:commit)"
+    ]
+  }
+}

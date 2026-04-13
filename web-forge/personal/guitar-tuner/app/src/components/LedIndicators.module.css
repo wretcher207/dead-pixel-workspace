@@ -1,0 +1,63 @@
+.leds {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+}
+
+.ledGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid var(--on-surface-variant);
+  margin-bottom: 2px;
+}
+
+.led {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface-container-highest);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: background 0.05s, box-shadow 0.05s;
+}
+
+.greenLed {
+  width: 13px;
+  height: 13px;
+}
+
+.redLed.on {
+  background: var(--primary);
+  box-shadow: 0 0 6px rgba(255, 180, 170, 0.7);
+}
+
+.greenLed.on {
+  background: var(--secondary);
+  filter: brightness(1.25);
+  box-shadow: 0 0 8px rgba(150, 162, 140, 0.8);
+}
+
+.label {
+  font-family: var(--font-label);
+  font-size: 0.45rem;
+  color: var(--outline-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.centerLabel {
+  font-size: 0.5rem;
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}

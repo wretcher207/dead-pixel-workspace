@@ -1,0 +1,52 @@
+{
+  "reportId": "816fb2a4-a03c-4d63-a71c-cfadb54307f1",
+  "timestamp": "2026-04-07T12:05:18.971297+00:00",
+  "runType": "daily",
+  "source": "gatekeeper",
+  "version": "1.0",
+  "payload": {
+    "status": "critical",
+    "findings": [
+      {
+        "id": "360301da-0cd5-4181-9c35-930b4330a214",
+        "category": "patches",
+        "description": "1 pending Windows security update(s) detected. Unpatched systems are vulnerable to known exploits.",
+        "target": "Windows Update",
+        "severity": "medium",
+        "cveId": null,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Install pending Windows updates via Windows Update settings.",
+        "status": "pending"
+      },
+      {
+        "id": "57eb908a-6630-4df6-8d7b-049974bb473f",
+        "category": "credentials",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "target": "Credential Files",
+        "severity": "high",
+        "cveId": null,
+        "approvalLevel": "explicit_approval",
+        "suggestedAction": "Move credential files to a secure vault or password manager. Never store plaintext credentials in user directories.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "securityScore": 85,
+      "securityScoreTrend": "flat",
+      "defenderEnabled": true,
+      "defenderDefinitionAge": 0,
+      "defenderLastScan": "/Date(1775503626000)/",
+      "firewallEnabled": true,
+      "firewallProfiles": {
+        "domain": true,
+        "private": true,
+        "public": true
+      },
+      "pendingSecurityPatches": 1,
+      "riskyExtensionCount": 0,
+      "openPortCount": 0,
+      "vulnerableSoftwareCount": 0,
+      "exposedCredentialFiles": 2
+    }
+  }
+}

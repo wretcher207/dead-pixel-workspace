@@ -19,7 +19,7 @@
 </script>
 
 <div class="flex items-center gap-1">
-  <span class="w-28 text-xs text-neutral-400 truncate flex-shrink-0">
+  <span class="w-28 text-xs text-[var(--color-dp-text-muted)] font-['Inter'] truncate flex-shrink-0">
     {KIT_PIECE_LABELS[piece]}
   </span>
   <div class="flex gap-px">

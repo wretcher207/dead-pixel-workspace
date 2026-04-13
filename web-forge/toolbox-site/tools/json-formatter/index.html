@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter — Dead Pixel Toolbox</title>
+  <meta name="description" content="Format, validate, and minify JSON with syntax highlighting. Free, client-side, no data leaves your browser.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .tool-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tool-controls select {
+      width: auto;
+      min-width: 140px;
+    }
+
+    .input-textarea {
+      width: 100%;
+      min-height: 420px;
+      resize: vertical;
+      line-height: 1.5;
+      tab-size: 2;
+    }
+
+    .output-wrap {
+      position: relative;
+    }
+
+    .output-area {
+      min-height: 420px;
+      max-height: 600px;
+      overflow: auto;
+      line-height: 1.5;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .output-actions {
+      display: flex;
+      gap: 8px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+    }
+
+    /* Syntax highlighting */
+    .json-key { color: #4d8dff; }
+    .json-string { color: #00e87b; }
+    .json-number { color: #ffaa22; }
+    .json-bool { color: #ff6b9d; }
+    .json-null { color: #6e6e82; font-style: italic; }
+    .json-brace { color: #d8d8e0; }
+    .json-comma { color: #6e6e82; }
+
+    /* Validation status */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      min-height: 38px;
+    }
+
+    .status-bar.valid {
+      border-color: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .status-bar.invalid {
+      border-color: rgba(255, 68, 102, 0.3);
+      color: var(--danger);
+    }
+
+    .status-bar.empty {
+      color: var(--text-faint);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-bar.valid .status-dot { background: var(--accent); }
+    .status-bar.invalid .status-dot { background: var(--danger); }
+    .status-bar.empty .status-dot { background: var(--text-faint); }
+
+    /* Stats row */
+    .json-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .json-stats .stat {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-faint);
+    }
+
+    .json-stats .stat strong {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Panel header with actions */
+    .panel-header-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* Line numbers in error */
+    .error-line {
+      font-weight: 600;
+      color: var(--warning);
+    }
+
+    /* Empty state */
+    .output-empty {
+      color: var(--text-faint);
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 200px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .input-textarea,
+      .output-area {
+        min-height: 260px;
+      }
+
+      .tool-controls {
+        gap: 8px;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="/toolbox-site/">All Tools</a>
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper tool-container">
+    <div class="tool-header fade-in">
+      <div class="tool-breadcrumb">
+        <a href="/toolbox-site/">Home</a>
+        <span>/</span>
+        <span>JSON Formatter</span>
+      </div>
+      <h1 class="tool-title">JSON Formatter</h1>
+      <p class="tool-description">Validate, format, and minify JSON with real-time syntax highlighting. Everything runs in your browser.</p>
+    </div>
+
+    <div class="tool-controls fade-in fade-in-1">
+      <label for="indent-select" style="margin-bottom: 0; margin-right: -4px;">Indent</label>
+      <select id="indent-select">
+        <option value="2" selected>2 Spaces</option>
+        <option value="4">4 Spaces</option>
+        <option value="tab">Tabs</option>
+      </select>
+      <button class="btn btn-primary" id="btn-format">Format</button>
+      <button class="btn btn-secondary" id="btn-minify">Minify</button>
+      <button class="btn btn-ghost" id="btn-clear">Clear</button>
+    </div>
+
+    <div class="status-bar empty fade-in fade-in-2" id="status-bar">
+      <span class="status-dot"></span>
+      <span id="status-text">Paste or type JSON to get started</span>
+    </div>
+
+    <div class="split-layout fade-in fade-in-3">
+      <!-- Input Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-label">Input</span>
+          <div class="panel-header-actions">
+            <button class="btn btn-ghost btn-sm" id="btn-paste" title="Paste from clipboard">Paste</button>
+            <button class="btn btn-ghost btn-sm" id="btn-sample" title="Load sample JSON">Sample</button>
+          </div>
+        </div>
+        <textarea
+          id="json-input"
+          class="input-textarea"
+          placeholder='{"name": "example", "value": 42}'
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+        ></textarea>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-label">Output</span>
+          <div class="panel-header-actions">
+            <button class="btn btn-ghost btn-sm" id="btn-copy" title="Copy to clipboard">Copy</button>
+            <button class="btn btn-ghost btn-sm" id="btn-download" title="Download as .json">Download</button>
+          </div>
+        </div>
+        <div class="output-wrap">
+          <div class="output-area" id="json-output">
+            <div class="output-empty">Formatted output will appear here</div>
+          </div>
+        </div>
+        <div class="json-stats" id="json-stats"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+
+  <script src="../../js/shared.js"></script>
+  <script>
+    const input = document.getElementById('json-input');
+    const output = document.getElementById('json-output');
+    const indentSelect = document.getElementById('indent-select');
+    const statusBar = document.getElementById('status-bar');
+    const statusText = document.getElementById('status-text');
+    const statsEl = document.getElementById('json-stats');
+
+    let lastParsed = null;
+    let lastFormatted = '';
+
+    // ---- Validation + Live Feedback ----
+
+    function validate(raw) {
+      if (!raw.trim()) {
+        return { valid: false, empty: true };
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        return { valid: true, parsed };
+      } catch (e) {
+        const match = e.message.match(/position\s+(\d+)/i);
+        let line = null;
+        let col = null;
+        if (match) {
+          const pos = parseInt(match[1], 10);
+          const before = raw.substring(0, pos);
+          line = (before.match(/\n/g) || []).length + 1;
+          col = pos - before.lastIndexOf('\n');
+        }
+        return { valid: false, error: e.message, line, col };
+      }
+    }
+
+    function updateStatus(result) {
+      if (result.empty) {
+        statusBar.className = 'status-bar empty';
+        statusText.textContent = 'Paste or type JSON to get started';
+      } else if (result.valid) {
+        statusBar.className = 'status-bar valid';
+        const type = Array.isArray(result.parsed) ? 'Array' : typeof result.parsed === 'object' && result.parsed !== null ? 'Object' : typeof result.parsed;
+        statusText.textContent = `Valid JSON (${type})`;
+      } else {
+        statusBar.className = 'status-bar invalid';
+        let msg = 'Invalid JSON';
+        if (result.line) {
+          msg += ` — error near line ${result.line}, col ${result.col}`;
+        }
+        if (result.error) {
+          const clean = result.error.replace(/^JSON\.parse:\s*/i, '').replace(/^Unexpected/i, 'unexpected');
+          msg += `: ${clean}`;
+        }
+        statusText.textContent = msg;
+      }
+    }
+
+    // ---- Syntax Highlighting ----
+
+    function syntaxHighlight(json) {
+      const escaped = json
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      return escaped.replace(
+        /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+        function (match) {
+          let cls = 'json-number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'json-key';
+            } else {
+              cls = 'json-string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'json-bool';
+          } else if (/null/.test(match)) {
+            cls = 'json-null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        }
+      );
+    }
+
+    // ---- Format / Minify ----
+
+    function getIndent() {
+      const val = indentSelect.value;
+      if (val === 'tab') return '\t';
+      return parseInt(val, 10);
+    }
+
+    function formatJSON() {
+      const raw = input.value;
+      const result = validate(raw);
+      updateStatus(result);
+
+      if (!result.valid) {
+        if (!result.empty) {
+          output.innerHTML = '<div class="output-empty" style="color: var(--danger);">Fix the errors above to format</div>';
+        } else {
+          output.innerHTML = '<div class="output-empty">Formatted output will appear here</div>';
+        }
+        lastFormatted = '';
+        lastParsed = null;
+        updateStats(raw, '');
+        return;
+      }
+
+      lastParsed = result.parsed;
+      const indent = getIndent();
+      lastFormatted = JSON.stringify(result.parsed, null, indent);
+      output.innerHTML = syntaxHighlight(lastFormatted);
+      updateStats(raw, lastFormatted);
+    }
+
+    function minifyJSON() {
+      const raw = input.value;
+      const result = validate(raw);
+      updateStatus(result);
+
+      if (!result.valid) {
+        if (!result.empty) {
+          output.innerHTML = '<div class="output-empty" style="color: var(--danger);">Fix the errors above to minify</div>';
+        }
+        return;
+      }
+
+      lastParsed = result.parsed;
+      lastFormatted = JSON.stringify(result.parsed);
+      output.innerHTML = syntaxHighlight(lastFormatted);
+      updateStats(raw, lastFormatted);
+    }
+
+    // ---- Stats ----
+
+    function updateStats(raw, formatted) {
+      if (!raw.trim() || !formatted) {
+        statsEl.innerHTML = '';
+        return;
+      }
+
+      const inputSize = new Blob([raw]).size;
+      const outputSize = new Blob([formatted]).size;
+      const diff = inputSize - outputSize;
+      const pct = inputSize > 0 ? Math.abs(Math.round((diff / inputSize) * 100)) : 0;
+
+      let sizeNote = '';
+      if (diff > 0) {
+        sizeNote = `<span class="stat"><strong>${pct}%</strong> smaller</span>`;
+      } else if (diff < 0) {
+        sizeNote = `<span class="stat"><strong>${pct}%</strong> larger</span>`;
+      }
+
+      statsEl.innerHTML = `
+        <span class="stat"><strong>${formatBytes(inputSize)}</strong> input</span>
+        <span class="stat"><strong>${formatBytes(outputSize)}</strong> output</span>
+        ${sizeNote}
+      `;
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 B';
+      if (bytes < 1024) return bytes + ' B';
+      return (bytes / 1024).toFixed(1) + ' KB';
+    }
+
+    // ---- Event Handlers ----
+
+    document.getElementById('btn-format').addEventListener('click', formatJSON);
+    document.getElementById('btn-minify').addEventListener('click', minifyJSON);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+      input.value = '';
+      output.innerHTML = '<div class="output-empty">Formatted output will appear here</div>';
+      statusBar.className = 'status-bar empty';
+      statusText.textContent = 'Paste or type JSON to get started';
+      statsEl.innerHTML = '';
+      lastParsed = null;
+      lastFormatted = '';
+      input.focus();
+    });
+
+    document.getElementById('btn-copy').addEventListener('click', () => {
+      if (!lastFormatted) {
+        showToast('Nothing to copy');
+        return;
+      }
+      copyToClipboard(lastFormatted);
+    });
+
+    document.getElementById('btn-download').addEventListener('click', () => {
+      if (!lastFormatted) {
+        showToast('Nothing to download');
+        return;
+      }
+      downloadFile('formatted.json', lastFormatted, 'application/json');
+      showToast('Downloaded formatted.json');
+    });
+
+    document.getElementById('btn-paste').addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        input.value = text;
+        formatJSON();
+      } catch {
+        showToast('Could not read clipboard');
+      }
+    });
+
+    document.getElementById('btn-sample').addEventListener('click', () => {
+      input.value = JSON.stringify({
+        "name": "Dead Pixel Toolbox",
+        "version": "1.0.0",
+        "tools": [
+          { "id": "json-formatter", "active": true },
+          { "id": "color-palette", "active": true },
+          { "id": "password-generator", "active": false }
+        ],
+        "config": {
+          "theme": "dark",
+          "maxFileSize": 5242880,
+          "features": {
+            "syntaxHighlight": true,
+            "liveValidation": true,
+            "exportFormats": ["json", "csv", "xml"]
+          }
+        },
+        "stats": {
+          "users": 1284,
+          "requests": null,
+          "uptime": 99.97
+        }
+      }, null, 2);
+      formatJSON();
+    });
+
+    indentSelect.addEventListener('change', () => {
+      if (lastParsed !== null) {
+        formatJSON();
+      }
+    });
+
+    // Live validation (debounced)
+    const liveValidate = debounce(() => {
+      const raw = input.value;
+      const result = validate(raw);
+      updateStatus(result);
+    }, 400);
+
+    input.addEventListener('input', liveValidate);
+
+    // Tab key inserts tab in textarea
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        input.value = input.value.substring(0, start) + '  ' + input.value.substring(end);
+        input.selectionStart = input.selectionEnd = start + 2;
+        liveValidate();
+      }
+    });
+  </script>
+</body>
+</html>

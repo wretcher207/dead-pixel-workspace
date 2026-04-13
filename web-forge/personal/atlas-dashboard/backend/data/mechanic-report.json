@@ -1,0 +1,100 @@
+{
+  "reportId": "412f535b-fa34-4802-8c36-7035d0e88e82",
+  "timestamp": "2026-04-07T12:05:23.968562+00:00",
+  "runType": "daily",
+  "source": "mechanic",
+  "version": "1.0",
+  "payload": {
+    "status": "attention",
+    "findings": [
+      {
+        "id": "514449fe-601a-4392-9f3b-5cf1022da972",
+        "category": "startup",
+        "description": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. These slow down boot time.",
+        "processName": null,
+        "pid": null,
+        "memoryBytes": null,
+        "cpuPercent": null,
+        "severity": "medium",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Disable non-essential startup programs via Task Manager > Startup tab.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "bootTimeSeconds": 333,
+      "totalRamBytes": 34229383168,
+      "usedRamBytes": 6569635840,
+      "ramUsagePercent": 19.2,
+      "chromeRamBytes": 2162982912,
+      "chromeTabCount": 18,
+      "cpuUsagePercent": 11.0,
+      "startupProgramCount": 28,
+      "startupNonEssentialCount": 6,
+      "ssdHealthPercent": 100,
+      "ssdTemperatureCelsius": null,
+      "topProcesses": [
+        {
+          "name": "explorer.exe",
+          "pid": 4276,
+          "ramBytes": 311795712,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 14112,
+          "ramBytes": 295198720,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 3020,
+          "ramBytes": 275103744,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "MsMpEng.exe",
+          "pid": 4756,
+          "ramBytes": 261480448,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 9300,
+          "ramBytes": 230715392,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 12768,
+          "ramBytes": 199004160,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "TextInputHost.exe",
+          "pid": 11984,
+          "ramBytes": 179412992,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 14304,
+          "ramBytes": 172314624,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "StartMenuExperienceHost.exe",
+          "pid": 7904,
+          "ramBytes": 154206208,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "SearchHost.exe",
+          "pid": 9000,
+          "ramBytes": 147972096,
+          "cpuPercent": 0.0
+        }
+      ]
+    }
+  }
+}

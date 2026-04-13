@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#2D1B69" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Royal Energy Healing Experience",
+      "description": "Reiki healing, energy alignment, tarot and oracle readings, and distance healing services in Newport, Maine. Affordable holistic energy work by Jill.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Newport",
+        "addressRegion": "ME",
+        "postalCode": "04953",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.8364,
+        "longitude": -69.2784
+      },
+      "telephone": "+12488820998",
+      "email": "royalenergyhealing@gmail.com",
+      "priceRange": "$",
+      "founder": {
+        "@type": "Person",
+        "name": "Jill",
+        "jobTitle": "Reiki Practitioner & Energy Healer"
+      },
+      "areaServed": {
+        "@type": "State",
+        "name": "Maine"
+      },
+      "sameAs": [
+        "https://www.instagram.com/royalenergyhealingexperience/",
+        "https://www.youtube.com/@TheEclecticWitchTarotShow",
+        "https://www.tiktok.com/@eclecticwitchtarot",
+        "https://www.facebook.com/RoyalEnergyHealingExperience"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Healing Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reiki Healing", "description": "Hands-on energy healing to promote relaxation and energetic balance." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Energy Alignment", "description": "Restore balance to your body's energy centers and promote overall well-being." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Tarot & Oracle Readings", "description": "Intuitive card readings for guidance, clarity, and personal insight." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Distance Healing", "description": "Remote Reiki and energy healing sessions available anywhere." } }
+        ]
+      }
+    })} />
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

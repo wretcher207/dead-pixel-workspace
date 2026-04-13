@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lorem Ipsum Generator — Dead Pixel Toolbox</title>
+  <meta name="description" content="Generate placeholder text instantly. Choose paragraphs, sentences, or words. Copy with one click. Free, no signup.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .generator-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-group input[type="number"] {
+      width: 100px;
+    }
+    .output-text {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--text);
+      white-space: pre-wrap;
+      min-height: 200px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .output-text p {
+      margin-bottom: 1em;
+    }
+    .output-meta {
+      display: flex;
+      gap: 20px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+    .output-meta span {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .output-meta strong {
+      color: var(--accent);
+    }
+    .format-tabs {
+      margin-top: 12px;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="/toolbox-site/">All Tools</a>
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="tool-container">
+      <div class="tool-header fade-in">
+        <div class="tool-breadcrumb">
+          <a href="/toolbox-site/">Home</a>
+          <span>/</span>
+          <span>Lorem Ipsum</span>
+        </div>
+        <h1 class="tool-title">Lorem Ipsum Generator</h1>
+        <p class="tool-description">Generate placeholder text by paragraphs, sentences, or words. Multiple output formats.</p>
+      </div>
+
+      <div class="panel fade-in fade-in-1">
+        <div class="panel-header">
+          <span class="panel-label">Configure</span>
+        </div>
+
+        <div class="generator-controls">
+          <div class="control-group">
+            <label for="unit-tabs">Unit</label>
+            <div class="tabs" id="unit-tabs">
+              <button class="tab active" data-unit="paragraphs">Paragraphs</button>
+              <button class="tab" data-unit="sentences">Sentences</button>
+              <button class="tab" data-unit="words">Words</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="count">Count</label>
+            <input type="number" id="count" value="3" min="1" max="50">
+          </div>
+
+          <div class="toggle-group">
+            <label class="toggle">
+              <input type="checkbox" id="start-lorem" checked>
+              <span class="toggle-track"></span>
+            </label>
+            <span class="toggle-label">Start with "Lorem ipsum..."</span>
+          </div>
+
+          <button class="btn btn-primary" id="generate-btn">Generate</button>
+        </div>
+
+        <div class="control-group format-tabs">
+          <label>Output format</label>
+          <div class="tabs" id="format-tabs">
+            <button class="tab active" data-format="plain">Plain Text</button>
+            <button class="tab" data-format="html">HTML</button>
+            <button class="tab" data-format="markdown">Markdown</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel fade-in fade-in-2" style="margin-top: 20px; position: relative;">
+        <div class="panel-header">
+          <span class="panel-label">Output</span>
+          <div class="controls-row">
+            <button class="btn btn-secondary btn-sm" id="copy-btn">Copy</button>
+          </div>
+        </div>
+        <div class="output-text" id="output"></div>
+        <div class="output-meta">
+          <span>Words: <strong id="word-count">0</strong></span>
+          <span>Characters: <strong id="char-count">0</strong></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+
+  <script src="../../js/shared.js"></script>
+  <script>
+    const WORDS = [
+      'lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do',
+      'eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim',
+      'ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi',
+      'aliquip','ex','ea','commodo','consequat','duis','aute','irure','in','reprehenderit',
+      'voluptate','velit','esse','cillum','fugiat','nulla','pariatur','excepteur','sint',
+      'occaecat','cupidatat','non','proident','sunt','culpa','qui','officia','deserunt',
+      'mollit','anim','id','est','laborum','ac','accumsan','aliquet','ante','arcu','at',
+      'auctor','augue','bibendum','blandit','condimentum','congue','cras','cursus',
+      'dapibus','diam','dictum','dignissim','donec','efficitur','egestas','elementum',
+      'etiam','eu','euismod','facilisis','fames','faucibus','felis','fermentum','feugiat',
+      'finibus','gravida','habitant','hendrerit','iaculis','integer','interdum','justo',
+      'lacinia','lacus','laoreet','lectus','leo','libero','ligula','lobortis','luctus',
+      'maecenas','massa','mattis','mauris','maximus','metus','mi','morbi','nam','nec',
+      'neque','nibh','nunc','odio','orci','ornare','pellentesque','pharetra','phasellus',
+      'placerat','porta','porttitor','posuere','praesent','pretium','proin','pulvinar',
+      'purus','quam','quisque','rhoncus','risus','rutrum','sagittis','sapien','scelerisque',
+      'semper','senectus','sociosqu','sodales','sollicitudin','suscipit','suspendisse',
+      'tellus','tincidunt','tortor','tristique','turpis','ultrices','ultricies','urna',
+      'varius','vehicula','vel','vestibulum','vita','vitae','vivamus','viverra','volutpat',
+      'vulputate'
+    ];
+
+    const OPENING = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+    let currentUnit = 'paragraphs';
+    let currentFormat = 'plain';
+
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function generateWord() {
+      return WORDS[randInt(0, WORDS.length - 1)];
+    }
+
+    function generateSentence(minWords = 6, maxWords = 16) {
+      const len = randInt(minWords, maxWords);
+      const words = [];
+      for (let i = 0; i < len; i++) {
+        words.push(generateWord());
+      }
+      // Add comma sometimes
+      if (len > 8) {
+        const commaPos = randInt(3, Math.floor(len / 2));
+        words[commaPos] = words[commaPos] + ',';
+      }
+      return capitalize(words.join(' ')) + '.';
+    }
+
+    function generateParagraph(minSentences = 4, maxSentences = 8) {
+      const len = randInt(minSentences, maxSentences);
+      const sentences = [];
+      for (let i = 0; i < len; i++) {
+        sentences.push(generateSentence());
+      }
+      return sentences.join(' ');
+    }
+
+    function generateWords(count) {
+      const words = [];
+      for (let i = 0; i < count; i++) {
+        words.push(generateWord());
+      }
+      return capitalize(words.join(' ')) + '.';
+    }
+
+    function generate() {
+      const count = Math.max(1, Math.min(50, parseInt(document.getElementById('count').value) || 3));
+      const startWithLorem = document.getElementById('start-lorem').checked;
+      let parts = [];
+
+      if (currentUnit === 'paragraphs') {
+        for (let i = 0; i < count; i++) {
+          parts.push(generateParagraph());
+        }
+        if (startWithLorem && parts.length > 0) {
+          parts[0] = OPENING + ' ' + parts[0];
+        }
+      } else if (currentUnit === 'sentences') {
+        for (let i = 0; i < count; i++) {
+          parts.push(generateSentence());
+        }
+        if (startWithLorem && parts.length > 0) {
+          parts[0] = OPENING;
+        }
+      } else {
+        const text = generateWords(count);
+        if (startWithLorem) {
+          const loremWords = OPENING.replace('.', '').split(' ').slice(0, Math.min(count, 5));
+          const remaining = count - loremWords.length;
+          if (remaining > 0) {
+            const rest = [];
+            for (let i = 0; i < remaining; i++) rest.push(generateWord());
+            parts = [capitalize(loremWords.join(' ')) + ' ' + rest.join(' ') + '.'];
+          } else {
+            parts = [capitalize(loremWords.join(' ')) + '.'];
+          }
+        } else {
+          parts = [text];
+        }
+      }
+
+      return formatOutput(parts);
+    }
+
+    function formatOutput(parts) {
+      if (currentUnit === 'words') {
+        return parts.join('');
+      }
+
+      if (currentFormat === 'html') {
+        if (currentUnit === 'paragraphs') {
+          return parts.map(p => '<p>' + p + '</p>').join('\n\n');
+        }
+        return '<p>' + parts.join(' ') + '</p>';
+      }
+
+      if (currentFormat === 'markdown') {
+        if (currentUnit === 'paragraphs') {
+          return parts.join('\n\n');
+        }
+        return parts.join(' ');
+      }
+
+      // plain
+      if (currentUnit === 'paragraphs') {
+        return parts.join('\n\n');
+      }
+      return parts.join(' ');
+    }
+
+    function updateOutput() {
+      const text = generate();
+      const output = document.getElementById('output');
+      output.textContent = text;
+
+      const plainText = text.replace(/<[^>]+>/g, '');
+      const words = plainText.trim().split(/\s+/).filter(w => w.length > 0);
+      document.getElementById('word-count').textContent = words.length;
+      document.getElementById('char-count').textContent = plainText.length;
+    }
+
+    // Tab switching
+    document.getElementById('unit-tabs').addEventListener('click', e => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      document.querySelectorAll('#unit-tabs .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentUnit = tab.dataset.unit;
+      updateOutput();
+    });
+
+    document.getElementById('format-tabs').addEventListener('click', e => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      document.querySelectorAll('#format-tabs .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFormat = tab.dataset.format;
+      updateOutput();
+    });
+
+    document.getElementById('generate-btn').addEventListener('click', updateOutput);
+    document.getElementById('count').addEventListener('change', updateOutput);
+
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      copyToClipboard(document.getElementById('output').textContent);
+    });
+
+    // Generate on load
+    updateOutput();
+  </script>
+</body>
+</html>

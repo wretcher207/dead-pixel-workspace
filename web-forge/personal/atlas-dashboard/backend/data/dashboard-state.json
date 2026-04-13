@@ -1,0 +1,166 @@
+{
+  "lastUpdated": "2026-04-07T12:06:25.299232+00:00",
+  "systemHealth": {
+    "score": 65,
+    "trend": "flat"
+  },
+  "agentStatuses": {
+    "gatekeeper": "critical",
+    "mechanic": "attention",
+    "janitor": "attention",
+    "archivist": "healthy",
+    "scout": "healthy"
+  },
+  "alerts": [
+    {
+      "id": "d5a48c60-36a7-48d2-b3cb-3c018214d84c",
+      "level": "critical",
+      "agent": "gatekeeper",
+      "message": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+      "timestamp": "2026-04-07T12:06:25.299232+00:00"
+    },
+    {
+      "id": "60d2d6c7-8059-4b74-ad83-f10d06a0de3d",
+      "level": "warning",
+      "agent": "gatekeeper",
+      "message": "1 pending Windows security update(s) detected. Unpatched systems are vulnerable to known exploits.",
+      "timestamp": "2026-04-07T12:06:25.299232+00:00"
+    },
+    {
+      "id": "0ac84af9-eb33-40f2-a8ee-379e45c27b05",
+      "level": "warning",
+      "agent": "mechanic",
+      "message": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. Th",
+      "timestamp": "2026-04-07T12:06:25.299232+00:00"
+    },
+    {
+      "id": "94c8ffbe-0674-4204-8d7d-a3afa2dd4182",
+      "level": "warning",
+      "agent": "janitor",
+      "message": "68 large file(s) over 500 MB found (123.41 GB total).",
+      "timestamp": "2026-04-07T12:06:25.299232+00:00"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "6fb6d429-3a22-4c53-9517-628e0acf4ac3",
+      "timestamp": "2026-04-07T12:06:25.293423+00:00",
+      "agent": "Scout",
+      "action": "scan",
+      "target": "software versions",
+      "result": "success",
+      "details": "1 updates available, 0 security patches"
+    },
+    {
+      "id": "7e71b617-d238-4c79-aabf-ec9d617fd2e1",
+      "timestamp": "2026-04-07T12:06:02.163612+00:00",
+      "agent": "Archivist",
+      "action": "scan",
+      "target": "file organization",
+      "result": "success",
+      "details": "Organizational score: 100/100, 0 misplaced files"
+    },
+    {
+      "id": "b9d80a02-0278-420c-996c-6726412dd4d6",
+      "timestamp": "2026-04-07T12:05:59.179961+00:00",
+      "agent": "Janitor",
+      "action": "scan",
+      "target": "disk cleanup",
+      "result": "success",
+      "details": "Reclaimable: 123.44 GB, Findings: 2"
+    },
+    {
+      "id": "be16f98f-203f-4482-95c9-a4fe43aedbba",
+      "timestamp": "2026-04-07T12:05:23.968562+00:00",
+      "agent": "Mechanic",
+      "action": "scan",
+      "target": "system performance",
+      "result": "success",
+      "details": "RAM: 19%, CPU: 11%, Boot: 333s"
+    },
+    {
+      "id": "f834a54f-29a7-44c5-a4f6-586d90ff335b",
+      "timestamp": "2026-04-07T12:05:20.689444+00:00",
+      "agent": "Mechanic",
+      "action": "Disable non-essential startup programs",
+      "target": "Startup Programs (6 identified)",
+      "result": "pending_approval",
+      "details": "Queued for approval: 6 non-essential startup programs found: GoogleDriveFS, OneDriveSetup, GoogleDriv"
+    },
+    {
+      "id": "e189057e-4a2c-42af-9b58-d32dcab6b296",
+      "timestamp": "2026-04-07T12:05:18.971297+00:00",
+      "agent": "Gatekeeper",
+      "action": "scan",
+      "target": "system security",
+      "result": "success",
+      "details": "Security score: 85/100, 2 findings"
+    },
+    {
+      "id": "a0ff6765-4491-4ff0-b59b-2895a3a43d44",
+      "timestamp": "2026-04-07T12:04:23.725747+00:00",
+      "agent": "Gatekeeper",
+      "action": "Install Windows Updates",
+      "target": "Windows Update (1 pending)",
+      "result": "pending_approval",
+      "details": "Queued for approval: 1 Windows update(s) are pending installation. These include security patches for"
+    },
+    {
+      "id": "ae0085c1-6f70-4dd3-aaba-020c3c5afac9",
+      "timestamp": "2026-04-07T02:18:50.177201+00:00",
+      "agent": "Supervisor",
+      "action": "orchestration",
+      "target": "all agents",
+      "result": "success",
+      "details": "Health score: 65/100, Status: attention"
+    },
+    {
+      "id": "2d69fda0-c503-493e-90b1-4707b4653b56",
+      "timestamp": "2026-04-07T02:18:50.177201+00:00",
+      "agent": "Scout",
+      "action": "scan",
+      "target": "software versions",
+      "result": "success",
+      "details": "1 updates available, 0 security patches"
+    },
+    {
+      "id": "fa30c771-4beb-4f3f-9ef2-7c8ca8d14905",
+      "timestamp": "2026-04-07T02:18:25.018353+00:00",
+      "agent": "Archivist",
+      "action": "scan",
+      "target": "file organization",
+      "result": "success",
+      "details": "Organizational score: 57/100, 85 misplaced files"
+    }
+  ],
+  "metrics": {
+    "diskUsage": {
+      "totalBytes": 959307575296,
+      "usedBytes": 636060971008,
+      "freeBytes": 323246604288,
+      "freePercent": 33.7
+    },
+    "performance": {
+      "bootTimeSeconds": 333,
+      "ramUsagePercent": 19.2,
+      "chromeRamGB": 2.01,
+      "chromeTabCount": 18,
+      "ssdHealthPercent": 100
+    },
+    "security": {
+      "securityScore": 85,
+      "defenderEnabled": true,
+      "firewallEnabled": true,
+      "pendingPatches": 1
+    },
+    "organization": {
+      "organizationalScore": 100,
+      "misplacedFiles": 0,
+      "desktopClutter": 2
+    },
+    "updates": {
+      "totalPending": 1,
+      "criticalPending": 0
+    }
+  }
+}

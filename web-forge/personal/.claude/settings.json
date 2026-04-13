@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/dead-pixel-design/the-brain/**)"
+    ]
+  }
+}

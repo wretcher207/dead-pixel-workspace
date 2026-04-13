@@ -6,13 +6,13 @@
 <div class="flex flex-col gap-2">
   <button
     onclick={addToSession}
-    class="w-full py-2 text-sm font-bold bg-amber-600 hover:bg-amber-500 text-neutral-950 rounded transition-colors"
+    class="w-full py-2.5 text-sm font-bold font-['Space_Grotesk'] bg-[var(--color-dp-primary)] hover:opacity-90 active:translate-y-px text-[var(--color-dp-base)] transition-opacity"
   >
     + Add to Session
   </button>
 
   {#if $sessionStore.items.length === 0}
-    <p class="text-xs text-neutral-600 text-center py-4">No patterns in session. Configure a groove and add it.</p>
+    <p class="text-xs text-[var(--color-dp-text-dim)] text-center py-4">No patterns in session. Configure a groove and add it.</p>
   {:else}
     <div class="flex flex-col gap-1">
       {#each $sessionStore.items as item, i (item.id)}
@@ -22,7 +22,7 @@
 
     <button
       onclick={clearSession}
-      class="text-xs text-neutral-600 hover:text-red-400 transition-colors"
+      class="text-xs text-[var(--color-dp-text-dim)] hover:text-[var(--color-dp-error)] transition-colors"
     >
       Clear All
     </button>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Homemade+Apple&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#fdf8f0',
+                        beige: '#e8dfd4',
+                        parchment: '#f5f0e8',
+                        'espresso-dark': '#3d2e24',
+                        'espresso-mid': '#8b5e3c',
+                        sage: '#7a9e7e',
+                        berry: '#b85c6e',
+                        gold: '#c9a96e',
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["EB Garamond", "serif"],
+                        body: ["DM Sans", "sans-serif"],
+                        label: ["DM Sans", "sans-serif"],
+                        handwritten: ["Homemade Apple", "cursive"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grain-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-parchment font-body text-espresso-dark">
+<!-- Hero Section Container -->
+<div class="relative min-h-screen flex flex-col overflow-hidden bg-espresso-dark">
+<!-- Background Image with Overlay and Vignette -->
+<div class="absolute inset-0 z-0">
+<img alt="warm cafe interior with candlelit wooden tables and soft morning light" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="cozy dimly lit artisan cafe interior with wooden tables soft candlelight warm atmosphere and steam rising in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMKRioYRll5nIc-IH_wwjerUbG0a1lu37gGBQXzRVejENTQ-I4CY2P3E0ga7ueLNE4eOJy_QXWD91vATfNtRwh1klsPPInxoq5Y0ge0xK2ERW8ruzcWcwu8XATnrAkfkE7ySlkTdd_IafoHOzRjnslB11CKZ1-OJrzx1vCgBpaudJLM63iV9E0n80e9Xxzjx-3YpHni3TwiNuZpPXcTtWbqXSr4CSNwgbob83kWlCW0EagENc2prJflRDQ9naEu4drHRhMrA_BJvY"/>
+<div class="absolute inset-0 bg-gradient-to-r from-espresso-dark via-espresso-dark/80 to-transparent"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(61,46,36,0.8)_100%)]"></div>
+<div class="grain-overlay absolute inset-0"></div>
+</div>
+<!-- Decorative Watermark (Squirrel/Acorn placeholder) -->
+<div class="absolute right-[-5%] top-1/2 -translate-y-1/2 opacity-15 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[40rem] text-gold" style="font-variation-settings: 'wght' 100;">
+                nest_eco_leaf
+            </span>
+</div>
+<!-- TopNavBar (Shared Component) -->
+<header class="relative z-50 bg-transparent">
+<div class="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif italic text-[#fdf8f0]">Nutty Netties Cafe</div>
+<nav class="hidden md:flex items-center gap-8">
+<!-- Semantic Mapping: Since this is Home/Hero, 'Menu' or no tab is active unless explicitly landing there -->
+<a class="font-['DM_Sans'] text-sm tracking-widest uppercase text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Menu</a>
+<a class="font-['DM_Sans'] text-sm tracking-widest uppercase text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Our Story</a>
+<a class="font-['DM_Sans'] text-sm tracking-widest uppercase text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Specials</a>
+<a class="font-['DM_Sans'] text-sm tracking-widest uppercase text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Visit</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-gold text-espresso-dark px-6 py-2.5 rounded-lg text-sm font-bold tracking-wide hover:opacity-80 transition-opacity active:scale-95 duration-150">
+                        Order Now
+                    </button>
+</div>
+</div>
+</header>
+<!-- Hero Content -->
+<main class="relative z-10 flex-grow flex items-center px-8 md:px-24 py-20 max-w-screen-2xl mx-auto w-full">
+<div class="max-w-3xl">
+<!-- Floating Label -->
+<div class="inline-block mb-8 animate-float">
+<div class="bg-gold px-4 py-1.5 rounded-sm shadow-xl -rotate-2 transform-gpu origin-bottom-left">
+<span class="font-handwritten text-espresso-dark text-lg md:text-xl">Southern Maine ✦</span>
+</div>
+</div>
+<!-- Headline -->
+<h1 class="font-headline text-5xl md:text-8xl text-cream leading-[1.1] mb-6">
+                    A little <span class="italic">nutty.</span> <br/>
+                    Completely worth it.
+                </h1>
+<!-- Subline -->
+<p class="font-body text-parchment/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+                    House-roasted coffee, scratch pastries, and a corner booth with your name on it. <span class="text-gold/90 font-medium">Biddeford, Maine.</span>
+</p>
+<!-- CTA Buttons -->
+<div class="flex flex-wrap gap-4">
+<button class="bg-gold text-espresso-dark px-10 py-4 rounded-lg font-bold text-lg hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-espresso-dark/40">
+                        See the Menu
+                    </button>
+<button class="border-2 border-cream text-cream px-10 py-4 rounded-lg font-bold text-lg hover:bg-cream hover:text-espresso-dark transition-all active:scale-95">
+                        Find Us
+                    </button>
+</div>
+</div>
+</main>
+<!-- Steam Decoration -->
+<div class="absolute bottom-0 left-0 w-64 h-64 pointer-events-none z-20">
+<svg class="w-full h-full opacity-30 mix-blend-screen" viewbox="0 0 200 200">
+<filter id="blur">
+<fegaussianblur in="SourceGraphic" stddeviation="5"></fegaussianblur>
+</filter>
+<path d="M40,180 Q60,140 40,100 T40,20" fill="none" filter="url(#blur)" stroke="white" stroke-width="2"></path>
+<path d="M60,180 Q80,150 60,120 T60,50" fill="none" filter="url(#blur)" stroke="white" stroke-width="2"></path>
+<path d="M80,180 Q100,160 80,140 T80,80" fill="none" filter="url(#blur)" stroke="white" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 opacity-50">
+<span class="text-[10px] uppercase tracking-[0.3em] text-cream">Scroll</span>
+<div class="w-px h-12 bg-gradient-to-b from-cream to-transparent"></div>
+</div>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-12 px-8 flex flex-col items-center gap-4 bg-[#3d2e24] dark:bg-[#1a1410] border-t border-[#8b5e3c]/20">
+<div class="text-xl font-serif text-[#fdf8f0]">Nutty Netties Cafe</div>
+<div class="flex gap-6">
+<a class="font-['DM_Sans'] text-stone-400 text-xs hover:text-[#c9a96e] transition-colors" href="#">Privacy</a>
+<a class="font-['DM_Sans'] text-stone-400 text-xs hover:text-[#c9a96e] transition-colors" href="#">Accessibility</a>
+<a class="font-['DM_Sans'] text-stone-400 text-xs hover:text-[#c9a96e] transition-colors" href="#">Contact</a>
+</div>
+<p class="font-['DM_Sans'] text-stone-400 text-xs opacity-90">
+            © 2024 Nutty Netties Cafe. Hand-crafted in Southern Maine.
+        </p>
+</footer>
+</body></html>

@@ -1,0 +1,51 @@
+{
+  "tier1_critical": {
+    "description": "Explicit approval required for ANY action",
+    "paths": [
+      "C:\\Users\\david\\Documents\\dead-pixel-design",
+      "C:\\Users\\david\\Documents\\REAPER Projects",
+      "C:\\Users\\david\\Documents\\REAPER Media",
+      "C:\\Users\\david\\AppData\\Roaming\\REAPER",
+      "C:\\Program Files\\REAPER",
+      "C:\\Program Files (x86)\\VstPlugins",
+      "C:\\Program Files\\VstPlugins",
+      "C:\\Program Files\\Steinberg",
+      "C:\\Program Files (x86)\\Steinberg",
+      "C:\\Windows",
+      "C:\\Program Files",
+      "C:\\Program Files (x86)"
+    ],
+    "extensions": [".rpp", ".rpp-bak", ".dll", ".vst", ".vst3", ".exe", ".msi", ".sys"]
+  },
+  "tier2_sensitive": {
+    "description": "Approval recommended",
+    "paths": [
+      "C:\\Users\\david\\Documents",
+      "C:\\Users\\david\\Music",
+      "C:\\Users\\david\\Pictures",
+      "C:\\Users\\david\\Videos",
+      "C:\\Users\\david\\OneDrive"
+    ],
+    "extensions": [".wav", ".aif", ".aiff", ".flac", ".mp3", ".ogg", ".mid", ".midi",
+                   ".psd", ".ai", ".pdf", ".docx", ".xlsx", ".pptx",
+                   ".py", ".js", ".ts", ".jsx", ".tsx", ".html", ".css"]
+  },
+  "tier3_standard": {
+    "description": "Auto-cleanup allowed",
+    "paths": [
+      "C:\\Windows\\Temp",
+      "C:\\Users\\david\\AppData\\Local\\Temp",
+      "C:\\Users\\david\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache",
+      "C:\\$Recycle.Bin"
+    ]
+  },
+  "never_touch": {
+    "description": "Never touch regardless of tier",
+    "patterns": [".git", ".env", "id_rsa", "id_ed25519", "passwords.txt", "credentials.json", ".claude"],
+    "rules": [
+      "Files modified in last 24 hours",
+      "Files larger than 1 GB",
+      "Files currently open by another process"
+    ]
+  }
+}

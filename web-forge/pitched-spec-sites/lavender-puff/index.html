@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavender Puff Hair & Tanning Salon | Caribou, Maine</title>
+    <meta name="description" content="Lavender Puff Hair and Tanning Salon on Water St in Caribou, Maine. Expert cuts, dimensional color, balayage, and premium tanning. 96% recommended. Call (207) 493-4423.">
+    <meta name="keywords" content="hair salon Caribou Maine, tanning salon Caribou, balayage Aroostook County, hair color Caribou ME, spray tan northern Maine">
+    <link rel="canonical" href="https://www.lavenderpuffcaribou.com">
+    <meta property="og:title" content="Lavender Puff Hair & Tanning Salon | Caribou, Maine">
+    <meta property="og:description" content="Expert hair care and premium tanning in Caribou, Maine. Cuts, color, balayage, spray tans. 96% recommended on Facebook.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="sign.jpg">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BeautySalon",
+      "name": "Lavender Puff Hair and Tanning Salon",
+      "image": "sign.jpg",
+      "url": "https://www.lavenderpuffcaribou.com",
+      "telephone": "(207) 493-4423",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "3 Water St",
+        "addressLocality": "Caribou",
+        "addressRegion": "ME",
+        "postalCode": "04736",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 46.8606,
+        "longitude": -68.0119
+      },
+      "priceRange": "$$",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "38",
+        "bestRating": "5"
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDFBF7',
+                        lavender: {
+                            light: '#F3EEF5',
+                            DEFAULT: '#E2D4E0',
+                            dark: '#A692A9',
+                        },
+                        mauve: '#9B7A8B',
+                        blush: '#F2E4E4',
+                        espresso: '#3B2F2F',
+                        charcoal: '#2D2A2A'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .focus-ring {
+                @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-mauve focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+            }
+        }
+
+        body { background-color: #FDFBF7; color: #3B2F2F; overflow-x: hidden; }
+        .page-section { display: none; opacity: 0; }
+        .page-section.active { display: block; opacity: 1; animation: fadeIn 0.4s ease-out forwards; }
+
+        .nav-link { position: relative; transition: color 0.2s ease; }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px;
+            background-color: #9B7A8B; transform: scaleX(0); transition: transform 0.3s ease; transform-origin: right;
+        }
+        .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+        .nav-link.active::after { transform: scaleX(1); }
+        .nav-link.active { color: #3B2F2F; font-weight: 500; }
+
+        /* Testimonial carousel */
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-espresso flex flex-col min-h-screen">
+
+    <div class="bg-mauve text-cream text-[10px] sm:text-xs tracking-widest uppercase text-center py-2.5 px-4 font-medium z-50 relative">
+        96% Recommended on Facebook &bull; Now Booking for Spring 2026
+    </div>
+
+    <header class="sticky top-0 w-full z-40 transition-all duration-300 bg-cream/95 backdrop-blur-md border-b border-lavender" id="header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <button class="flex-shrink-0 text-left focus-ring rounded-sm" onclick="navigate('home')" aria-label="Go to homepage">
+                    <h1 class="font-serif text-2xl tracking-wide text-espresso">Lavender Puff</h1>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.2em] text-mauve mt-0.5">Hair & Tanning &bull; Caribou, ME</p>
+                </button>
+
+                <nav class="hidden md:flex space-x-8 items-center" aria-label="Main Navigation">
+                    <button onclick="navigate('home')" class="nav-link text-sm text-charcoal/80 hover:text-espresso focus-ring rounded-sm active" data-target="home">Home</button>
+                    <button onclick="navigate('services')" class="nav-link text-sm text-charcoal/80 hover:text-espresso focus-ring rounded-sm" data-target="services">Services</button>
+                    <button onclick="navigate('about')" class="nav-link text-sm text-charcoal/80 hover:text-espresso focus-ring rounded-sm" data-target="about">About</button>
+                    <button onclick="navigate('lookbook')" class="nav-link text-sm text-charcoal/80 hover:text-espresso focus-ring rounded-sm" data-target="lookbook">Lookbook</button>
+                    <button onclick="navigate('contact')" class="nav-link text-sm text-charcoal/80 hover:text-espresso focus-ring rounded-sm" data-target="contact">Contact</button>
+                    <button onclick="navigate('contact')" class="bg-espresso text-cream px-6 py-2.5 text-sm uppercase tracking-wider hover:bg-charcoal active:scale-95 transition-all duration-200 focus-ring rounded-sm">Book Now</button>
+                </nav>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-espresso p-2 -mr-2 focus-ring rounded-md" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" id="menu-icon-path"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-cream border-b border-lavender shadow-xl" aria-hidden="true">
+            <nav class="px-6 py-8 space-y-4 text-center flex flex-col items-center">
+                <button onclick="navigate('home')" class="mobile-nav-link block w-full py-2 text-lg font-medium text-charcoal/80 hover:text-espresso focus-ring" data-target="home">Home</button>
+                <button onclick="navigate('services')" class="mobile-nav-link block w-full py-2 text-lg font-medium text-charcoal/80 hover:text-espresso focus-ring" data-target="services">Services</button>
+                <button onclick="navigate('about')" class="mobile-nav-link block w-full py-2 text-lg font-medium text-charcoal/80 hover:text-espresso focus-ring" data-target="about">About</button>
+                <button onclick="navigate('lookbook')" class="mobile-nav-link block w-full py-2 text-lg font-medium text-charcoal/80 hover:text-espresso focus-ring" data-target="lookbook">Lookbook</button>
+                <button onclick="navigate('contact')" class="mobile-nav-link block w-full py-2 text-lg font-medium text-charcoal/80 hover:text-espresso focus-ring" data-target="contact">Contact</button>
+                <button onclick="navigate('contact')" class="mt-6 block w-full max-w-[250px] bg-espresso text-cream px-6 py-4 text-sm uppercase tracking-wider focus-ring rounded-sm active:bg-charcoal">Book Appointment</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col">
+
+        <!-- ═══════════════════ HOME ═══════════════════ -->
+        <section id="home" class="page-section active flex-grow">
+
+            <!-- Hero with neon sign -->
+            <div class="relative w-full bg-espresso overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-12 md:py-20">
+                        <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                            <p class="text-mauve tracking-widest uppercase text-xs font-semibold mb-3 sm:mb-4">3 Water St &bull; Caribou, Maine</p>
+                            <h2 class="text-4xl sm:text-5xl md:text-6xl font-serif text-cream leading-[1.1] mb-5 sm:mb-6">Effortless beauty.<br><span class="italic text-lavender">Rooted right here.</span></h2>
+                            <p class="text-base sm:text-lg text-cream/80 font-light mb-8 leading-relaxed max-w-[90%] md:max-w-full">
+                                Expert hair care and premium tanning in the heart of Aroostook County. Walk in feeling ready for a change. Walk out feeling like yourself, only better.
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <button onclick="navigate('contact')" class="bg-cream text-espresso px-8 py-3.5 text-sm uppercase tracking-wider hover:bg-lavender-light transition-colors duration-200 text-center focus-ring rounded-sm">Book Your Visit</button>
+                                <button onclick="navigate('services')" class="border border-cream/60 text-cream px-8 py-3.5 text-sm uppercase tracking-wider hover:bg-cream/10 transition-colors duration-200 text-center focus-ring rounded-sm">Explore Services</button>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center">
+                            <img src="sign.jpg" alt="Lavender Puff neon sign glowing in pink and orange in the salon window" class="w-full max-w-md lg:max-w-full aspect-square object-cover rounded-sm shadow-2xl" fetchpriority="high">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service cards -->
+            <div class="py-16 md:py-24 bg-cream">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                        <button onclick="navigate('services')" class="group text-left focus-ring p-2 -m-2 rounded-sm" aria-label="View Color and Styling services">
+                            <div class="aspect-[4/5] overflow-hidden bg-blush mb-5 relative rounded-sm">
+                                <img src="showcase3.jpg" alt="Soft blonde balayage with beach waves styled at Lavender Puff" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h3 class="font-serif text-xl text-espresso mb-1">Color & Styling</h3>
+                            <p class="text-sm text-charcoal/70 font-light leading-relaxed">Dimensional color, custom cuts, and lived-in balayage tailored to your hair.</p>
+                        </button>
+
+                        <button onclick="navigate('services')" class="group text-left focus-ring p-2 -m-2 rounded-sm" aria-label="View Premium Tanning services">
+                            <div class="aspect-[4/5] overflow-hidden mb-5 relative rounded-sm bg-gradient-to-br from-blush via-lavender to-mauve/40 flex items-center justify-center transition-all duration-700 group-hover:scale-[1.02]">
+                                <div class="text-center px-6">
+                                    <svg class="w-12 h-12 mx-auto mb-4 text-espresso/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                    <p class="font-serif text-2xl text-espresso/50 italic">Glow</p>
+                                </div>
+                            </div>
+                            <h3 class="font-serif text-xl text-espresso mb-1">Premium Tanning</h3>
+                            <p class="text-sm text-charcoal/70 font-light leading-relaxed">Clean, modern beds and custom spray applications matched to your skin tone.</p>
+                        </button>
+
+                        <button onclick="navigate('lookbook')" class="group text-left focus-ring p-2 -m-2 rounded-sm sm:col-span-2 lg:col-span-1" aria-label="View Bridal and Event lookbook">
+                            <div class="aspect-[4/5] overflow-hidden bg-cream mb-5 relative rounded-sm">
+                                <img src="showcase7.jpg" alt="Half-up braided crown hairstyle with cascading curls for a special event" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            </div>
+                            <h3 class="font-serif text-xl text-espresso mb-1">Bridal & Events</h3>
+                            <p class="text-sm text-charcoal/70 font-light leading-relaxed">Elegant updos, braided styles, and polished looks for your most important days.</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About teaser with interior photo -->
+            <div class="py-16 md:py-24 bg-lavender-light">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                        <div class="w-full lg:w-1/2">
+                            <img src="sign.jpg" alt="Lavender Puff neon sign glowing in the salon storefront window" loading="lazy" class="w-full aspect-[4/3] sm:aspect-square object-cover shadow-md rounded-sm">
+                        </div>
+                        <div class="w-full lg:w-1/2 md:pr-8">
+                            <h2 class="font-serif text-3xl sm:text-4xl text-espresso mb-5">Your Kind of Salon</h2>
+                            <p class="text-charcoal/80 font-light leading-relaxed mb-5">
+                                Lavender Puff has been part of Caribou for years. Recently refreshed with updated aesthetics and expanded techniques, but the warmth hasn't changed. No pretension. Just skilled stylists who genuinely love what they do.
+                            </p>
+                            <p class="text-charcoal/80 font-light leading-relaxed mb-8">
+                                Whether you're here for a full color transformation or a quick sun-kissed glow, you'll leave feeling taken care of.
+                            </p>
+                            <button onclick="navigate('about')" class="group inline-flex items-center text-espresso uppercase tracking-widest text-sm font-medium focus-ring rounded-sm">
+                                <span class="border-b border-espresso pb-0.5 group-hover:text-mauve group-hover:border-mauve transition-colors">Read Our Story</span>
+                                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform group-hover:text-mauve" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="py-16 md:py-24 bg-cream">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="font-serif text-3xl sm:text-4xl text-espresso mb-3">What Clients Say</h2>
+                        <p class="text-charcoal/70 font-light">Real reviews from real people. 96% recommend us on Facebook.</p>
+                    </div>
+
+                    <div class="relative overflow-hidden" id="testimonial-carousel" aria-label="Client testimonials">
+                        <div class="testimonial-track" id="testimonial-track">
+                            <!-- Slide 1 -->
+                            <div class="w-full flex-shrink-0 px-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"Great service along with prices. Very polite and great atmosphere to get your hair done."</p>
+                                        <footer class="text-sm font-medium text-espresso">Allyson B.</footer>
+                                    </blockquote>
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"You won't be disappointed! J.D. was friendly and sweet to my kids. Highly recommend. Really clean, beautiful results."</p>
+                                        <footer class="text-sm font-medium text-espresso">Becca S.</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="w-full flex-shrink-0 px-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"Favorite hair salon hands down. I live in southern Maine now, but whenever I come home I make an appointment."</p>
+                                        <footer class="text-sm font-medium text-espresso">Kellie R.</footer>
+                                    </blockquote>
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"Great place! Friendly! Salena did an excellent job on my hair and nails!"</p>
+                                        <footer class="text-sm font-medium text-espresso">Jemelie M.</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="w-full flex-shrink-0 px-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"Relaxing, cheerful, wonderful girls and I leave feeling like a million bucks. It doesn't get any better."</p>
+                                        <footer class="text-sm font-medium text-espresso">Patty C.</footer>
+                                    </blockquote>
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"HIGHLY recommend Jessica Devoe! I have never had a haircut I've loved this much. She cuts your hair the exact way you want!"</p>
+                                        <footer class="text-sm font-medium text-espresso">Molly O.</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <!-- Slide 4 -->
+                            <div class="w-full flex-shrink-0 px-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <blockquote class="bg-lavender-light p-6 sm:p-8 rounded-sm md:col-span-2 max-w-xl mx-auto">
+                                        <svg class="w-6 h-6 text-lavender-dark mb-3 opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/></svg>
+                                        <p class="text-charcoal/80 font-light leading-relaxed mb-4">"All of the girls are great at what they do, knowledgeable and helpful. Ashley has been my hairdresser for about three years. She always makes sure I'm happy with the end result and she really knows her color."</p>
+                                        <footer class="text-sm font-medium text-espresso">Staci G.</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carousel controls -->
+                    <div class="flex items-center justify-center gap-4 mt-8">
+                        <button onclick="moveTestimonial(-1)" class="w-10 h-10 rounded-full border border-lavender-dark/40 flex items-center justify-center hover:bg-lavender-light transition-colors focus-ring" aria-label="Previous testimonials">
+                            <svg class="w-4 h-4 text-espresso" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <div class="flex gap-2" id="testimonial-dots"></div>
+                        <button onclick="moveTestimonial(1)" class="w-10 h-10 rounded-full border border-lavender-dark/40 flex items-center justify-center hover:bg-lavender-light transition-colors focus-ring" aria-label="Next testimonials">
+                            <svg class="w-4 h-4 text-espresso" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA band -->
+            <div class="bg-espresso py-12 md:py-16">
+                <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+                    <h2 class="font-serif text-2xl sm:text-3xl text-cream mb-4">Ready for a fresh look?</h2>
+                    <p class="text-cream/70 font-light mb-8 max-w-lg mx-auto">Call us at <a href="tel:+12074934423" class="text-lavender hover:text-cream transition-colors underline">(207) 493-4423</a> or request an appointment online.</p>
+                    <button onclick="navigate('contact')" class="bg-cream text-espresso px-10 py-4 text-sm uppercase tracking-wider hover:bg-lavender-light transition-colors focus-ring rounded-sm">Book Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════ SERVICES ═══════════════════ -->
+        <section id="services" class="page-section flex-grow">
+            <div class="py-16 md:py-24 bg-cream">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="font-serif text-3xl sm:text-4xl text-espresso mb-4">Our Services</h2>
+                        <p class="text-charcoal/70 font-light max-w-xl mx-auto">Pricing varies by stylist, hair density, and length. Consultations are always free.</p>
+                    </div>
+
+                    <div class="mb-16">
+                        <h3 class="font-serif text-2xl text-espresso border-b border-lavender-dark/40 pb-4 mb-8">Hair Cutting & Styling</h3>
+                        <div class="space-y-8">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Signature Haircut</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Consultation, relaxing wash, customized cut, and blowout.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $45</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Dry Cut / Maintenance</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Quick, precise refresh. No wash or heat styling.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $30</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Event Blowout & Style</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Wash with voluminous round-brush blowout or polished thermal iron styling.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $40</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-16">
+                        <h3 class="font-serif text-2xl text-espresso border-b border-lavender-dark/40 pb-4 mb-8">Color & Dimension</h3>
+                        <div class="space-y-8">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Custom Balayage</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Hand-painted dimension for a soft, seamless grow-out. Includes a personalized gloss.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $165</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Full Foil Highlight</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Detailed foiling for maximum brightness and impact.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $140</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Root Retouch & Gloss</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Grey coverage or base matching with an all-over shine treatment.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $85</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Vivid Color & Color Correction</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Fashion tones or corrective processes. Requires an in-person consultation first.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">Consult</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-12">
+                        <h3 class="font-serif text-2xl text-espresso border-b border-lavender-dark/40 pb-4 mb-8">Tanning Studio</h3>
+                        <div class="space-y-8">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">UV Tanning Sessions</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Meticulously maintained beds. Single sessions, punch cards, and monthly unlimited available.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">from $12</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                                <div class="max-w-2xl">
+                                    <h4 class="font-medium text-lg text-espresso">Custom Spray Tan</h4>
+                                    <p class="text-sm text-charcoal/70 mt-1.5 font-light leading-relaxed">Hand-sprayed, color-matched to your skin tone. Natural glow, no orange.</p>
+                                </div>
+                                <span class="font-serif text-lg text-mauve whitespace-nowrap">$45</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-16 text-center border-t border-lavender-dark/20 pt-12">
+                        <button onclick="navigate('contact')" class="bg-espresso text-cream px-10 py-4 text-sm uppercase tracking-wider hover:bg-charcoal transition shadow-sm focus-ring rounded-sm">Book an Appointment</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════ ABOUT ═══════════════════ -->
+        <section id="about" class="page-section flex-grow">
+            <div class="w-full h-[35vh] sm:h-[45vh] relative overflow-hidden bg-espresso">
+                <img src="pages (6).png" alt="Interior seating area inside Lavender Puff Salon" class="w-full h-full object-cover opacity-80" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-espresso/60 to-transparent"></div>
+                <div class="absolute inset-0 flex items-center justify-center pt-8">
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-serif text-cream drop-shadow-md">Our Story</h2>
+                </div>
+            </div>
+
+            <div class="py-16 md:py-24 bg-cream">
+                <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <p class="text-mauve tracking-widest uppercase text-xs font-semibold mb-6">Rooted in Community</p>
+                    <p class="text-xl sm:text-2xl font-serif text-espresso leading-relaxed mb-10">
+                        Lavender Puff is a piece of Caribou. For years, this has been where friends catch up, confidence is restored, and taking care of yourself is just what you do.
+                    </p>
+                    <div class="text-charcoal/80 font-light leading-relaxed space-y-6 text-left sm:text-center text-base sm:text-lg">
+                        <p>
+                            Recently refreshed with updated aesthetics, expanded education, and refined techniques. But the thing that makes this place work hasn't changed: the warmth. No big-city pretension. Skilled stylists, good products, and genuine care for the people who walk through the door.
+                        </p>
+                        <p>
+                            Whether you've been coming here for a decade or you're walking in for the first time, you're our guest. Sit down, have a coffee, and let us handle the rest.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blush py-16 md:py-24">
+                 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="font-serif text-3xl text-espresso mb-5">Our Philosophy</h3>
+                        <p class="text-charcoal/80 font-light leading-relaxed mb-6 text-base sm:text-lg">
+                            Beauty should never feel intimidating. We believe in soft enhancements, protecting the health of your hair, and providing a space where you actually relax.
+                        </p>
+                        <p class="text-charcoal/80 font-light leading-relaxed text-base sm:text-lg">
+                            From the product lines at our wash stations to the lighting in our tanning suites, every detail has been chosen with your comfort in mind.
+                        </p>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <img src="sign.jpg" alt="Lavender Puff neon sign in the salon window" class="w-full shadow-md rounded-sm object-cover" loading="lazy">
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════ LOOKBOOK ═══════════════════ -->
+        <section id="lookbook" class="page-section flex-grow">
+            <div class="py-16 md:py-24 bg-cream">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12 sm:mb-16">
+                        <h2 class="font-serif text-3xl sm:text-4xl text-espresso mb-4">The Lookbook</h2>
+                        <p class="text-charcoal/70 font-light max-w-xl mx-auto">Real results from real clients. Balayage, vivid color, textured cuts, and event styling straight from the chairs at Lavender Puff.</p>
+                    </div>
+
+                    <!-- Masonry-style grid with all 8 showcase photos -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-6xl mx-auto">
+                        <div class="row-span-2">
+                            <img src="showcase3.jpg" alt="Soft blonde balayage with loose beach waves" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase5.jpg" alt="Textured stacked bob with warm caramel highlights on brunette hair" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase4.jpg" alt="Blonde hair woven with soft lavender and purple highlights" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div class="row-span-2">
+                            <img src="showcase7.jpg" alt="Half-up braided crown with cascading curls for a bridal or event look" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase.jpg" alt="Blonde hair with playful pink vivid money piece highlights" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase6.jpg" alt="Long blonde hair with soft voluminous waves and curls" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase2.jpg" alt="Rich brunette hair with subtle warm dimensional highlights and waves" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                        <div>
+                            <img src="showcase8.jpg" alt="Long straight blonde hair with dimensional foil highlights" loading="lazy" class="w-full h-full object-cover shadow-sm bg-lavender-light rounded-sm hover:opacity-90 transition-opacity">
+                        </div>
+                    </div>
+
+                    <div class="mt-16 sm:mt-20 text-center">
+                        <p class="text-sm font-light text-charcoal/70 mb-3">Follow us for daily results and salon updates.</p>
+                        <a href="#" class="inline-block border-b border-espresso pb-0.5 text-espresso uppercase tracking-widest text-sm font-medium hover:text-mauve hover:border-mauve transition-colors focus-ring rounded-sm" aria-label="Follow Lavender Puff on social media">@LavenderPuffCaribou</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════ CONTACT ═══════════════════ -->
+        <section id="contact" class="page-section flex-grow">
+            <div class="py-16 md:py-24 bg-lavender-light">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                    <div class="flex flex-col lg:flex-row bg-cream shadow-md rounded-sm overflow-hidden">
+                        <div class="w-full lg:w-5/12 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+                            <h2 class="font-serif text-3xl sm:text-4xl text-espresso mb-8">Visit Us</h2>
+
+                            <div class="mb-8">
+                                <h3 class="uppercase tracking-widest text-xs font-semibold text-mauve mb-3">Location</h3>
+                                <p class="text-charcoal/80 font-light leading-relaxed">3 Water St<br>Caribou, ME 04736</p>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 class="uppercase tracking-widest text-xs font-semibold text-mauve mb-3">Contact</h3>
+                                <p class="text-charcoal/80 font-light leading-relaxed">
+                                    <a href="tel:+12074934423" class="hover:text-mauve transition-colors focus-ring rounded-sm">(207) 493-4423</a><br>
+                                    <a href="mailto:hello@lavenderpuff.com" class="hover:text-mauve transition-colors focus-ring rounded-sm">hello@lavenderpuff.com</a>
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 class="uppercase tracking-widest text-xs font-semibold text-mauve mb-3">Hours</h3>
+                                <ul class="text-charcoal/80 font-light space-y-2">
+                                    <li class="flex justify-between items-center max-w-[220px]"><span>Tuesday - Friday</span> <span>9am - 6pm</span></li>
+                                    <li class="flex justify-between items-center max-w-[220px]"><span>Saturday</span> <span>9am - 2pm</span></li>
+                                    <li class="flex justify-between items-center max-w-[220px] text-mauve italic mt-2"><span>Sunday & Monday</span> <span>Closed</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-7/12 bg-espresso p-8 sm:p-12 lg:p-16 text-cream">
+                            <h3 class="font-serif text-2xl sm:text-3xl mb-4">Request an Appointment</h3>
+                            <p class="font-light text-cream/80 text-sm sm:text-base mb-8 leading-relaxed">Fill out the form below and we'll call you to confirm your date, time, and stylist.</p>
+
+                            <form id="booking-form" class="space-y-6 sm:space-y-8">
+                                <div>
+                                    <label for="client-name" class="block text-xs uppercase tracking-widest text-lavender-light mb-2">Full Name</label>
+                                    <input type="text" id="client-name" name="name" autocomplete="name" class="w-full bg-transparent border-b border-lavender/40 pb-2 text-cream placeholder-cream/30 focus:outline-none focus:border-cream focus:ring-0 transition-colors" placeholder="Jane Doe" required>
+                                </div>
+                                <div>
+                                    <label for="client-phone" class="block text-xs uppercase tracking-widest text-lavender-light mb-2">Phone Number</label>
+                                    <input type="tel" id="client-phone" name="phone" autocomplete="tel" class="w-full bg-transparent border-b border-lavender/40 pb-2 text-cream placeholder-cream/30 focus:outline-none focus:border-cream focus:ring-0 transition-colors" placeholder="(207) 555-0123" required>
+                                </div>
+                                <div>
+                                    <label for="service-type" class="block text-xs uppercase tracking-widest text-lavender-light mb-2">Primary Service Needed</label>
+                                    <select id="service-type" name="service" class="w-full bg-transparent border-b border-lavender/40 pb-2 text-cream focus:outline-none focus:border-cream focus:ring-0 transition-colors appearance-none cursor-pointer rounded-none">
+                                        <option value="" class="text-espresso">Select a service...</option>
+                                        <option value="haircut" class="text-espresso">Haircut & Style</option>
+                                        <option value="color" class="text-espresso">Color / Highlights / Balayage</option>
+                                        <option value="tanning" class="text-espresso">UV Tanning Package</option>
+                                        <option value="spray" class="text-espresso">Custom Spray Tan</option>
+                                        <option value="bridal" class="text-espresso">Bridal / Event Styling</option>
+                                        <option value="other" class="text-espresso">Other / Consultation</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full bg-cream text-espresso py-4 mt-4 text-sm font-medium uppercase tracking-wider hover:bg-lavender-light active:bg-lavender transition-colors focus-ring rounded-sm">Request Booking</button>
+                            </form>
+                            <div id="form-success" class="hidden mt-6 p-4 bg-cream/10 border border-cream/20 rounded-sm">
+                                <p class="text-sm text-cream font-light text-center">Thank you! Your request has been sent. We'll be in touch soon.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-charcoal text-lavender-light pt-16 pb-8 border-t-[6px] border-mauve mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 mb-12">
+                <div class="col-span-1 sm:col-span-2 md:col-span-2">
+                    <h2 class="font-serif text-2xl sm:text-3xl mb-4 text-cream">Lavender Puff</h2>
+                    <p class="font-light text-sm sm:text-base text-cream/70 max-w-sm leading-relaxed">
+                        Hair care and tanning on Water St in Caribou, Maine. A space where you can actually relax.
+                    </p>
+                    <p class="font-light text-sm text-cream/50 mt-3">
+                        <a href="tel:+12074934423" class="hover:text-cream transition-colors">(207) 493-4423</a> &bull; 3 Water St, Caribou, ME 04736
+                    </p>
+                </div>
+                <div>
+                    <h3 class="uppercase tracking-widest text-xs font-semibold text-mauve mb-4">Explore</h3>
+                    <ul class="space-y-3 text-sm font-light text-cream/70">
+                        <li><button onclick="navigate('home')" class="hover:text-cream focus-ring rounded-sm transition-colors text-left">Home</button></li>
+                        <li><button onclick="navigate('services')" class="hover:text-cream focus-ring rounded-sm transition-colors text-left">Services</button></li>
+                        <li><button onclick="navigate('about')" class="hover:text-cream focus-ring rounded-sm transition-colors text-left">Our Story</button></li>
+                        <li><button onclick="navigate('lookbook')" class="hover:text-cream focus-ring rounded-sm transition-colors text-left">Lookbook</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="uppercase tracking-widest text-xs font-semibold text-mauve mb-4">Connect</h3>
+                    <ul class="space-y-3 text-sm font-light text-cream/70">
+                        <li><a href="#" class="hover:text-cream focus-ring rounded-sm transition-colors block">Instagram</a></li>
+                        <li><a href="#" class="hover:text-cream focus-ring rounded-sm transition-colors block">Facebook</a></li>
+                        <li class="pt-2"><button onclick="navigate('contact')" class="inline-block border-b border-mauve text-cream pb-0.5 hover:text-lavender-light focus-ring rounded-sm transition-colors">Book Appointment</button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-espresso pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-cream/50 font-light text-center md:text-left gap-4">
+                <p>&copy; 2026 Lavender Puff Hair and Tanning Salon. All rights reserved.</p>
+                <p>3 Water St, Caribou, Maine</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+        <!-- Chat Panel -->
+        <div id="chat-panel" class="hidden w-[340px] sm:w-[380px] max-h-[500px] bg-cream rounded-sm shadow-2xl border border-lavender overflow-hidden flex flex-col" role="dialog" aria-label="Chat with Lavender Puff">
+            <!-- Chat Header -->
+            <div class="bg-espresso px-5 py-4 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-mauve/60 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-cream text-sm font-medium">Lavender Puff</p>
+                        <p class="text-cream/50 text-[10px] uppercase tracking-wider">Typically replies instantly</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-cream/60 hover:text-cream transition-colors p-1" aria-label="Close chat">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto px-5 py-4 space-y-4 min-h-[280px] max-h-[340px]">
+                <!-- Welcome message -->
+                <div class="flex gap-2.5 items-start">
+                    <div class="w-7 h-7 rounded-full bg-lavender flex-shrink-0 flex items-center justify-center mt-0.5">
+                        <span class="text-espresso text-[10px] font-semibold">LP</span>
+                    </div>
+                    <div class="bg-lavender-light rounded-sm rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm text-charcoal/90 font-light leading-relaxed">Hi there! How can we help you today?</p>
+                    </div>
+                </div>
+
+                <!-- Quick action buttons -->
+                <div class="flex flex-wrap gap-2 pl-9">
+                    <button onclick="chatQuickAction('I\'d like to book an appointment')" class="text-xs border border-lavender-dark/30 text-espresso px-3 py-1.5 rounded-full hover:bg-lavender-light transition-colors">Book appointment</button>
+                    <button onclick="chatQuickAction('What are your hours?')" class="text-xs border border-lavender-dark/30 text-espresso px-3 py-1.5 rounded-full hover:bg-lavender-light transition-colors">Hours & location</button>
+                    <button onclick="chatQuickAction('What services do you offer?')" class="text-xs border border-lavender-dark/30 text-espresso px-3 py-1.5 rounded-full hover:bg-lavender-light transition-colors">Services & pricing</button>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="border-t border-lavender px-4 py-3 flex-shrink-0">
+                <form id="chat-form" class="flex items-center gap-2" onsubmit="handleChatSubmit(event)">
+                    <input type="text" id="chat-input" class="flex-1 bg-transparent text-sm text-espresso placeholder-charcoal/40 focus:outline-none py-1" placeholder="Type a message..." autocomplete="off">
+                    <button type="submit" class="text-mauve hover:text-espresso transition-colors p-1 flex-shrink-0" aria-label="Send message">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle" onclick="toggleChat()" class="w-14 h-14 bg-espresso text-cream rounded-full shadow-lg hover:bg-charcoal hover:shadow-xl transition-all duration-200 flex items-center justify-center group active:scale-95" aria-label="Open chat">
+            <svg id="chat-icon-open" class="w-6 h-6 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        </button>
+        <!-- Unread badge -->
+        <span id="chat-badge" class="absolute bottom-12 right-0 w-4 h-4 bg-mauve rounded-full border-2 border-cream animate-pulse pointer-events-none"></span>
+    </div>
+
+    <script>
+        // Testimonial carousel state
+        let currentSlide = 0;
+        const track = document.getElementById('testimonial-track');
+        const totalSlides = track ? track.children.length : 0;
+
+        function moveTestimonial(dir) {
+            currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            if (!track) return;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            // Update dots
+            const dots = document.querySelectorAll('#testimonial-dots button');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-mauve', i === currentSlide);
+                dot.classList.toggle('bg-lavender', i !== currentSlide);
+            });
+        }
+
+        // Create dots
+        (function initDots() {
+            const dotsContainer = document.getElementById('testimonial-dots');
+            if (!dotsContainer) return;
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('button');
+                dot.className = `w-2.5 h-2.5 rounded-full transition-colors ${i === 0 ? 'bg-mauve' : 'bg-lavender'}`;
+                dot.setAttribute('aria-label', `Go to testimonial page ${i + 1}`);
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        })();
+
+        // Auto-advance testimonials
+        let testimonialTimer = setInterval(() => moveTestimonial(1), 6000);
+        const carousel = document.getElementById('testimonial-carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', () => clearInterval(testimonialTimer));
+            carousel.addEventListener('mouseleave', () => {
+                testimonialTimer = setInterval(() => {
+                    if (currentSlide >= totalSlides - 1) currentSlide = -1;
+                    moveTestimonial(1);
+                }, 6000);
+            });
+        }
+
+        // Handle Navigation
+        function navigate(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+                if (link.dataset.target === pageId) {
+                    link.classList.add('active');
+                    if(link.classList.contains('mobile-nav-link')) {
+                        link.classList.add('text-espresso', 'font-semibold');
+                        link.classList.remove('text-charcoal/80', 'font-medium');
+                    }
+                } else {
+                    link.classList.remove('active');
+                    if(link.classList.contains('mobile-nav-link')) {
+                        link.classList.remove('text-espresso', 'font-semibold');
+                        link.classList.add('text-charcoal/80', 'font-medium');
+                    }
+                }
+            });
+
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('mobile-menu-btn');
+            const iconPath = document.getElementById('menu-icon-path');
+
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+            if (!isExpanded) {
+                menu.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+                menu.setAttribute('aria-hidden', 'false');
+                iconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                menu.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+                menu.setAttribute('aria-hidden', 'true');
+                iconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+
+        // Form submission
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+
+            btn.innerText = 'Sending...';
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+
+            setTimeout(() => {
+                this.reset();
+                this.style.display = 'none';
+                document.getElementById('form-success').classList.remove('hidden');
+                document.getElementById('form-success').classList.add('block');
+
+                setTimeout(() => {
+                    this.style.display = 'block';
+                    document.getElementById('form-success').classList.add('hidden');
+                    document.getElementById('form-success').classList.remove('block');
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-70');
+                }, 5000);
+            }, 800);
+        });
+
+        // Initialize state based on hash
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                navigate(hash);
+            }
+        });
+
+        // ─── Chat Widget ───
+        let chatOpen = false;
+
+        const chatResponses = {
+            booking: "We'd love to get you on the schedule! You can call us at (207) 493-4423 or fill out the booking form on our Contact page. We'll confirm your date, time, and stylist.",
+            hours: "We're open Tuesday through Friday, 9am to 6pm, and Saturday 9am to 2pm. Closed Sunday and Monday. We're at 3 Water St in Caribou.",
+            services: "We offer haircuts (from $30), balayage (from $165), full foil highlights (from $140), root retouch & gloss (from $85), vivid color, UV tanning (from $12), and custom spray tans ($45). Want details on any of these?",
+            default: "Thanks for reaching out! For the quickest response, give us a call at (207) 493-4423. We're happy to answer any questions about services, pricing, or availability."
+        };
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const panel = document.getElementById('chat-panel');
+            const badge = document.getElementById('chat-badge');
+
+            if (chatOpen) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                badge.classList.add('hidden');
+                document.getElementById('chat-input').focus();
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+            }
+        }
+
+        function chatQuickAction(message) {
+            addUserMessage(message);
+            // Remove quick action buttons after first use
+            const quickBtns = document.querySelector('#chat-messages .flex.flex-wrap');
+            if (quickBtns) quickBtns.remove();
+
+            setTimeout(() => {
+                let response = chatResponses.default;
+                const lower = message.toLowerCase();
+                if (lower.includes('book') || lower.includes('appointment')) response = chatResponses.booking;
+                else if (lower.includes('hour') || lower.includes('location') || lower.includes('where') || lower.includes('open')) response = chatResponses.hours;
+                else if (lower.includes('service') || lower.includes('price') || lower.includes('cost') || lower.includes('offer')) response = chatResponses.services;
+                addBotMessage(response);
+            }, 800);
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addUserMessage(message);
+            input.value = '';
+
+            // Remove quick actions if still present
+            const quickBtns = document.querySelector('#chat-messages .flex.flex-wrap');
+            if (quickBtns) quickBtns.remove();
+
+            setTimeout(() => {
+                let response = chatResponses.default;
+                const lower = message.toLowerCase();
+                if (lower.includes('book') || lower.includes('appointment') || lower.includes('schedule')) response = chatResponses.booking;
+                else if (lower.includes('hour') || lower.includes('location') || lower.includes('where') || lower.includes('open') || lower.includes('address')) response = chatResponses.hours;
+                else if (lower.includes('service') || lower.includes('price') || lower.includes('cost') || lower.includes('offer') || lower.includes('how much') || lower.includes('cut') || lower.includes('color') || lower.includes('tan')) response = chatResponses.services;
+                addBotMessage(response);
+            }, 1000);
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = 'flex justify-end';
+            div.innerHTML = `<div class="bg-espresso text-cream rounded-sm rounded-tr-none px-4 py-3 max-w-[85%]"><p class="text-sm font-light leading-relaxed">${escapeHtml(text)}</p></div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const container = document.getElementById('chat-messages');
+            // Typing indicator
+            const typing = document.createElement('div');
+            typing.className = 'flex gap-2.5 items-start';
+            typing.id = 'typing-indicator';
+            typing.innerHTML = `<div class="w-7 h-7 rounded-full bg-lavender flex-shrink-0 flex items-center justify-center mt-0.5"><span class="text-espresso text-[10px] font-semibold">LP</span></div><div class="bg-lavender-light rounded-sm rounded-tl-none px-4 py-3"><div class="flex gap-1"><span class="w-1.5 h-1.5 bg-charcoal/30 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-1.5 h-1.5 bg-charcoal/30 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-1.5 h-1.5 bg-charcoal/30 rounded-full animate-bounce" style="animation-delay:300ms"></span></div></div>`;
+            container.appendChild(typing);
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                typing.remove();
+                const div = document.createElement('div');
+                div.className = 'flex gap-2.5 items-start';
+                div.innerHTML = `<div class="w-7 h-7 rounded-full bg-lavender flex-shrink-0 flex items-center justify-center mt-0.5"><span class="text-espresso text-[10px] font-semibold">LP</span></div><div class="bg-lavender-light rounded-sm rounded-tl-none px-4 py-3 max-w-[85%]"><p class="text-sm text-charcoal/90 font-light leading-relaxed">${text}</p></div>`;
+                container.appendChild(div);
+                container.scrollTop = container.scrollHeight;
+            }, 600);
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

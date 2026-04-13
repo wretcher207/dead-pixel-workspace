@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx netlify:*)",
+      "Skill(remember)",
+      "Skill(remember:*)"
+    ]
+  }
+}

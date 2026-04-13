@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nightfall Crystals | Belfast, Maine's Crystal & Metaphysical Boutique</title>
+<meta name="description" content="Nightfall Crystals is a curated metaphysical boutique in Belfast, Maine. Rare crystals, polished specimens, artisan soaps, and hand-carved figurines — chosen by hand, one piece at a time."/>
+<meta name="keywords" content="crystals, metaphysical, Belfast Maine, crystal shop, amethyst, citrine, polished stones, artisan soaps, spiritual, crystal boutique"/>
+<meta name="author" content="Nightfall Crystals LLC"/>
+<meta name="geo.region" content="US-ME"/>
+<meta name="geo.placename" content="Belfast, Maine"/>
+<meta name="geo.position" content="44.4257;-69.0064"/>
+<meta name="ICBM" content="44.4257, -69.0064"/>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Nightfall Crystals | Belfast, Maine"/>
+<meta property="og:description" content="A curated metaphysical boutique. Rare crystals, polished specimens, artisan goods — chosen by hand."/>
+<meta property="og:image" content="./logo.jpg"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_US"/>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "surface-container-high": "#2a2a2a",
+        "surface-bright": "#3a3939",
+        "outline-variant": "#4a454d",
+        "on-tertiary": "#3a2852",
+        "on-secondary": "#2f3034",
+        "surface-container-low": "#1c1b1b",
+        "on-background": "#e5e2e1",
+        "secondary-container": "#46464b",
+        "outline": "#958f98",
+        "surface-variant": "#353534",
+        "primary": "#c6c6c6",
+        "background": "#131313",
+        "error": "#ffb4ab",
+        "surface-tint": "#c6c6c6",
+        "on-surface": "#e5e2e1",
+        "primary-container": "#121414",
+        "surface-container-highest": "#353534",
+        "surface": "#131313",
+        "on-primary": "#2f3131",
+        "surface-container-lowest": "#0e0e0e",
+        "inverse-surface": "#e5e2e1",
+        "on-surface-variant": "#cbc4ce",
+        "surface-container": "#201f1f",
+        "secondary": "#c6c6cb",
+        "inverse-primary": "#5d5f5f",
+        "tertiary": "#d4bdf2",
+        "surface-dim": "#131313",
+      },
+      borderRadius: {
+        DEFAULT: "0rem",
+        lg: "0rem",
+        xl: "0rem",
+        full: "9999px",
+      },
+      fontFamily: {
+        headline: ["Noto Serif", "serif"],
+        body: ["Manrope", "sans-serif"],
+        label: ["Manrope", "sans-serif"],
+      },
+    },
+  },
+}
+</script>
+
+<!-- JSON-LD: LocalBusiness -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "Nightfall Crystals",
+  "description": "A curated metaphysical boutique in Belfast, Maine offering rare crystals, polished specimens, artisan soaps, and hand-carved figurines.",
+  "url": "https://nightfallcrystals.com",
+  "email": "nightfallcrystals.llc@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "161 High Street",
+    "addressLocality": "Belfast",
+    "addressRegion": "ME",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 44.4257,
+    "longitude": -69.0064
+  },
+  "image": "./logo.jpg",
+  "priceRange": "$$",
+  "openingDate": "2026-04-11",
+  "keywords": "crystals, metaphysical, spiritual, minerals, gemstones"
+}
+</script>
+
+<!-- JSON-LD: Grand Opening Event -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Nightfall Crystals Grand Opening",
+  "startDate": "2026-04-11T10:00:00-04:00",
+  "location": {
+    "@type": "Place",
+    "name": "Nightfall Crystals",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "161 High Street",
+      "addressLocality": "Belfast",
+      "addressRegion": "ME",
+      "addressCountry": "US"
+    }
+  },
+  "description": "Grand opening of Nightfall Crystals, Belfast Maine's newest metaphysical crystal boutique.",
+  "organizer": {
+    "@type": "Organization",
+    "name": "Nightfall Crystals LLC"
+  },
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"
+}
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .shimmer-glow {
+    background: linear-gradient(45deg, #c6c6c6, #d4bdf2);
+  }
+
+  .celestial-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #c6c6c6, transparent);
+    opacity: 0.3;
+  }
+
+  .celestial-line-v {
+    width: 1px;
+    background: linear-gradient(180deg, transparent, #c6c6c6, transparent);
+    opacity: 0.2;
+  }
+
+  .hero-bg {
+    transform: scale(1.1);
+    transition: transform 20s ease-out;
+  }
+  .hero-bg:hover {
+    transform: scale(1.15);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slowPulse {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.35; }
+  }
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes shimmerSlide {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .fade-up {
+    animation: fadeUp 1s ease-out both;
+  }
+  .fade-in { animation: fadeIn 1.5s ease-out both; }
+  .fade-in-slow { animation: fadeIn 2.5s ease-out both; animation-delay: 0.5s; }
+  .slow-pulse { animation: slowPulse 6s ease-in-out infinite; }
+  .rotate-slow { animation: rotateSlow 60s linear infinite; }
+
+  .shimmer-text {
+    background: linear-gradient(90deg, #c6c6c6 0%, #d4bdf2 40%, #c6c6c6 80%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmerSlide 6s linear infinite;
+  }
+
+  /* Scroll-triggered fade */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Nav scroll state */
+  nav.scrolled {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: rgba(10, 10, 10, 0.85);
+  }
+
+  /* Mobile nav drawer */
+  .mobile-menu {
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  /* Focus styles */
+  a:focus-visible, button:focus-visible {
+    outline: 1px solid #d4bdf2;
+    outline-offset: 4px;
+  }
+</style>
+</head>
+
+<body class="bg-background text-on-surface font-body selection:bg-tertiary/30 overflow-x-hidden">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAVIGATION                                  -->
+<!-- ═══════════════════════════════════════════ -->
+<nav id="mainNav" class="fixed top-0 z-50 flex justify-between items-center w-full px-5 md:px-12 py-4 md:py-6 bg-neutral-950/40 backdrop-blur-md transition-all duration-500">
+  <a href="#hero" class="flex items-center gap-3 group" aria-label="Nightfall Crystals — Back to top">
+    <img src="./logo.jpg" alt="Nightfall Crystals" class="w-8 h-8 object-contain opacity-80 group-hover:opacity-100 transition-opacity" style="mix-blend-mode: lighten;"/>
+    <span class="font-headline text-sm tracking-[0.2em] text-primary/70 uppercase hidden md:inline group-hover:text-primary transition-colors">Nightfall</span>
+  </a>
+  <div class="flex items-center gap-6 md:gap-10">
+    <a href="#collections" class="font-label text-xs tracking-[0.2em] uppercase text-on-surface-variant/60 hover:text-primary transition-colors duration-300 hidden md:inline">Collections</a>
+    <a href="#about" class="font-label text-xs tracking-[0.2em] uppercase text-on-surface-variant/60 hover:text-primary transition-colors duration-300 hidden md:inline">About</a>
+    <a href="#visit" class="font-label text-xs tracking-[0.2em] uppercase text-on-surface-variant/60 hover:text-primary transition-colors duration-300 hidden md:inline">Visit</a>
+    <div class="w-[1px] h-4 bg-on-surface/10 hidden md:block"></div>
+    <a href="#visit" class="hidden md:flex w-10 h-10 border border-primary/20 items-center justify-center hover:border-primary/40 transition-all duration-300 group" aria-label="Visit the store">
+      <span class="material-symbols-outlined text-primary/60 text-lg group-hover:text-tertiary transition-colors">near_me</span>
+    </a>
+    <!-- Mobile menu toggle -->
+    <button id="menuToggle" class="md:hidden w-10 h-10 flex items-center justify-center border border-primary/20 hover:border-primary/40 transition-all" aria-label="Open menu" aria-expanded="false">
+      <span class="material-symbols-outlined text-primary/60 text-lg">menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-surface/95 backdrop-blur-lg flex flex-col items-center justify-center gap-12 md:hidden" aria-hidden="true">
+  <button id="menuClose" class="absolute top-4 right-5 w-10 h-10 flex items-center justify-center border border-primary/20" aria-label="Close menu">
+    <span class="material-symbols-outlined text-primary/60 text-lg">close</span>
+  </button>
+  <a href="#collections" class="mobile-nav-link font-headline text-2xl text-on-surface/80 tracking-wide">Collections</a>
+  <a href="#about" class="mobile-nav-link font-headline text-2xl text-on-surface/80 tracking-wide">About</a>
+  <a href="#visit" class="mobile-nav-link font-headline text-2xl text-on-surface/80 tracking-wide">Visit</a>
+  <div class="celestial-line w-24"></div>
+  <a href="mailto:nightfallcrystals.llc@gmail.com" class="font-label text-xs tracking-[0.3em] uppercase text-tertiary/60">Contact</a>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO                                        -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="hero" class="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-surface">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img src="./crystal.jpg" alt="" class="hero-bg w-full h-full object-cover opacity-[0.18]" aria-hidden="true"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-surface/60 via-transparent to-surface"></div>
+  </div>
+
+  <!-- Decorative celestial ring -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none fade-in-slow">
+    <div class="w-[320px] h-[320px] md:w-[700px] md:h-[700px] border border-primary/[0.04] rotate-slow" style="border-radius: 9999px;"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 flex flex-col items-center px-6 text-center">
+    <!-- Logo -->
+    <div class="fade-up mb-8 md:mb-14" style="animation-delay: 0s;">
+      <img src="./logo.jpg" alt="Nightfall Crystals — Crescent moon cradling crystal cluster" class="w-32 h-32 md:w-56 md:h-56 object-contain" style="mix-blend-mode: lighten;"/>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="font-headline text-3xl md:text-5xl lg:text-6xl font-light text-on-surface tracking-tight leading-tight fade-up mb-5 md:mb-6" style="animation-delay: 0.15s;">
+      Where Earth Meets<br class="hidden md:block"/> the Ethereal
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="font-label text-xs md:text-sm tracking-[0.3em] uppercase text-on-surface-variant/50 fade-up mb-4" style="animation-delay: 0.3s;">
+      Belfast, Maine
+    </p>
+
+    <!-- Decorative line -->
+    <div class="celestial-line w-24 md:w-48 fade-up mb-12 md:mb-16" style="animation-delay: 0.5s;"></div>
+
+    <!-- Scroll indicator -->
+    <a href="#opening" class="fade-up w-10 h-10 md:w-12 md:h-12 border border-primary/20 flex items-center justify-center group hover:border-primary/40 transition-all duration-500" style="animation-delay: 0.7s;" aria-label="Scroll to content">
+      <span class="material-symbols-outlined text-primary/40 group-hover:text-tertiary transition-colors text-base md:text-xl">keyboard_arrow_down</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- GRAND OPENING                               -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="opening" class="bg-surface-container-low relative overflow-hidden">
+  <div class="celestial-line w-full"></div>
+
+  <div class="py-20 md:py-40 px-6 md:px-12 max-w-[1200px] mx-auto text-center relative">
+    <!-- Decorative diamond -->
+    <div class="reveal mb-8 md:mb-12 flex justify-center">
+      <div class="w-5 h-5 md:w-6 md:h-6 border border-tertiary/30 rotate-45"></div>
+    </div>
+
+    <p class="reveal font-label text-[11px] tracking-[0.4em] uppercase text-tertiary/70 mb-6 md:mb-8">An Invitation</p>
+
+    <h2 class="reveal font-headline text-3xl md:text-5xl font-light text-on-surface mb-6 md:mb-8 tracking-tight">
+      Grand Opening
+    </h2>
+
+    <p class="reveal font-headline text-xl md:text-2xl font-light text-primary/60 italic mb-8 md:mb-12">
+      April 11th
+    </p>
+
+    <div class="reveal space-y-2 mb-12 md:mb-16">
+      <p class="font-body text-on-surface-variant/70 text-sm md:text-base tracking-wide">
+        161 High Street, Belfast, Maine
+      </p>
+      <p class="font-body text-on-surface-variant/50 text-sm tracking-wide">
+        Doors open at 10 AM
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="reveal flex justify-center">
+      <a href="#visit" class="inline-flex items-center gap-3 px-8 md:px-10 py-3.5 md:py-4 shimmer-glow text-on-primary font-label text-xs tracking-[0.25em] uppercase hover:opacity-90 transition-opacity group">
+        <span>Find Us</span>
+        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="celestial-line w-full"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ABOUT / BRAND STORY                         -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="about" class="bg-surface py-20 md:py-48">
+  <div class="max-w-[1440px] mx-auto px-5 md:px-12 lg:px-24">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 items-center">
+      <!-- Image -->
+      <div class="reveal aspect-[4/5] md:aspect-[3/4] bg-surface-container-high overflow-hidden relative">
+        <img src="./sign.jpg" alt="Nightfall Crystals storefront sign on High Street, Belfast Maine" class="w-full h-full object-cover grayscale opacity-50 hover:grayscale-0 hover:opacity-70 transition-all duration-1000"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface/40 to-transparent pointer-events-none"></div>
+      </div>
+
+      <!-- Copy -->
+      <div class="reveal md:pl-8">
+        <div class="w-16 h-[1px] bg-tertiary/40 mb-8 md:mb-10"></div>
+        <h2 class="font-headline text-2xl md:text-4xl font-light text-on-surface mb-6 md:mb-8 tracking-tight leading-snug">
+          Curated for<br/>the Curious
+        </h2>
+        <div class="space-y-5 text-on-surface-variant/70 text-sm md:text-base leading-relaxed font-light">
+          <p>
+            This is not a warehouse. Every specimen in this space was selected by hand — held, studied, and chosen for the quality of its formation, the depth of its color, the way it catches the light.
+          </p>
+          <p>
+            From deep-violet amethyst cathedrals to golden citrine clusters, from hand-carved figurines to small-batch artisan soaps — this collection was built slowly, one piece at a time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- COLLECTIONS BENTO GRID                      -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="collections" class="bg-surface-container-low py-20 md:py-48 px-5 md:px-12 lg:px-24">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Section header -->
+    <div class="reveal mb-12 md:mb-28 flex justify-between items-end">
+      <div>
+        <p class="font-label text-[11px] tracking-[0.3em] uppercase text-tertiary/50 mb-3 md:mb-4">Explore</p>
+        <h2 class="font-headline text-2xl md:text-4xl font-light text-on-surface tracking-tight">The Collection</h2>
+      </div>
+    </div>
+
+    <!-- Bento grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
+      <!-- Large card: Amethyst -->
+      <div class="reveal md:col-span-8 group relative bg-surface h-[320px] md:h-[600px] overflow-hidden">
+        <img src="./pruple.jpg" alt="Deep purple amethyst crystal cluster — museum-quality dark specimen" class="absolute inset-0 w-full h-full object-cover opacity-40 transition-all duration-[2000ms] group-hover:scale-110 group-hover:opacity-55"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent"></div>
+        <div class="absolute bottom-8 md:bottom-16 left-6 md:left-16 right-6 md:right-16 z-10">
+          <p class="font-label text-[11px] tracking-[0.3em] uppercase text-tertiary/60 mb-2 md:mb-3">Rare Specimens</p>
+          <h3 class="font-headline text-xl md:text-3xl font-light text-on-surface/90 mb-1 md:mb-2">Amethyst &amp; Dark Formations</h3>
+          <p class="font-body text-sm text-on-surface-variant/40 max-w-md hidden md:block">Cathedral geodes, deep-violet clusters, and raw mineral formations sourced for depth and clarity.</p>
+        </div>
+        <div class="absolute inset-0 border border-primary/[0.03] group-hover:border-primary/10 transition-all duration-700"></div>
+      </div>
+
+      <!-- Small cards stack -->
+      <div class="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-8">
+        <!-- Citrine -->
+        <div class="reveal group relative bg-surface h-[200px] md:h-[284px] overflow-hidden">
+          <img src="./rystal-2.jpg" alt="Golden citrine geode clusters with amber crystalline formations" class="absolute inset-0 w-full h-full object-cover opacity-35 grayscale group-hover:grayscale-0 group-hover:opacity-50 transition-all duration-700"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent"></div>
+          <div class="absolute bottom-6 left-5 right-5 md:bottom-8 md:left-8 md:right-8 z-10">
+            <p class="font-label text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-tertiary/50 mb-1 md:mb-2">Warm Stones</p>
+            <h3 class="font-headline text-base md:text-lg font-light text-on-surface/80">Citrine &amp; Golden Specimens</h3>
+          </div>
+        </div>
+
+        <!-- Polished stones -->
+        <div class="reveal group relative bg-surface h-[200px] md:h-[284px] overflow-hidden">
+          <img src="./eggs.jpg" alt="Polished crystal palm stones and eggs in warm peach and amber tones" class="absolute inset-0 w-full h-full object-cover opacity-35 grayscale group-hover:grayscale-0 group-hover:opacity-50 transition-all duration-700"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent"></div>
+          <div class="absolute bottom-6 left-5 right-5 md:bottom-8 md:left-8 md:right-8 z-10">
+            <p class="font-label text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-tertiary/50 mb-1 md:mb-2">Palm Stones</p>
+            <h3 class="font-headline text-base md:text-lg font-light text-on-surface/80">Polished &amp; Carved Pieces</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FEATURED / FIGURINES                        -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="bg-surface py-0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+    <!-- Image -->
+    <div class="reveal h-[360px] md:h-[800px] overflow-hidden relative order-2 md:order-1">
+      <img src="./rocks.jpg" alt="Hand-carved crystal figurines — angels, animals, and totems in rose quartz, amethyst, and aventurine" class="w-full h-full object-cover grayscale opacity-40 hover:grayscale-0 hover:opacity-60 transition-all duration-1000"/>
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-surface/30 pointer-events-none hidden md:block"></div>
+    </div>
+
+    <!-- Copy -->
+    <div class="reveal flex items-center justify-center px-6 py-16 md:p-24 bg-surface-container-low order-1 md:order-2">
+      <div class="max-w-lg space-y-8 md:space-y-10">
+        <div class="w-7 h-7 md:w-8 md:h-8 border border-tertiary/25 rotate-45"></div>
+        <p class="font-label text-[11px] tracking-[0.4em] uppercase text-tertiary/50">One of a Kind</p>
+        <h2 class="font-headline text-2xl md:text-4xl font-light text-on-surface tracking-tight leading-snug">
+          Hand-Selected.<br/>Never Mass-Produced.
+        </h2>
+        <div class="space-y-4 md:space-y-5 text-on-surface-variant/60 text-sm leading-relaxed font-light">
+          <p>
+            Every carved angel, every crystal animal, every polished totem was chosen individually. These aren't catalog pieces. They're sculptural objects — each one shaped from raw mineral by hand.
+          </p>
+          <p>
+            Rose quartz. Aventurine. Tiger's eye. Labradorite. The range shifts with each sourcing, and no two visits to the shop look the same.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ARTISAN GOODS                               -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="bg-surface py-20 md:py-48 px-5 md:px-12 lg:px-24">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Section header -->
+    <div class="reveal mb-12 md:mb-28">
+      <p class="font-label text-[11px] tracking-[0.4em] uppercase text-on-surface-variant/30 mb-3 md:mb-4">Beyond the Stone</p>
+      <h2 class="font-headline text-2xl md:text-4xl font-light text-on-surface tracking-tight">Ritual &amp; Craft</h2>
+    </div>
+
+    <!-- 3-column grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+      <!-- Artisan soaps -->
+      <div class="reveal group relative aspect-[4/3] sm:aspect-[3/4] bg-surface-container-low overflow-hidden">
+        <img src="./rocks2.jpg" alt="Artisan mineral-themed soaps — Silver Mine, Moss Agate, Rose Quartz — small-batch crystal-inspired body care" class="w-full h-full object-cover opacity-50 transition-all duration-700 group-hover:scale-105 group-hover:opacity-65"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
+        <div class="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8 z-10">
+          <p class="font-label text-[11px] tracking-[0.3em] uppercase text-tertiary/50 mb-2">Artisan Goods</p>
+          <h3 class="font-headline text-lg font-light text-on-surface/80 mb-1 md:mb-2">Small-Batch Soaps &amp; Body Care</h3>
+          <p class="font-body text-xs text-on-surface-variant/40 hidden md:block">Handcrafted with natural minerals and botanicals.</p>
+        </div>
+      </div>
+
+      <!-- Storefront -->
+      <div class="reveal group relative aspect-[4/3] sm:aspect-[3/4] bg-surface-container-low overflow-hidden md:translate-y-12">
+        <img src="./exterior.jpg" alt="Nightfall Crystals storefront window at 161 High Street, Belfast Maine" class="w-full h-full object-cover opacity-50 transition-all duration-700 group-hover:scale-105 group-hover:opacity-65"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
+        <div class="absolute bottom-8 left-6 right-6 md:bottom-10 md:left-8 md:right-8 z-10">
+          <p class="font-label text-[11px] tracking-[0.3em] uppercase text-tertiary/50 mb-2">The Space</p>
+          <h3 class="font-headline text-lg font-light text-on-surface/80">161 High Street</h3>
+        </div>
+      </div>
+
+      <!-- Text-only card -->
+      <div class="reveal group relative aspect-[4/3] sm:aspect-[3/4] sm:col-span-2 md:col-span-1 bg-surface-container-high overflow-hidden flex flex-col justify-center items-center p-8 md:p-12 text-center">
+        <div class="w-10 h-10 md:w-12 md:h-12 border border-primary/10 rotate-45 mb-8 md:mb-10 group-hover:border-tertiary/30 transition-all duration-700 group-hover:rotate-[225deg]"></div>
+        <p class="font-headline text-base md:text-xl font-light text-on-surface/60 leading-relaxed mb-6 md:mb-8 italic">
+          The collection grows weekly.<br/>No two visits are the same.
+        </p>
+        <a href="#visit" class="font-label text-[11px] tracking-[0.3em] uppercase text-primary/40 hover:text-tertiary transition-colors">
+          Plan Your Visit &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- VISIT THE STORE                             -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="visit" class="bg-surface-container-low relative overflow-hidden">
+  <div class="celestial-line w-full"></div>
+
+  <div class="py-20 md:py-48 px-5 md:px-12 lg:px-24">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+      <!-- Info -->
+      <div class="reveal">
+        <div class="w-7 h-7 md:w-8 md:h-8 border border-tertiary/25 rotate-45 mb-8 md:mb-12"></div>
+        <p class="font-label text-[11px] tracking-[0.4em] uppercase text-tertiary/50 mb-4 md:mb-6">Find Us</p>
+        <h2 class="font-headline text-3xl md:text-5xl font-light text-on-surface tracking-tight mb-10 md:mb-16 leading-tight">
+          Visit the<br/>Collection
+        </h2>
+
+        <div class="space-y-8 md:space-y-10">
+          <!-- Address -->
+          <div class="flex items-start gap-4 md:gap-5">
+            <span class="material-symbols-outlined text-primary/30 text-lg md:text-xl mt-0.5">location_on</span>
+            <div>
+              <p class="font-body text-on-surface/80 text-sm mb-1">161 High Street</p>
+              <p class="font-body text-on-surface-variant/50 text-sm">Belfast, Maine</p>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="flex items-start gap-4 md:gap-5">
+            <span class="material-symbols-outlined text-primary/30 text-lg md:text-xl mt-0.5">mail</span>
+            <a href="mailto:nightfallcrystals.llc@gmail.com" class="font-body text-on-surface/80 text-sm hover:text-tertiary transition-colors break-all md:break-normal">
+              nightfallcrystals.llc@gmail.com
+            </a>
+          </div>
+
+          <!-- Category -->
+          <div class="flex items-start gap-4 md:gap-5">
+            <span class="material-symbols-outlined text-primary/30 text-lg md:text-xl mt-0.5">diamond</span>
+            <p class="font-body text-on-surface-variant/50 text-sm">Metaphysical Supply &amp; Crystal Boutique</p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-12 md:mt-16">
+          <a href="mailto:nightfallcrystals.llc@gmail.com" class="inline-flex items-center gap-3 md:gap-4 px-6 md:px-8 py-3.5 md:py-4 border border-primary/20 hover:border-primary/40 transition-all duration-300 group">
+            <span class="font-label text-xs tracking-[0.2em] uppercase text-primary/70 group-hover:text-primary transition-colors">Get in Touch</span>
+            <span class="material-symbols-outlined text-primary/40 text-sm group-hover:text-tertiary group-hover:translate-x-1 transition-all">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Decorative image area -->
+      <div class="reveal relative hidden md:flex items-center justify-center">
+        <div class="w-full aspect-square relative">
+          <!-- Concentric rings — using inline border-radius since these are decorative, not structural -->
+          <div class="absolute inset-0 border border-primary/[0.04] slow-pulse" style="border-radius: 9999px;"></div>
+          <div class="absolute inset-8 border border-primary/[0.06] slow-pulse" style="border-radius: 9999px; animation-delay: 2s;"></div>
+          <div class="absolute inset-16 border border-primary/[0.08] slow-pulse" style="border-radius: 9999px; animation-delay: 4s;"></div>
+          <!-- Center crystal image -->
+          <div class="absolute inset-24 overflow-hidden" style="border-radius: 9999px;">
+            <img src="./crystal.jpg" alt="" class="w-full h-full object-cover opacity-25 mix-blend-screen" aria-hidden="true"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="celestial-line w-full"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER                                      -->
+<!-- ═══════════════════════════════════════════ -->
+<footer class="bg-surface-container-lowest py-12 md:py-24 px-5 md:px-12 lg:px-24">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-10">
+      <!-- Logo + name -->
+      <div class="flex items-center gap-3">
+        <img src="./logo.jpg" alt="Nightfall Crystals" class="w-7 h-7 md:w-8 md:h-8 object-contain" style="mix-blend-mode: lighten;"/>
+        <span class="font-headline text-xs md:text-sm tracking-[0.2em] text-on-surface-variant/30 uppercase">Nightfall Crystals</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex flex-wrap gap-6 md:gap-12">
+        <a href="#hero" class="font-label text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/30 hover:text-primary/50 transition-colors">Top</a>
+        <a href="#collections" class="font-label text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/30 hover:text-primary/50 transition-colors">Collections</a>
+        <a href="#about" class="font-label text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/30 hover:text-primary/50 transition-colors">About</a>
+        <a href="#visit" class="font-label text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/30 hover:text-primary/50 transition-colors">Visit</a>
+      </div>
+    </div>
+
+    <div class="celestial-line w-full my-8 md:my-12"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 text-on-surface-variant/20">
+      <p class="font-label text-[11px] tracking-widest uppercase">&copy; 2026 Nightfall Crystals LLC</p>
+      <p class="font-label text-[11px] tracking-widest uppercase">
+        Site by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener" class="text-on-surface-variant/30 hover:text-tertiary/50 transition-colors">Dead Pixel Design</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SCRIPTS                                     -->
+<!-- ═══════════════════════════════════════════ -->
+<script>
+// Scroll-triggered reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 100);
+});
+
+// Mobile menu
+const menuToggle = document.getElementById('menuToggle');
+const menuClose = document.getElementById('menuClose');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function openMenu() {
+  mobileMenu.classList.add('open');
+  mobileMenu.setAttribute('aria-hidden', 'false');
+  menuToggle.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  mobileMenu.classList.remove('open');
+  mobileMenu.setAttribute('aria-hidden', 'true');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
+menuToggle.addEventListener('click', openMenu);
+menuClose.addEventListener('click', closeMenu);
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
+</script>
+
+</body>
+</html>

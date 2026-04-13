@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p assets css js)",
+      "Bash(mv bagel-site-loop.mp4 bagels.jpg bagels2.jpg espresso.jpg harbor-shot.jpg info.png info2.png interior.jpg logo.jpg assets/)",
+      "Bash(python -m http.server 5757 --bind 127.0.0.1)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__new_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__resize_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__evaluate_script",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+      "Bash(npx netlify:*)",
+      "Bash(kill %1)"
+    ]
+  }
+}

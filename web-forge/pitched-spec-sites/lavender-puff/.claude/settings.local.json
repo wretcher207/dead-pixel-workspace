@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv site.html index.html)",
+      "Bash(ls *.html)",
+      "Bash(npx netlify:*)",
+      "Skill(remember)"
+    ]
+  }
+}

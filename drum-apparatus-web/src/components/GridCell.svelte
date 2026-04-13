@@ -22,8 +22,8 @@
 
 <button
   onclick={handleClick}
-  class="w-6 h-6 rounded-sm border transition-colors {isBeat ? 'border-neutral-600' : 'border-neutral-800'} {active ? 'bg-amber-500' : 'bg-[#1a1a1a] hover:bg-neutral-800'}"
-  style={active ? `opacity: ${opacity}` : ''}
+  class="w-6 h-6 transition-opacity duration-150 {active ? 'bg-[var(--color-dp-primary)] active:translate-y-px' : isBeat ? 'bg-[var(--color-dp-surface)] hover:bg-[var(--color-dp-elevated)]' : 'bg-[var(--color-dp-sunken)] hover:bg-[var(--color-dp-surface)]'}"
+  style="{active ? `opacity: ${opacity}` : ''}{active ? '' : '; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3)'}"
   title={active ? `Velocity: ${velocity}` : 'Click to activate, Shift+click for velocity'}
 >
 </button>

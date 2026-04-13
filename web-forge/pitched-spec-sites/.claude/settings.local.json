@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m http.server 8765 --bind 127.0.0.1)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8765/)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__new_page",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "Bash(mkdir -p /c/Users/david/.claude/hooks)",
+      "Bash(mkdir -p /c/Users/david/.claude/session-state)",
+      "Bash(node dpd-session-reset.js)",
+      "Bash(echo \"reset OK: $?\")",
+      "Bash(node dpd-track-skill.js)",
+      "Bash(echo \"track-skill OK: $?\")",
+      "Bash(node dpd-track-read.js)",
+      "Bash(echo \"track-read OK: $?\")",
+      "Bash(node dpd-gate-write.js)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(rm -rf /c/Users/david/.claude/session-state/test-empty)",
+      "Bash(node dpd-stop-signal.js)",
+      "Bash(rm -f /c/Users/david/.claude/hooks/dpd-session-reset.js /c/Users/david/.claude/hooks/dpd-track-skill.js /c/Users/david/.claude/hooks/dpd-track-read.js /c/Users/david/.claude/hooks/dpd-gate-write.js /c/Users/david/.claude/hooks/dpd-stop-signal.js /c/Users/david/.claude/hooks/dpd-preamble.js)",
+      "Bash(rm -rf /c/Users/david/.claude/session-state)",
+      "Bash(rm -f /c/dead-pixel-design/web-forge/pitched-spec-sites/luna-terra-studio/lt-*.jpeg /c/dead-pixel-design/web-forge/pitched-spec-sites/luna-terra-studio/lt-*.png /c/dead-pixel-design/web-forge/pitched-spec-sites/luna-terra-studio/lt-full.*)"
+    ]
+  }
+}

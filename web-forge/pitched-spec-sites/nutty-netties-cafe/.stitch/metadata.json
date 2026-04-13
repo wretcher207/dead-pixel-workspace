@@ -1,0 +1,59 @@
+{
+  "name": "projects/7421747041352526616",
+  "projectId": "7421747041352526616",
+  "title": "Nutty Netties Cafe",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "headlineFont": "EB_GARAMOND",
+    "bodyFont": "DM_SANS",
+    "roundness": "ROUND_EIGHT",
+    "customColor": "#c9a96e",
+    "colorVariant": "TONAL_SPOT",
+    "overridePrimaryColor": "#8b5e3c",
+    "overrideSecondaryColor": "#7a9e7e",
+    "overrideTertiaryColor": "#b85c6e",
+    "overrideNeutralColor": "#e8dfd4"
+  },
+  "screens": {
+    "hero": {
+      "id": "e06a309be7344ebfb670ed8a40d4d148",
+      "sourceScreen": "projects/7421747041352526616/screens/e06a309be7344ebfb670ed8a40d4d148",
+      "width": 2560,
+      "height": 2426
+    },
+    "featured-specials": {
+      "id": "7be9c72920164758b394dc0931a9b19a",
+      "sourceScreen": "projects/7421747041352526616/screens/7be9c72920164758b394dc0931a9b19a",
+      "width": 2560,
+      "height": 3078
+    },
+    "about": {
+      "id": "6caed7403527414bb83678f9c67a7b55",
+      "sourceScreen": "projects/7421747041352526616/screens/6caed7403527414bb83678f9c67a7b55",
+      "width": 2560,
+      "height": 2486
+    },
+    "menu-preview": {
+      "id": "4a400d39a4a44f5284f91d129cfc7d67",
+      "sourceScreen": "projects/7421747041352526616/screens/4a400d39a4a44f5284f91d129cfc7d67",
+      "width": 2560,
+      "height": 2912
+    },
+    "gallery": {
+      "id": "78f4d45dc9144b9185422de7feea5596",
+      "sourceScreen": "projects/7421747041352526616/screens/78f4d45dc9144b9185422de7feea5596",
+      "width": 2560,
+      "height": 4536
+    },
+    "visit-footer": {
+      "id": "44b15030d8e640b7b4bbdb878339e9c2",
+      "sourceScreen": "projects/7421747041352526616/screens/44b15030d8e640b7b4bbdb878339e9c2",
+      "width": 2560,
+      "height": 2234
+    }
+  }
+}

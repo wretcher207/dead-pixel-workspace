@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; json.load\\(open\\('C:/dead-pixel-design/projects/ai-receptionist/n8n-workflows/receptionist-chat.json'\\)\\); print\\('chat workflow: valid JSON'\\)\")",
+      "Bash(python -c \"import json; json.load\\(open\\('C:/dead-pixel-design/projects/ai-receptionist/n8n-workflows/receptionist-voice.json'\\)\\); print\\('voice workflow: valid JSON'\\)\")",
+      "Bash(python -c \"import json; json.load\\(open\\('C:/dead-pixel-design/projects/ai-receptionist/business-config/sample-business.json'\\)\\); print\\('business config: valid JSON'\\)\")",
+      "Bash(docker --version)",
+      "Bash(docker compose:*)",
+      "Bash(ollama --version)",
+      "Bash(npm --version)",
+      "Bash(ollama serve:*)",
+      "Bash(ollama list:*)",
+      "Bash(ollama pull:*)",
+      "Bash(npx --yes n8n)",
+      "Bash(curl -s http://localhost:5678/healthz)",
+      "Bash(tasklist)",
+      "Bash(curl -s http://localhost:11434/api/chat -d '{\"model\":\"llama3.1:8b\",\"messages\":[{\"role\":\"user\",\"content\":\"Say hello in one sentence.\"}],\"stream\":false}')",
+      "Bash(python -c \"import sys,json; print\\(json.load\\(sys.stdin\\)['message']['content']\\)\")",
+      "Bash(curl:*)",
+      "Bash(systeminfo)",
+      "Bash(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader)",
+      "Bash(wmic path:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.n8n.io)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(claude mcp:*)",
+      "Bash(claude plugin:*)",
+      "Bash(npm search:*)",
+      "Bash(npm view:*)",
+      "Bash(ls C:/Users/david/.claude/*.json)",
+      "Bash(npx n8n-mcp:*)"
+    ]
+  }
+}

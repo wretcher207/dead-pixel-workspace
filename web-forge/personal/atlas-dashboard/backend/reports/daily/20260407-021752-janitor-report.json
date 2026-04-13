@@ -1,0 +1,84 @@
+{
+  "reportId": "3383790a-eaaa-4601-a708-51b8a94fbb60",
+  "timestamp": "2026-04-07T02:17:52.800764+00:00",
+  "runType": "daily",
+  "source": "janitor",
+  "version": "1.0",
+  "payload": {
+    "status": "attention",
+    "findings": [
+      {
+        "id": "60df803f-4979-435e-bbbd-5fa64e1f6a6e",
+        "category": "downloads",
+        "description": "Downloads folder has 187 files (1.08 GB total). 21 files are older than 30 days.",
+        "location": "C:\\Users\\david\\Downloads",
+        "fileCount": 187,
+        "sizeBytes": 1155882814,
+        "severity": "medium",
+        "reclaimableBytes": 8447592,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review and clean out old files from your Downloads folder.",
+        "status": "pending"
+      },
+      {
+        "id": "afe6738a-2f98-421e-acf4-935bb1a2e77f",
+        "category": "desktop",
+        "description": "Desktop has 14 files, 1 of which are older than 7 days. A cluttered desktop slows Windows Explorer.",
+        "location": "C:\\Users\\david\\Desktop",
+        "fileCount": 14,
+        "sizeBytes": 0,
+        "severity": "low",
+        "reclaimableBytes": 0,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Move or delete old files from the Desktop. Keep only active items there.",
+        "status": "pending"
+      },
+      {
+        "id": "89862637-a3ca-4aa6-926e-59b8bbc466e0",
+        "category": "duplicates",
+        "description": "8 groups of duplicate files found (8 duplicates, 229 MB reclaimable).",
+        "location": "Downloads, Desktop, Documents",
+        "fileCount": 8,
+        "sizeBytes": 240125574,
+        "severity": "low",
+        "reclaimableBytes": 240125574,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review duplicate files and delete the copies you no longer need.",
+        "status": "pending"
+      },
+      {
+        "id": "a7d067c5-0179-4778-8121-044625478bb0",
+        "category": "large_files",
+        "description": "68 large file(s) over 500 MB found (123.41 GB total).",
+        "location": "Downloads, Desktop, Documents, Videos",
+        "fileCount": 68,
+        "sizeBytes": 132514684320,
+        "severity": "medium",
+        "reclaimableBytes": 132514684320,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review large files and delete or archive those you no longer need.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "totalReclaimableBytes": 132763257486,
+      "totalReclaimableGB": 123.65,
+      "duplicateGroupCount": 8,
+      "duplicateFileCount": 8,
+      "downloadsFileCount": 187,
+      "downloadsSizeBytes": 1155882814,
+      "desktopFileCount": 14,
+      "tempSizeBytes": 30343821,
+      "recycleBinSizeBytes": 0,
+      "recycleBinItemCount": 0,
+      "largeFileCount": 68,
+      "staleFileCount": 0,
+      "orphanedNodeModulesCount": 0,
+      "browserCacheSizeBytes": 0
+    }
+  }
+}

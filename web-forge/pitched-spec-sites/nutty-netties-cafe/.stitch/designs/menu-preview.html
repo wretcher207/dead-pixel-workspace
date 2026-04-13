@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        cream: "#fdf8f0",
+                        beige: "#e8dfd4",
+                        parchment: "#f5f0e8",
+                        espresso: {
+                            dark: "#3d2e24",
+                            mid: "#8b5e3c",
+                        },
+                        sage: "#7a9e7e",
+                        berry: "#b85c6e",
+                        gold: "#c9a96e",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["EB Garamond", "serif"],
+                        body: ["DM Sans", "sans-serif"],
+                        label: ["DM Sans", "sans-serif"],
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .nettie-note { font-family: 'EB Garamond', serif; font-style: italic; }
+        .small-caps { font-variant: small-caps; }
+    </style>
+</head>
+<body class="bg-parchment font-body text-espresso-dark selection:bg-gold/30">
+<!-- TopNavBar from Shared Components JSON -->
+<nav class="bg-[#fdf8f0] dark:bg-[#3d2e24] shadow-sm border-b border-[#e8dfd4] dark:border-[#8b5e3c]/20 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-serif italic text-[#3d2e24] dark:text-[#fdf8f0] font-['EB_Garamond']">
+                Nutty Netties Cafe
+            </div>
+<div class="hidden md:flex items-center gap-8 font-['EB_Garamond'] italic serif text-lg">
+<a class="text-[#8b5e3c] dark:text-[#c9a96e] border-b-2 border-[#8b5e3c] pb-1 hover:text-[#b85c6e] transition-colors duration-300" href="#">Menu</a>
+<a class="text-[#3d2e24]/70 dark:text-[#fdf8f0]/70 hover:text-[#b85c6e] transition-colors duration-300" href="#">Specials</a>
+<a class="text-[#3d2e24]/70 dark:text-[#fdf8f0]/70 hover:text-[#b85c6e] transition-colors duration-300" href="#">Our Story</a>
+<a class="text-[#3d2e24]/70 dark:text-[#fdf8f0]/70 hover:text-[#b85c6e] transition-colors duration-300" href="#">Visit</a>
+</div>
+<button class="bg-[#8b5e3c] text-white px-6 py-2 rounded-full font-medium hover:opacity-80 active:scale-95 transition-all">
+                Order Now
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-6 py-24">
+<!-- Section Header -->
+<header class="text-center mb-16">
+<span class="font-headline italic text-espresso-mid text-xl block mb-2">the full spread</span>
+<h1 class="font-headline text-5xl md:text-6xl text-espresso-dark mb-6">Our Menu</h1>
+<div class="flex items-center justify-center gap-4 text-gold">
+<div class="h-[1px] w-12 bg-gold/40"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+<div class="h-[1px] w-12 bg-gold/40"></div>
+</div>
+</header>
+<!-- Category Tab Row -->
+<div class="flex flex-wrap justify-center gap-3 mb-16">
+<button class="px-8 py-3 rounded-full bg-espresso-dark text-cream font-medium transition-all shadow-md">Coffee</button>
+<button class="px-8 py-3 rounded-full bg-beige text-espresso-dark/80 font-medium hover:bg-beige/80 transition-all">Tea</button>
+<button class="px-8 py-3 rounded-full bg-beige text-espresso-dark/80 font-medium hover:bg-beige/80 transition-all">Breakfast</button>
+<button class="px-8 py-3 rounded-full bg-beige text-espresso-dark/80 font-medium hover:bg-beige/80 transition-all">Pastries</button>
+<button class="px-8 py-3 rounded-full bg-beige text-espresso-dark/80 font-medium hover:bg-beige/80 transition-all">Lunch</button>
+<button class="px-8 py-3 rounded-full bg-beige text-berry font-medium hover:bg-beige/80 transition-all">Seasonal Specials</button>
+</div>
+<!-- Menu Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
+<!-- Item 1 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:-rotate-1 transition-transform duration-300 border border-white/50">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Drip Coffee</h3>
+<span class="font-headline text-espresso-mid text-xl">$3.00</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">House blend, dark roast</p>
+<div class="mt-4 pt-4 border-t border-beige/50">
+<span class="text-sage text-xs font-bold uppercase tracking-wider small-caps">Signature Blend</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:rotate-1 transition-transform duration-300 border border-white/50">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Americano</h3>
+<span class="font-headline text-espresso-mid text-xl">$4.00</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">Double shot, hot or iced</p>
+</div>
+<!-- Item 3 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:-rotate-1 transition-transform duration-300 border border-white/50 relative overflow-hidden">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Hazelnut Fog</h3>
+<span class="font-headline text-espresso-mid text-xl">$5.50</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">Oat cortado, hazelnut, sea salt</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="nettie-note text-gold text-lg">fan fave ✦</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:rotate-1 transition-transform duration-300 border-gold/20 border relative">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Lavender Latte</h3>
+<span class="font-headline text-espresso-mid text-xl">$5.75</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">Espresso, oat milk, house lavender</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-gold text-sm" style="font-variation-settings: 'FILL' 1;">pets</span>
+<span class="nettie-note text-gold text-lg">Nettie's pick</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:-rotate-1 transition-transform duration-300 border border-white/50">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Cold Brew</h3>
+<span class="font-headline text-espresso-mid text-xl">$5.00</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">24-hr steep, served over Maine ice</p>
+</div>
+<!-- Item 6 -->
+<div class="bg-cream p-8 rounded-xl shadow-[0_10px_30px_-15px_rgba(61,46,36,0.15)] flex flex-col justify-between group hover:rotate-1 transition-transform duration-300 border border-white/50">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-headline text-2xl font-medium text-espresso-dark">Maple Cortado</h3>
+<span class="font-headline text-espresso-mid text-xl">$5.25</span>
+</div>
+<p class="font-body font-light text-[#6b5f56] leading-relaxed italic">Double shot, local maple, steamed oat</p>
+<div class="mt-4 pt-4 border-t border-beige/50">
+<span class="text-sage text-xs font-bold uppercase tracking-wider small-caps">Maine Classic</span>
+</div>
+</div>
+</div>
+<!-- Footer Link -->
+<div class="mt-20 text-center">
+<a class="inline-flex items-center gap-2 text-espresso-mid font-headline text-2xl hover:text-berry transition-all group" href="#">
+                View Full Menu 
+                <span class="group-hover:translate-x-2 transition-transform duration-300">→</span>
+</a>
+</div>
+</main>
+<!-- Footer from Shared Components JSON -->
+<footer class="bg-[#3d2e24] dark:bg-[#1a1410] text-[#fdf8f0] border-t border-[#8b5e3c]/30 font-['DM_Sans'] font-light tracking-wide">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 gap-6 max-w-7xl mx-auto">
+<div class="text-xl font-serif text-[#c9a96e]">Nutty Netties Cafe</div>
+<div class="flex gap-8">
+<a class="text-[#fdf8f0]/60 hover:text-[#fdf8f0] underline transition-all focus:ring-1 focus:ring-[#c9a96e]" href="#">Privacy</a>
+<a class="text-[#fdf8f0]/60 hover:text-[#fdf8f0] underline transition-all focus:ring-1 focus:ring-[#c9a96e]" href="#">Terms</a>
+<a class="text-[#fdf8f0]/60 hover:text-[#fdf8f0] underline transition-all focus:ring-1 focus:ring-[#c9a96e]" href="#">Allergens</a>
+<a class="text-[#fdf8f0]/60 hover:text-[#fdf8f0] underline transition-all focus:ring-1 focus:ring-[#c9a96e]" href="#">Press</a>
+</div>
+<div class="text-sm opacity-60">
+                © 2024 Nutty Netties Cafe. Stay Nutty.
+            </div>
+</div>
+</footer>
+</body></html>

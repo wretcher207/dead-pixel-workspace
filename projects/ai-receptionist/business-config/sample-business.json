@@ -1,0 +1,153 @@
+{
+  "business": {
+    "name": "Aroostook Family Dental",
+    "tagline": "Your hometown dental office since 1998",
+    "address": {
+      "street": "45 Main Street",
+      "city": "Presque Isle",
+      "state": "ME",
+      "zip": "04769"
+    },
+    "phone": "(207) 555-0142",
+    "email": "info@aroostookfamilydental.com",
+    "website": "https://aroostookfamilydental.com"
+  },
+
+  "hours": {
+    "monday":    { "open": "08:00", "close": "17:00" },
+    "tuesday":   { "open": "08:00", "close": "17:00" },
+    "wednesday": { "open": "08:00", "close": "17:00" },
+    "thursday":  { "open": "08:00", "close": "15:00" },
+    "friday":    { "open": "08:00", "close": "12:00" },
+    "saturday":  "closed",
+    "sunday":    "closed"
+  },
+
+  "services": [
+    {
+      "name": "Cleaning & Exam",
+      "duration_minutes": 60,
+      "price_range": "$150-$250",
+      "description": "Routine cleaning, X-rays, and comprehensive exam"
+    },
+    {
+      "name": "Filling",
+      "duration_minutes": 45,
+      "price_range": "$175-$350",
+      "description": "Composite or amalgam fillings"
+    },
+    {
+      "name": "Crown",
+      "duration_minutes": 90,
+      "price_range": "$800-$1500",
+      "description": "Porcelain or ceramic crown — typically requires two visits"
+    },
+    {
+      "name": "Emergency Visit",
+      "duration_minutes": 30,
+      "price_range": "Varies",
+      "description": "Same-day emergency dental care for pain or injury"
+    },
+    {
+      "name": "Whitening",
+      "duration_minutes": 60,
+      "price_range": "$300-$500",
+      "description": "In-office professional teeth whitening"
+    }
+  ],
+
+  "appointment_types": [
+    {
+      "id": "cleaning",
+      "name": "Cleaning & Exam",
+      "duration_minutes": 60,
+      "buffer_minutes": 15,
+      "calendar_color": "#4CAF50"
+    },
+    {
+      "id": "filling",
+      "name": "Filling",
+      "duration_minutes": 45,
+      "buffer_minutes": 15,
+      "calendar_color": "#FF9800"
+    },
+    {
+      "id": "crown",
+      "name": "Crown Consultation",
+      "duration_minutes": 90,
+      "buffer_minutes": 15,
+      "calendar_color": "#2196F3"
+    },
+    {
+      "id": "emergency",
+      "name": "Emergency Visit",
+      "duration_minutes": 30,
+      "buffer_minutes": 10,
+      "calendar_color": "#F44336"
+    },
+    {
+      "id": "whitening",
+      "name": "Whitening",
+      "duration_minutes": 60,
+      "buffer_minutes": 15,
+      "calendar_color": "#9C27B0"
+    },
+    {
+      "id": "consultation",
+      "name": "General Consultation",
+      "duration_minutes": 30,
+      "buffer_minutes": 10,
+      "calendar_color": "#607D8B"
+    }
+  ],
+
+  "faq": [
+    {
+      "question": "Do you accept my insurance?",
+      "answer": "We accept most major dental insurance plans including Delta Dental, Cigna, Aetna, and MetLife. Call us to verify your specific plan."
+    },
+    {
+      "question": "Are you accepting new patients?",
+      "answer": "Yes, we're always welcoming new patients. You can schedule your first visit as a Cleaning & Exam appointment."
+    },
+    {
+      "question": "What should I do in a dental emergency?",
+      "answer": "Call us immediately at (207) 555-0142. If it's after hours, leave a message and we'll get back to you first thing. For severe trauma, go to the nearest emergency room."
+    },
+    {
+      "question": "Do you offer payment plans?",
+      "answer": "Yes, we offer CareCredit financing and in-house payment plans for procedures over $500. Ask us for details."
+    },
+    {
+      "question": "How often should I come in for a cleaning?",
+      "answer": "We recommend every 6 months for most patients. Some patients with gum disease or other conditions may need more frequent visits."
+    }
+  ],
+
+  "policies": {
+    "cancellation": "Please give us at least 24 hours notice if you need to cancel or reschedule.",
+    "late_arrival": "If you arrive more than 15 minutes late, we may need to reschedule your appointment.",
+    "new_patient_forms": "New patients should arrive 15 minutes early to complete paperwork, or download forms from our website."
+  },
+
+  "owner": {
+    "name": "Dr. Sarah Mitchell",
+    "role": "Owner / Lead Dentist",
+    "notification_methods": ["telegram", "email"],
+    "telegram_chat_id": "",
+    "email": "sarah@aroostookfamilydental.com"
+  },
+
+  "ai_receptionist": {
+    "name": "Amy",
+    "personality": "Friendly, professional, and helpful. Speaks naturally without being overly formal. Keeps responses concise.",
+    "greeting": "Hi! This is Amy at Aroostook Family Dental. How can I help you today?",
+    "escalation_triggers": [
+      "billing disputes",
+      "complaints about care",
+      "requests to speak with the dentist directly",
+      "legal or insurance claim questions"
+    ],
+    "off_hours_message": "We're currently closed, but I can take a message and someone will get back to you when we open. Would you like to leave your name and number?"
+  }
+}

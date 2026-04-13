@@ -1,0 +1,50 @@
+{
+  "schedule": {
+    "dailyScanEnabled": true,
+    "dailyScanTime": "02:00",
+    "weeklyScanEnabled": true,
+    "weeklyScanDay": "Sunday",
+    "monthlyScanEnabled": true,
+    "monthlyScanDay": "1"
+  },
+  "cleanup": {
+    "tempFileAgeDays": 7,
+    "recycleBinAgeDays": 30,
+    "largeFileThresholdMB": 500,
+    "staleFileThresholdDays": 90,
+    "autoClearTemp": true,
+    "autoClearRecycleBin": true,
+    "autoClearBrowserCache": true
+  },
+  "performance": {
+    "chromeRamAlertGB": 4.0,
+    "chromeTabAlertCount": 30,
+    "bootTimeAlertSeconds": 120
+  },
+  "security": {
+    "autoUpdateDefenderDefs": true,
+    "extensionAuditFrequency": "weekly",
+    "portScanFrequency": "daily"
+  },
+  "organization": {
+    "desktopAgeAlertDays": 7,
+    "projectStaleDays": 60
+  },
+  "updates": {
+    "audioToolPolicy": "explicit_approval",
+    "devToolPolicy": "approval_recommended",
+    "browserUpdatePolicy": "approval_recommended"
+  },
+  "notifications": {
+    "showCriticalImmediately": true,
+    "summaryAfterScan": true,
+    "approvalQueueReminders": "daily"
+  },
+  "protectedFolders": [
+    "C:\\Users\\david\\Documents\\dead-pixel-design",
+    "C:\\Users\\david\\Documents\\REAPER Projects",
+    "C:\\Users\\david\\Documents\\REAPER Media",
+    "C:\\Users\\david\\AppData\\Roaming\\REAPER",
+    "C:\\Program Files\\REAPER"
+  ]
+}

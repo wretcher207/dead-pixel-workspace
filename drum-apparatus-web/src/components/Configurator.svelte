@@ -12,16 +12,16 @@
   const DIRECTIONS = ['descending', 'ascending', 'alternating'] as const
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-6">
   <!-- MIDI Map -->
   <section>
-    <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">MIDI Map</h3>
+    <h3 class="text-xs font-bold font-['Space_Grotesk'] text-[var(--color-dp-text-muted)] uppercase tracking-[-0.02em] mb-2">MIDI Map</h3>
     <MidiMapEditor />
   </section>
 
   <!-- Time & Length -->
   <section>
-    <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Time & Length</h3>
+    <h3 class="text-xs font-bold font-['Space_Grotesk'] text-[var(--color-dp-text-muted)] uppercase tracking-[-0.02em] mb-2">Time & Length</h3>
     <div class="flex flex-col gap-2">
       <select
         value={$configuratorStore.timeSignature.name}
@@ -29,14 +29,14 @@
           const ts = TIME_SIGNATURES.find(t => t.name === (e.target as HTMLSelectElement).value)
           if (ts) configuratorStore.update(s => ({ ...s, timeSignature: ts }))
         }}
-        class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700"
+        class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
       >
         {#each TIME_SIGNATURES as ts}
           <option value={ts.name}>{ts.name}</option>
         {/each}
       </select>
 
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         BPM
         <input
           type="number"
@@ -44,7 +44,7 @@
           max="300"
           value={$configuratorStore.bpm}
           oninput={(e) => configuratorStore.update(s => ({ ...s, bpm: parseInt((e.target as HTMLInputElement).value) || 120 }))}
-          class="w-20 bg-neutral-800 text-neutral-100 text-sm text-center px-2 py-1 rounded border border-neutral-700"
+          class="w-20 bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm text-center px-2 py-1 focus:bg-[var(--color-dp-floating)] focus:outline-none"
         />
       </label>
 
@@ -52,7 +52,7 @@
         {#each LOOP_LENGTHS as len}
           <button
             onclick={() => configuratorStore.update(s => ({ ...s, loopLength: len }))}
-            class="flex-1 text-sm py-1 rounded border transition-colors {$configuratorStore.loopLength === len ? 'bg-neutral-700 border-neutral-500 text-neutral-100' : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700'}"
+            class="flex-1 text-sm py-1 transition-colors active:translate-y-px {$configuratorStore.loopLength === len ? 'bg-[var(--color-dp-secondary)] text-[var(--color-dp-base)] shadow-[0_0_8px_rgba(0,162,253,0.2)]' : 'bg-[var(--color-dp-sunken)] text-[var(--color-dp-text-dim)] hover:bg-[var(--color-dp-surface)]'}"
           >
             {len} bar{len > 1 ? 's' : ''}
           </button>
@@ -63,12 +63,12 @@
 
   <!-- Power Hand -->
   <section>
-    <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Power Hand</h3>
+    <h3 class="text-xs font-bold font-['Space_Grotesk'] text-[var(--color-dp-text-muted)] uppercase tracking-[-0.02em] mb-2">Power Hand</h3>
     <div class="flex flex-col gap-2">
       <select
         value={$configuratorStore.powerHand.instrument}
         onchange={(e) => configuratorStore.update(s => ({ ...s, powerHand: { ...s.powerHand, instrument: (e.target as HTMLSelectElement).value as KitPiece } }))}
-        class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700"
+        class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
       >
         {#each POWER_HAND_OPTIONS as opt}
           <option value={opt.piece}>{opt.name}</option>
@@ -78,14 +78,14 @@
       <select
         value={$configuratorStore.powerHand.subdivision}
         onchange={(e) => configuratorStore.update(s => ({ ...s, powerHand: { ...s.powerHand, subdivision: (e.target as HTMLSelectElement).value } }))}
-        class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700"
+        class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
       >
         {#each SUBDIVISIONS as sub}
           <option value={sub.name}>{sub.name}</option>
         {/each}
       </select>
 
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         Velocity: {$configuratorStore.powerHand.velocity}
         <input type="range" min="40" max="127"
           value={$configuratorStore.powerHand.velocity}
@@ -93,7 +93,7 @@
           class="w-32" />
       </label>
 
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         Variance: {$configuratorStore.powerHand.varianceAmount}%
         <input type="range" min="0" max="100"
           value={$configuratorStore.powerHand.varianceAmount}
@@ -105,9 +105,9 @@
 
   <!-- Dynamics -->
   <section>
-    <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Dynamics</h3>
+    <h3 class="text-xs font-bold font-['Space_Grotesk'] text-[var(--color-dp-text-muted)] uppercase tracking-[-0.02em] mb-2">Dynamics</h3>
     <div class="flex flex-col gap-2">
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         Humanize: {$configuratorStore.dynamics.humanize}%
         <input type="range" min="0" max="100"
           value={$configuratorStore.dynamics.humanize}
@@ -115,7 +115,7 @@
           class="w-32" />
       </label>
 
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         Push/Pull: {$configuratorStore.dynamics.pushPull}
         <input type="range" min="-100" max="100"
           value={$configuratorStore.dynamics.pushPull}
@@ -127,14 +127,14 @@
         {#each (['Soft', 'Normal', 'Hard'] as const) as mode, i}
           <button
             onclick={() => configuratorStore.update(s => ({ ...s, dynamics: { ...s.dynamics, velocityMode: i as VelocityMode } }))}
-            class="flex-1 text-sm py-1 rounded border transition-colors {$configuratorStore.dynamics.velocityMode === i ? 'bg-neutral-700 border-neutral-500 text-neutral-100' : 'bg-neutral-800 border-neutral-700 text-neutral-400'}"
+            class="flex-1 text-sm py-1 transition-colors active:translate-y-px {$configuratorStore.dynamics.velocityMode === i ? 'bg-[var(--color-dp-secondary)] text-[var(--color-dp-base)] shadow-[0_0_8px_rgba(0,162,253,0.2)]' : 'bg-[var(--color-dp-sunken)] text-[var(--color-dp-text-dim)] hover:bg-[var(--color-dp-surface)]'}"
           >
             {mode}
           </button>
         {/each}
       </div>
 
-      <label class="flex items-center justify-between text-sm text-neutral-300">
+      <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
         Left Foot: {$configuratorStore.dynamics.leftFootStrength}%
         <input type="range" min="0" max="100"
           value={$configuratorStore.dynamics.leftFootStrength}
@@ -146,9 +146,9 @@
 
   <!-- Fill -->
   <section>
-    <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Fill</h3>
+    <h3 class="text-xs font-bold font-['Space_Grotesk'] text-[var(--color-dp-text-muted)] uppercase tracking-[-0.02em] mb-2">Fill</h3>
     <div class="flex flex-col gap-2">
-      <label class="flex items-center gap-2 text-sm text-neutral-300">
+      <label class="flex items-center gap-2 text-sm text-[var(--color-dp-text-muted)]">
         <input type="checkbox"
           checked={$configuratorStore.fill.enabled}
           onchange={(e) => configuratorStore.update(s => ({ ...s, fill: { ...s.fill, enabled: (e.target as HTMLInputElement).checked } }))}
@@ -157,7 +157,7 @@
       </label>
 
       {#if $configuratorStore.fill.enabled}
-        <label class="flex items-center justify-between text-sm text-neutral-300">
+        <label class="flex items-center justify-between text-sm text-[var(--color-dp-text-muted)]">
           Velocity: {$configuratorStore.fill.velocity}
           <input type="range" min="1" max="127"
             value={$configuratorStore.fill.velocity}
@@ -167,7 +167,7 @@
 
         <div class="flex gap-2">
           {#each TOM_OPTIONS as tom}
-            <label class="flex items-center gap-1 text-xs text-neutral-400">
+            <label class="flex items-center gap-1 text-xs text-[var(--color-dp-text-muted)]">
               <input
                 type="checkbox"
                 checked={$configuratorStore.fill.toms.includes(tom)}
@@ -186,7 +186,7 @@
         <select
           value={$configuratorStore.fill.direction}
           onchange={(e) => configuratorStore.update(s => ({ ...s, fill: { ...s.fill, direction: (e.target as HTMLSelectElement).value as any } }))}
-          class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700"
+          class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
         >
           {#each DIRECTIONS as dir}
             <option value={dir}>{dir.charAt(0).toUpperCase() + dir.slice(1)}</option>
@@ -197,7 +197,7 @@
           {#each FILL_LENGTHS as len}
             <button
               onclick={() => configuratorStore.update(s => ({ ...s, fill: { ...s.fill, length: len } }))}
-              class="flex-1 text-sm py-1 rounded border transition-colors {$configuratorStore.fill.length === len ? 'bg-neutral-700 border-neutral-500 text-neutral-100' : 'bg-neutral-800 border-neutral-700 text-neutral-400'}"
+              class="flex-1 text-sm py-1 transition-colors active:translate-y-px {$configuratorStore.fill.length === len ? 'bg-[var(--color-dp-secondary)] text-[var(--color-dp-base)] shadow-[0_0_8px_rgba(0,162,253,0.2)]' : 'bg-[var(--color-dp-sunken)] text-[var(--color-dp-text-dim)] hover:bg-[var(--color-dp-surface)]'}"
             >
               {len} steps
             </button>
@@ -210,7 +210,7 @@
             const v = (e.target as HTMLSelectElement).value
             configuratorStore.update(s => ({ ...s, fill: { ...s.fill, crash: v === 'NONE' ? null : v as KitPiece } }))
           }}
-          class="bg-neutral-800 text-neutral-100 text-sm px-2 py-1.5 rounded border border-neutral-700"
+          class="bg-[var(--color-dp-sunken)] text-[var(--color-dp-text)] text-sm px-2 py-1.5 focus:bg-[var(--color-dp-floating)] focus:outline-none"
         >
           {#each CRASH_OPTIONS as opt}
             <option value={opt}>{opt === 'NONE' ? 'No Crash' : opt.replace('_', ' ')}</option>

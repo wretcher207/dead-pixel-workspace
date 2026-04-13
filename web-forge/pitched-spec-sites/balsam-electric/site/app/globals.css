@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #0B1F1A;
+  --color-forest-light: #132E26;
+  --color-forest-mid: #1A3D32;
+  --color-charcoal: #0A0A0A;
+  --color-cream: #F5F5F3;
+  --color-cream-dim: #E8E8E4;
+  --color-cream-muted: #A8A8A2;
+  --color-copper: #B87333;
+  --color-copper-light: #D4915A;
+  --color-copper-dark: #8B5A2B;
+
+  --font-display: "Sora", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+}
+
+/* --- Base --- */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-charcoal);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-copper);
+  color: var(--color-charcoal);
+}
+
+/* --- Noise Overlay --- */
+
+.noise::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* --- Scroll Animations (CSS-only with scroll-driven where supported) --- */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.08); }
+}
+
+.reveal { opacity: 0; }
+.reveal.visible { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.reveal-fade { opacity: 0; }
+.reveal-fade.visible { animation: fadeIn 1.2s ease forwards; }
+.reveal-left { opacity: 0; }
+.reveal-left.visible { animation: slideInLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.reveal-right { opacity: 0; }
+.reveal-right.visible { animation: slideInRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 120ms; }
+.stagger > *:nth-child(3) { animation-delay: 240ms; }
+.stagger > *:nth-child(4) { animation-delay: 360ms; }
+.stagger > *:nth-child(5) { animation-delay: 480ms; }
+.stagger > *:nth-child(6) { animation-delay: 600ms; }
+
+/* --- Horizontal Scroll --- */
+
+.horizontal-scroll {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 1rem;
+}
+
+.horizontal-scroll::-webkit-scrollbar { display: none; }
+
+.horizontal-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* --- Custom Scrollbar (main page) --- */
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-charcoal); }
+::-webkit-scrollbar-thumb { background: var(--color-forest-light); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-copper); }
+
+/* --- Focus Styles --- */
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-copper) !important;
+  box-shadow: 0 0 0 2px rgba(184, 115, 51, 0.12);
+}
+
+/* --- Divider --- */
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 245, 243, 0.06) 20%, rgba(245, 245, 243, 0.06) 80%, transparent);
+}

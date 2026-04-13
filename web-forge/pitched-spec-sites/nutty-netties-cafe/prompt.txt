@@ -1,0 +1,371 @@
+Build a **production-ready multi-section cafe website** for a southern Maine cafe called **Nutty Netties**.
+
+This site should feel **cute, memorable, warm, and slightly eccentric**, but never childish, loud, or gimmicky. It should avoid the generic “rustic hipster coffee shop” look and instead create a distinct brand presence that feels like a beloved local spot with a playful personality.
+
+## Core Brand Concept
+
+Nutty Netties should feel like:
+
+* a cozy neighborhood cafe with a wink
+* a little offbeat in a charming way
+* storybook warmth mixed with polished modern web design
+* handmade, thoughtful, and full of small delightful details
+
+The mood is:
+**whimsical but tasteful**
+**cozy but art directed**
+**playful but commercially viable**
+**cute without becoming cartoonish**
+
+This is a spec website, so the design must feel convincing, premium, and portfolio-worthy.
+
+## Visual Identity Direction
+
+Create a visual language inspired by:
+
+* recipe cards
+* handwritten margin notes
+* warm coffeehouse textures
+* subtle woodland charm
+* small-town Maine coziness
+* bakery display cases, vintage paper labels, cafe chalkboards, jam jar labels, pie tins, and morning light through windows
+
+Do **not** make it look like:
+
+* a generic Squarespace cafe template
+* an overdone farmhouse aesthetic
+* a children’s brand
+* a maximalist cartoon world
+* a trendy ultra-minimal luxury brand
+* a kitschy diner
+* a generic coffee startup
+
+## Color Palette
+
+Use a palette that feels edible and warm:
+
+* steamed milk cream
+* soft oat beige
+* espresso brown
+* muted pistachio or sage green
+* dusty berry or jam red as an accent
+* occasional buttery gold highlights
+
+Keep contrast accessible, but maintain softness. The palette should feel warm, baked, and welcoming.
+
+## Typography
+
+Use a typography system with personality:
+
+* a soft editorial serif for headlines
+* a clean, highly readable sans serif for body copy
+* a restrained handwritten or note-style accent font for tiny annotations, labels, or microcopy moments only
+
+Typography should feel tactile and intentional. Headlines should feel distinctive and ownable. Body text must remain highly legible and production-ready.
+
+## Mascot / Signature Motif
+
+Incorporate a **subtle illustrated squirrel motif** as a recurring brand element, but keep it tasteful and minimal.
+This squirrel should not feel like a cartoon mascot. It should feel like:
+
+* a small illustrated emblem
+* a hand-drawn signature
+* a recurring icon hidden throughout the experience
+* a visual joke used sparingly
+
+Possible uses:
+
+* perched near section dividers
+* tiny loading or hover detail
+* a small “Nettie note” label next to featured menu items
+* hidden easter egg interaction
+
+The squirrel should feel like part of the identity, not the center of the identity.
+
+## Art Direction
+
+Photography or generated visuals should emphasize:
+
+* warm natural light
+* cozy interior details
+* pastries, coffee, ceramic mugs, handwritten menus
+* intimate, inviting framing
+* subtle visual storytelling
+* textures like paper grain, linen, ceramic glaze, wood, and frosted glass
+
+Use layered depth, soft shadows, and tactile surfaces. The site should feel almost touchable.
+
+## Overall UX Goal
+
+The site should feel like browsing a cafe menu and bulletin board inside a charming local spot, but translated into a polished premium web experience.
+
+The user should feel:
+
+* welcomed immediately
+* curious to keep exploring
+* subtly delighted by tiny details
+* confident this is a real, loved business
+
+## Site Structure
+
+Design and build a complete homepage with the following sections:
+
+### 1. Hero Section
+
+Create a striking but warm hero section.
+Include:
+
+* a strong branded headline area
+* supporting text
+* clear primary and secondary CTA buttons
+* layered cafe imagery or illustration
+* subtle motion, such as drifting steam, floating paper labels, or light parallax
+
+The hero should immediately communicate that Nutty Netties is not a generic cafe.
+
+Possible tone for copy:
+
+* playful
+* self-aware
+* warm
+* local
+* lightly quirky
+
+Avoid cringey jokes or overdone puns.
+
+### 2. Featured Specials / Signature Items
+
+Present featured drinks and pastries in a visually unique way.
+Use a concept like:
+
+* recipe cards
+* pinned note cards
+* menu tags
+* slightly rotated paper cards on a tabletop
+* bakery labels in a display case
+
+Cards should have:
+
+* item name
+* short description
+* price
+* optional little annotation or “Nettie note”
+
+Hover interactions should feel delightful and tactile.
+
+### 3. About Section
+
+Create a charming about section that feels more personal than corporate.
+Consider a layout inspired by:
+
+* a storybook page
+* a handwritten kitchen note
+* a framed note on a cafe wall
+
+This section should tell the story of Nutty Netties as a beloved local place with character and warmth.
+
+### 4. Full Menu Preview
+
+Include a menu section with categories like:
+
+* coffee
+* tea
+* breakfast
+* pastries
+* lunch
+* seasonal specials
+
+This should not feel like a boring restaurant PDF dump. It should feel curated, readable, and visually integrated into the site brand.
+
+### 5. Atmosphere / Gallery Section
+
+Show the cafe’s mood through imagery or stylized composition.
+This section should sell the feeling of visiting:
+
+* morning light
+* cozy corners
+* pastries under glass
+* plants, mugs, wood, paper, baked goods
+* southern Maine local charm
+
+### 6. Visit / Hours / Location Section
+
+Include clear practical information:
+
+* hours
+* address
+* map or map placeholder
+* parking note
+* dine-in / takeout
+* social links
+
+This section should still feel branded and charming, not like a generic footer block.
+
+### 7. Footer
+
+Include:
+
+* logo or wordmark
+* navigation
+* contact info
+* social links
+* tiny charming sign-off line
+
+## Interaction Design
+
+Add subtle, polished, premium motion throughout.
+Examples:
+
+* steam drifting from a coffee cup
+* buttons with a soft press or squish effect
+* cards straightening slightly on hover
+* tiny paper shuffle effects
+* cursor-adjacent crumb or dust motes
+* parallax layers in hero imagery
+* section reveals that feel like a page turning or note sliding into place
+
+Motion must remain restrained and elegant. No over-animation.
+
+## UI Components
+
+Create reusable branded components:
+
+* CTA buttons
+* menu cards
+* section headers
+* price tags
+* annotation badges
+* testimonial cards if needed
+* icon system with organic, hand-touched feel
+
+All components should feel cohesive and custom.
+
+## Layout & Responsiveness
+
+The site must be fully production-ready and responsive.
+Requirements:
+
+* desktop-first elegance with strong mobile adaptation
+* clear spacing system
+* visual hierarchy that feels editorial but accessible
+* responsive stacking for cards and feature layouts
+* excellent tap targets on mobile
+* menu content remains readable on small screens
+* animations should degrade gracefully
+
+## Build Requirements
+
+Generate this as a **real website design and implementation**, not a concept art mockup.
+The output should be:
+
+* polished
+* believable
+* portfolio quality
+* fully structured for front-end build
+* easy to adapt with real business content later
+
+Use best practices for:
+
+* accessibility
+* semantic structure
+* responsive behavior
+* performance-conscious animation
+* clean component architecture
+
+## Technical Direction for Claude Code
+
+Claude Code should interpret this as:
+
+* a full homepage build
+* modular component structure
+* clean semantic HTML structure or modern React/Next component architecture
+* reusable sections and cards
+* subtle animation system
+* polished design tokens for colors, spacing, radius, shadows, and type
+* production-ready styling, not placeholder code
+
+Prefer:
+
+* modern frontend patterns
+* tasteful animation
+* custom styling over template-like repetition
+* premium landing-page polish
+* strong visual hierarchy
+* refined spacing and rhythm
+
+If using React / Next.js:
+
+* create reusable section components
+* create a design token system
+* use accessible buttons, nav, cards, and menu lists
+* ensure animation remains smooth and not excessive
+* include placeholder content that sounds realistic for a local cafe brand
+
+## Technical Direction for Stitch
+
+Stitch should interpret this as:
+
+* visually rich, brand-consistent, production-ready web design
+* layered composition
+* tactile surfaces
+* polished modern landing page
+* custom cafe identity
+* subtle whimsy
+* art-directed layout rather than a generic template
+* distinctive section treatments
+* clean responsive structure
+* realistic UI with meaningful hierarchy and spacing
+
+Stitch should prioritize:
+
+* cohesive visual storytelling
+* custom section composition
+* premium typography pairing
+* edible warm color harmony
+* tactile paper-and-ceramic-inspired UI details
+* soft visual depth and natural framing
+
+## Copy Direction
+
+Write placeholder copy that feels:
+
+* local
+* warm
+* a little sly
+* memorable
+* not overly clever
+* not corporate
+* not faux-luxury
+
+The copy should sound like a real place people would actually visit.
+It can be a little self-aware and charming, but keep it restrained.
+
+## Keywords for the Final Aesthetic
+
+Nutty
+Cozy
+Handmade
+Tactile
+Warm
+Playful
+Local
+Storybook
+Editorial
+Whimsical
+Polished
+Small-town charm
+Bakery warmth
+Coffeehouse intimacy
+Soft eccentricity
+Delightful details
+
+## Final Quality Bar
+
+The final result should feel like an award-worthy boutique cafe site concept that could genuinely win over a local client.
+It should feel custom, ownable, and emotionally sticky.
+Not generic.
+Not silly.
+Not sterile.
+Not chaotic.
+
+It should feel like **Nutty Netties has a soul**.

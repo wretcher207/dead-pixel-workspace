@@ -1,0 +1,594 @@
+{
+  "name": "AI Receptionist — Chat",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "receptionist-chat",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-trigger",
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "receptionist-chat"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "You are Amy, the AI receptionist for Aroostook Family Dental.\n\nLocation: 45 Main Street, Presque Isle, ME 04769\nPhone: (207) 555-0142\nEmail: info@aroostookfamilydental.com\nWebsite: https://aroostookfamilydental.com\n\n## Hours\n- Monday: 8:00 AM – 5:00 PM\n- Tuesday: 8:00 AM – 5:00 PM\n- Wednesday: 8:00 AM – 5:00 PM\n- Thursday: 8:00 AM – 3:00 PM\n- Friday: 8:00 AM – 12:00 PM\n- Saturday: Closed\n- Sunday: Closed\n\n## Services & Pricing\n- Cleaning & Exam: $150–$250 (60 min) — Routine cleaning, X-rays, comprehensive exam\n- Filling: $175–$350 (45 min) — Composite or amalgam fillings\n- Crown: $800–$1,500 (90 min) — Porcelain or ceramic, typically two visits\n- Emergency Visit: Varies (30 min) — Same-day emergency dental care\n- Whitening: $300–$500 (60 min) — In-office professional whitening\n\n## Frequently Asked Questions\n- Insurance: We accept most major plans including Delta Dental, Cigna, Aetna, and MetLife. Caller should verify their specific plan.\n- New patients: Yes, always welcoming new patients. Schedule a Cleaning & Exam to start.\n- Dental emergency: Call (207) 555-0142 immediately. After hours, leave a message.\n- Payment plans: CareCredit financing and in-house plans for procedures over $500.\n- Cleaning frequency: Every 6 months for most patients.\n\n## Policies\n- Cancellation: 24 hours notice required.\n- Late arrival: More than 15 minutes late may need to reschedule.\n- New patients: Arrive 15 minutes early for paperwork, or download forms from the website.\n\n## Your Personality\nFriendly, professional, and helpful. Speak naturally without being overly formal. Keep responses concise.\n\n## Your Job\n1. Answer questions about the business using the information above\n2. Help callers schedule appointments\n3. Take messages when the office is closed or you can't fully help\n4. Escalate to a human when the topic matches escalation triggers\n\n## Rules\n- Answer from the information above. Do not make up or guess information.\n- If you don't know something, say so and offer to take a message.\n- Keep responses concise and natural — this is a chat, not an essay.\n- Always confirm appointment details before booking.\n- If someone asks about something outside your scope, offer to take a message.\n\n## Escalation Triggers (transfer to human immediately)\n- Billing disputes\n- Complaints about care\n- Requests to speak with the dentist directly\n- Legal or insurance claim questions"
+        }
+      },
+      "id": "ai-agent",
+      "name": "AI Receptionist Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "baseUrl": "http://localhost:11434",
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "ollama-chat-model",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [650, 500]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Chat Webhook').item.json.body.session_id }}",
+        "contextWindowLength": 20
+      },
+      "id": "memory-buffer",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [850, 500]
+    },
+    {
+      "parameters": {
+        "name": "get_business_info",
+        "description": "Get information about the business including hours, services, pricing, FAQ answers, and policies. Call this whenever someone asks about the business.",
+        "workflowId": "={{ $workflow.id }}",
+        "responsePropertyName": "response",
+        "fields": {
+          "values": [
+            {
+              "name": "query",
+              "description": "What the caller is asking about (e.g., 'hours', 'services', 'insurance', 'pricing')",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "id": "tool-business-info",
+      "name": "Get Business Info",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [1050, 500]
+    },
+    {
+      "parameters": {
+        "name": "check_availability",
+        "description": "Check if a specific date and time slot is available for an appointment. Always call this before booking.",
+        "workflowId": "={{ $workflow.id }}",
+        "responsePropertyName": "response",
+        "fields": {
+          "values": [
+            {
+              "name": "date",
+              "description": "The date to check in YYYY-MM-DD format",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "time",
+              "description": "The time to check in HH:MM format (24-hour)",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "appointment_type",
+              "description": "The type of appointment (cleaning, filling, crown, emergency, whitening, consultation)",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "id": "tool-check-availability",
+      "name": "Check Availability",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [1250, 500]
+    },
+    {
+      "parameters": {
+        "name": "book_appointment",
+        "description": "Book an appointment after confirming details with the caller and checking availability. Requires all fields.",
+        "workflowId": "={{ $workflow.id }}",
+        "responsePropertyName": "response",
+        "fields": {
+          "values": [
+            {
+              "name": "patient_name",
+              "description": "Full name of the patient",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "patient_phone",
+              "description": "Patient's phone number",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "patient_email",
+              "description": "Patient's email (optional)",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "appointment_type",
+              "description": "Type of appointment (cleaning, filling, crown, emergency, whitening, consultation)",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "date",
+              "description": "Appointment date in YYYY-MM-DD format",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "time",
+              "description": "Appointment time in HH:MM format (24-hour)",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "notes",
+              "description": "Any additional notes from the patient",
+              "type": "string",
+              "required": false
+            }
+          ]
+        }
+      },
+      "id": "tool-book-appointment",
+      "name": "Book Appointment",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [1450, 500]
+    },
+    {
+      "parameters": {
+        "name": "take_message",
+        "description": "Take a message from the caller to be passed to the office staff. Use this when the office is closed, the caller needs human follow-up, or you can't fully resolve their request.",
+        "workflowId": "={{ $workflow.id }}",
+        "responsePropertyName": "response",
+        "fields": {
+          "values": [
+            {
+              "name": "caller_name",
+              "description": "Name of the caller",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "caller_phone",
+              "description": "Caller's phone number",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "message",
+              "description": "The message to relay to the office",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "urgency",
+              "description": "How urgent is this? (low, medium, high)",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "id": "tool-take-message",
+      "name": "Take Message",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [1650, 500]
+    },
+    {
+      "parameters": {
+        "name": "transfer_to_human",
+        "description": "Transfer the conversation to a human staff member. Use this for escalation triggers: billing disputes, complaints, requests to speak with the dentist, legal/insurance claims.",
+        "workflowId": "={{ $workflow.id }}",
+        "responsePropertyName": "response",
+        "fields": {
+          "values": [
+            {
+              "name": "reason",
+              "description": "Why the caller needs a human",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "caller_name",
+              "description": "Name of the caller (if provided)",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "caller_phone",
+              "description": "Caller's phone number (if provided)",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "conversation_summary",
+              "description": "Brief summary of what was discussed before escalation",
+              "type": "string",
+              "required": true
+            }
+          ]
+        }
+      },
+      "id": "tool-transfer-to-human",
+      "name": "Transfer to Human",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [1850, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load business config — in production, this reads from a file or database.\n// For now, it's embedded. Replace this with a Read File node or HTTP Request\n// pointed at your business-config JSON.\n\nconst config = {\n  \"business\": {\n    \"name\": \"Aroostook Family Dental\",\n    \"tagline\": \"Your hometown dental office since 1998\",\n    \"address\": {\n      \"street\": \"45 Main Street\",\n      \"city\": \"Presque Isle\",\n      \"state\": \"ME\",\n      \"zip\": \"04769\"\n    },\n    \"phone\": \"(207) 555-0142\",\n    \"email\": \"info@aroostookfamilydental.com\",\n    \"website\": \"https://aroostookfamilydental.com\"\n  },\n  \"hours\": {\n    \"monday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"tuesday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"wednesday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"thursday\": { \"open\": \"08:00\", \"close\": \"15:00\" },\n    \"friday\": { \"open\": \"08:00\", \"close\": \"12:00\" },\n    \"saturday\": \"closed\",\n    \"sunday\": \"closed\"\n  },\n  \"services\": [\n    { \"name\": \"Cleaning & Exam\", \"duration_minutes\": 60, \"price_range\": \"$150-$250\" },\n    { \"name\": \"Filling\", \"duration_minutes\": 45, \"price_range\": \"$175-$350\" },\n    { \"name\": \"Crown\", \"duration_minutes\": 90, \"price_range\": \"$800-$1500\" },\n    { \"name\": \"Emergency Visit\", \"duration_minutes\": 30, \"price_range\": \"Varies\" },\n    { \"name\": \"Whitening\", \"duration_minutes\": 60, \"price_range\": \"$300-$500\" }\n  ],\n  \"faq\": [\n    { \"question\": \"Do you accept my insurance?\", \"answer\": \"We accept most major dental insurance plans including Delta Dental, Cigna, Aetna, and MetLife. Call us to verify your specific plan.\" },\n    { \"question\": \"Are you accepting new patients?\", \"answer\": \"Yes, we're always welcoming new patients.\" },\n    { \"question\": \"What should I do in a dental emergency?\", \"answer\": \"Call us immediately at (207) 555-0142. If it's after hours, leave a message.\" },\n    { \"question\": \"Do you offer payment plans?\", \"answer\": \"Yes, we offer CareCredit financing and in-house payment plans for procedures over $500.\" },\n    { \"question\": \"How often should I come in for a cleaning?\", \"answer\": \"We recommend every 6 months for most patients.\" }\n  ],\n  \"policies\": {\n    \"cancellation\": \"Please give us at least 24 hours notice if you need to cancel or reschedule.\",\n    \"late_arrival\": \"If you arrive more than 15 minutes late, we may need to reschedule.\",\n    \"new_patient_forms\": \"New patients should arrive 15 minutes early to complete paperwork.\"\n  },\n  \"ai_receptionist\": {\n    \"name\": \"Amy\",\n    \"personality\": \"Friendly, professional, and helpful.\",\n    \"greeting\": \"Hi! This is Amy at Aroostook Family Dental. How can I help you today?\",\n    \"escalation_triggers\": [\"billing disputes\", \"complaints about care\", \"requests to speak with the dentist directly\", \"legal or insurance claim questions\"],\n    \"off_hours_message\": \"We're currently closed, but I can take a message and someone will get back to you when we open.\"\n  },\n  \"owner\": {\n    \"name\": \"Dr. Sarah Mitchell\",\n    \"telegram_chat_id\": \"\",\n    \"email\": \"sarah@aroostookfamilydental.com\"\n  }\n};\n\nreturn [{ json: config }];"
+      },
+      "id": "load-config",
+      "name": "Load Business Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Determine current business hours status\nconst config = $('Load Business Config').item.json;\nconst now = new Date();\nconst dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];\nconst today = dayNames[now.getDay()];\nconst hours = config.hours[today];\n\nlet isOpen = false;\nlet statusMessage = '';\n\nif (hours === 'closed') {\n  statusMessage = `We're closed today (${today}).`;\n} else {\n  const currentTime = now.getHours() * 100 + now.getMinutes();\n  const openTime = parseInt(hours.open.replace(':', ''));\n  const closeTime = parseInt(hours.close.replace(':', ''));\n  \n  if (currentTime >= openTime && currentTime < closeTime) {\n    isOpen = true;\n    statusMessage = `We're open today until ${hours.close}.`;\n  } else if (currentTime < openTime) {\n    statusMessage = `We're not open yet today. We open at ${hours.open}.`;\n  } else {\n    statusMessage = `We're closed for today. We were open until ${hours.close}.`;\n  }\n}\n\n// Pass through the original webhook data plus hours status\nconst webhookData = $('Chat Webhook').item.json;\nreturn [{\n  json: {\n    ...webhookData,\n    business_status: {\n      is_open: isOpen,\n      message: statusMessage,\n      today: today,\n      hours: hours\n    }\n  }\n}];"
+      },
+      "id": "check-hours",
+      "name": "Check Business Hours",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ response: $json.output, session_id: $('Chat Webhook').item.json.body.session_id }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-to-webhook",
+      "name": "Respond to Chat",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1100, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-escalation",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "ESCALATION_TRIGGERED",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        }
+      },
+      "id": "check-escalation",
+      "name": "Needs Notification?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Load Business Config').item.json.owner.telegram_chat_id }}",
+        "text": "=🔔 *AI Receptionist Alert*\n\nA conversation was escalated or a message was taken.\n\nSession: {{ $('Chat Webhook').item.json.body.session_id }}\n\nLast message from caller:\n{{ $('Chat Webhook').item.json.body.message }}\n\nAI response:\n{{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-notify",
+      "name": "Notify Owner (Telegram)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1500, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "receptionist@yourdomain.com",
+        "toEmail": "={{ $('Load Business Config').item.json.owner.email }}",
+        "subject": "=AI Receptionist Alert — {{ $('Load Business Config').item.json.business.name }}",
+        "emailType": "text",
+        "message": "=A conversation was escalated or a message was taken.\n\nSession: {{ $('Chat Webhook').item.json.body.session_id }}\n\nLast message from caller:\n{{ $('Chat Webhook').item.json.body.message }}\n\nAI response:\n{{ $json.output }}"
+      },
+      "id": "email-notify",
+      "name": "Notify Owner (Email)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1500, 400],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "no-op",
+      "name": "No Notification Needed",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1500, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/calendar/v3/freeBusy",
+        "authentication": "oAuth2",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"timeMin\": \"{{ $json.date }}T{{ $json.time }}:00{{ $json.timezone || '-05:00' }}\",\n  \"timeMax\": \"{{ $json.date }}T{{ (parseInt($json.time.split(':')[0]) + 2).toString().padStart(2, '0') }}:{{ $json.time.split(':')[1] }}:00{{ $json.timezone || '-05:00' }}\",\n  \"items\": [{ \"id\": \"primary\" }]\n}",
+        "options": {}
+      },
+      "id": "gcal-freebusy",
+      "name": "Google Calendar FreeBusy",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 700],
+      "credentials": {
+        "oAuth2Api": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "Google Calendar OAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendarId": "primary",
+        "start": "={{ $json.date }}T{{ $json.time }}:00",
+        "end": "={{ $json.date }}T{{ (parseInt($json.time.split(':')[0]) + Math.ceil($json.duration_minutes / 60)).toString().padStart(2, '0') }}:{{ $json.time.split(':')[1] }}:00",
+        "additionalFields": {
+          "summary": "={{ $json.appointment_type }} — {{ $json.patient_name }}",
+          "description": "=Patient: {{ $json.patient_name }}\nPhone: {{ $json.patient_phone }}\nEmail: {{ $json.patient_email || 'Not provided' }}\nType: {{ $json.appointment_type }}\nNotes: {{ $json.notes || 'None' }}\n\nBooked by AI Receptionist",
+          "location": "={{ $('Load Business Config').item.json.business.address.street }}, {{ $('Load Business Config').item.json.business.address.city }}, {{ $('Load Business Config').item.json.business.address.state }}"
+        }
+      },
+      "id": "gcal-create-event",
+      "name": "Create Calendar Event",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.2,
+      "position": [450, 700],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "Google Calendar"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "Load Business Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Business Config": {
+      "main": [
+        [
+          {
+            "node": "Check Business Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Business Hours": {
+      "main": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Receptionist Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Chat",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Needs Notification?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Business Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Appointment": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Take Message": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transfer to Human": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Receptionist Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs Notification?": {
+      "main": [
+        [
+          {
+            "node": "Notify Owner (Telegram)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Owner (Email)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Notification Needed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "AI Receptionist",
+      "createdAt": "2026-04-09T00:00:00.000Z",
+      "updatedAt": "2026-04-09T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-09T00:00:00.000Z",
+  "versionId": "1"
+}

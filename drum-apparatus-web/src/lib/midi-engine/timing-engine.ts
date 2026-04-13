@@ -12,7 +12,7 @@ export function createTimingEngine(humanize: number, pushPull: number): TimingEn
 
     const drift = (Math.random() - 0.5) * (humanize / 100) * 0.025
     const push = (pushPull / 100) * 0.02
-    const offset = drift - push
+    const offset = drift - push || 0
 
     cache.set(key, offset)
     return offset

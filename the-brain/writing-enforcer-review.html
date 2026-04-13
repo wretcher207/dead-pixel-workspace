@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "writing-enforcer", "runs": [{"id": "eval-1-article-with_skill", "prompt": "Write a ~400 word Dead Pixel Design article about why small businesses need custom websites instead of templates.", "eval_id": "1-article", "outputs": [{"name": "article.md", "type": "text", "content": "# Why Small Businesses Need Custom Websites, Not Templates\n\nYou don't need another Wix clone.\n\nA template is efficient. It's cheap. It ships in a day. But efficient doesn't mean effective. Plenty of things are efficient. Factory-farmed chicken is efficient. Spam emails are efficient. So are the thousand websites that look exactly like yours.\n\nHere's what most small business owners get wrong. They think the website's job is to exist. To be \"up.\" To take up a spot on the internet alongside everyone else's placeholder. It's not.\n\nYour website's job is to change someone's mind.\n\nSomeone lands on your page cold. They have no idea who you are. They spent exactly three seconds on the last five sites they visited. What happens in those three seconds determines whether they call you or bookmark a competitor. A template can't do that. Templates serve nobody because they try to serve everybody.\n\nWhen you use the same theme as the accountant two towns over, the plumber in your zip code, and the personal trainer across the street, you've already lost. Before anyone reads a word. The moment someone's brain goes \"oh this is one of those sites\" they're gone. They're comparing you on price now instead of value because you haven't given them any reason to believe you're different.\n\nCustom doesn't mean fancy. Fancy is fast to bore. Custom means intentional. It means someone thought about what your specific customers need to know. It means the copy doesn't sound like a corporate brochure. It means the navigation reflects how people actually think about your service. It means the design reinforces what you actually do instead of just looking \"professional\" in some generic sense.\n\nA builder knows the difference between built and bought.\n\nSmall businesses survive on differentiation. On the fact that you're not a chain. That you actually know your customers. That your work carries your fingerprints. Your website should reflect that. If it doesn't, you're giving away the one advantage you have over someone bigger.\n\nWe build exactly this at Dead Pixel. Sites that feel like they came from somewhere. That look like someone made them for the person reading them, not just broadcast to the void.\n\nIf your website looks like everyone else's, you're not offline. You're invisible while online.\n"}, {"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-1-article\",\n  \"variant\": \"with_skill\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 0,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 0\n}"}], "grading": null}, {"id": "eval-1-article-without_skill", "prompt": "Write a ~400 word Dead Pixel Design article about why small businesses need custom websites instead of templates.", "eval_id": "1-article", "outputs": [{"name": "article.md", "type": "text", "content": "# Why Your Small Business Needs a Custom Website, Not a Template\n\nYou're probably thinking about building a website. And you've already seen the pitch: use a template, it's cheap, it's fast, everyone's doing it. I'm here to tell you that's corporate bullshit designed to extract money from people who don't know any better.\n\nLet me be direct. Your business is not like everyone else's business. Your customers didn't come to you because you're generic. They came because you do something specific, something real, something that matters. The moment you slap a template on your web presence, you're telling them you're interchangeable.\n\n## Templates Are Designed For Nobody\n\nA template is a compromise. It's built to work for anyone, which means it works well for no one. It's designed to fit a thousand different use cases, which guarantees it won't fit yours. You get stuck with features you don't need and you're missing the ones you do. You end up fighting the template to make it do what you actually want, and nine times out of ten, you give up. That website sits there, half-customized, looking like it was built by someone who didn't really care.\n\nBecause it was.\n\n## What Custom Actually Means\n\nA custom website built by someone who knows what they're doing isn't some luxury. It's the basic cost of doing business if you want to compete. It means your site is built around your specific customers, your specific offering, your specific workflow. It means the technology serves you, not the other way around.\n\nHere's what that looks like: A website that converts because it's designed for conversion. A site that loads fast because it's not bloated with template cruft. An interface that makes sense because it was built by someone who actually understands how your business works. A backend that doesn't fight you every time you want to update it.\n\n## Small Business, Big Advantage\n\nThis is where small business actually wins. You move fast. You know your customers by name. You understand what they need because you talk to them every day. A custom site built by a developer who takes the time to understand your business will reflect that. Your competitors with their template sites will look like they're running everything by algorithm.\n\nThe other thing: a template locks you in. Change platforms later, you start over. With a custom site, you own the code. You own your presence. You can grow it, modify it, migrate it. The template is renting space on someone else's terms. A custom site is yours.\n\n## The Cost Question\n\nYeah, custom costs more than a template. I'm not going to pretend it doesn't. But here's what you need to understand: a cheap template site that doesn't convert is infinitely more expensive than a well-built custom site that does. You're not paying for features. You're paying for a tool that actually works.\n\nAnd if you find someone who knows what they're doing, someone who understands small business because they operate that way themselves, you're getting something you can't get from a template vendor. You're getting a partner who cares whether your site succeeds.\n\n## What's At Stake\n\nYour website is your first impression for people who don't know you yet. It's how you show up online when someone's trying to decide if they should trust you with their money. That matters. It matters enough that it shouldn't be left to a template that thousands of other businesses are using.\n\nYou built your business because you could do something better than the people who came before you. Your website should reflect that. It should look like you built it that way on purpose, because you did.\n\nGet a custom website. Get it built by someone who understands that your business isn't generic, and neither should your web presence.\n\nDead Pixel Design. Houlton, Maine. Built for people who know the difference.\n"}, {"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-1-article\",\n  \"variant\": \"with_skillout\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 4,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 4\n}"}], "grading": null}, {"id": "eval-2-social-with_skill", "prompt": "Write 3 social media posts (LinkedIn, X, Facebook) promoting Dead Pixel Design's Claude setup service for small businesses.", "eval_id": "2-social", "outputs": [{"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-2-social\",\n  \"variant\": \"with_skill\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 0,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 0\n}"}, {"name": "posts.md", "type": "text", "content": "# Social Media Posts - Dead Pixel Claude AI Setup Service\n\n## LinkedIn\n\nYour Claude setup is costing you time and sanity.\n\nMost small businesses treat Claude like a search engine. They ask it random questions, get random answers, then wonder why it doesn't actually help. The problem isn't Claude. It's that nobody configured it for how you actually work.\n\nAt Dead Pixel, we build custom Claude setups for your business. We map your workflows. We create the prompts. We test them against your real work. Then we hand you something that actually saves you hours every week.\n\nNo fluff. No \"Let's sync up.\" Just a Claude instance that works for your business, not some generic thing.\n\nReady to stop wasting time on bad setup? Let's talk.\n\n---\n\n## X/Twitter\n\nYour Claude setup sucks because you never configured it.\n\nWe build custom Claude instances that actually work for small businesses. Map workflows. Write the prompts. Test them. Done.\n\nStop asking Claude generic questions. Get one that's built for your actual work.\n\nDead Pixel.\n\n---\n\n## Facebook\n\nMost small business owners never get the full power of Claude.\n\nHere's why: you set it up once, then just... ask it things. No system. No actual workflow integration. No prompts built specifically for how your business operates.\n\nDead Pixel does the work for you. We figure out what Claude can do for your business, build the setup, test it, and hand you something that actually saves you time and money.\n\nIt's not magic. It's just what happens when someone actually thinks about how you work instead of handing you the default.\n\nIf you're running a small business and Claude feels like just another tool that doesn't quite fit, we should talk.\n\n"}], "grading": null}, {"id": "eval-2-social-without_skill", "prompt": "Write 3 social media posts (LinkedIn, X, Facebook) promoting Dead Pixel Design's Claude setup service for small businesses.", "eval_id": "2-social", "outputs": [{"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-2-social\",\n  \"variant\": \"with_skillout\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 0,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 0\n}"}, {"name": "posts.md", "type": "text", "content": "# Dead Pixel Design - Claude AI Setup Service Posts\n\n## LinkedIn Post\n\nMost businesses treat AI like a tool you buy off the shelf and bolt onto your operation. They're wrong.\n\nThe real difference isn't the AI itself. It's how you set it up. How you talk to it. What you actually ask it to do. A Claude setup that's half-assed is just going to give you half-assed results. It'll sit there being impressive in the abstract while your actual work doesn't move.\n\nAt Dead Pixel, we don't just hand you API keys. We build your Claude workflow from scratch. We think about what you're actually trying to solve. We set up the system prompts, the context, the guardrails. We make sure when you ask Claude to do something for your business, it sounds like someone who gets what you do.\n\nThe difference between \"I have Claude\" and \"Claude actually works for us\" is usually about four hours of setup. Maybe less. But those four hours matter.\n\nIf you're trying to build something real, not just chase the hype, let's talk.\n\n---\n\n## X/Twitter Post\n\nmost people install claude and wonder why it's not magical. here's the secret: the magic is in the setup.\n\nnobody talks about this. they just show you the feature demo and expect you to figure it out. we build your whole claude environment so it actually does what you need it to do. prompts. context. workflows. the stuff that makes the difference between useful and actually useful.\n\nsounds small. it changes everything.\n\n---\n\n## Facebook Post\n\nYou know what nobody ever talks about? How much of \"AI not working\" is actually just \"nobody set it up right.\"\n\nWe see this all the time. A business owner gets access to Claude, tries it once, and decides it's all hype. But the real story is usually that they weren't asking it the right way. They didn't have the context loaded. They didn't think about what they actually needed.\n\nHere's what we do: We sit down with you. We understand what you're trying to build. Then we set up your Claude environment so when you use it, it works. No generic setup. No one-size-fits-all nonsense. Just a tool that's actually built for what you do.\n\nIt's not complicated, but it matters. The difference between AI that sits there being impressive and AI that actually helps you work? Usually it comes down to someone thinking carefully about how you're going to use it.\n\nThat's what Dead Pixel does for your team.\n\nReady to actually make this work?\n\n"}], "grading": null}, {"id": "eval-3-wiki-with_skill", "prompt": "Write a wiki synthesis page about the relationship between AI tools and small business productivity.", "eval_id": "3-wiki", "outputs": [{"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-3-wiki\",\n  \"variant\": \"with_skill\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 0,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 0\n}"}, {"name": "synthesis.md", "type": "text", "content": "---\ntitle: AI Tools and Small Business Productivity\ntype: synthesis\ncreated: 2026-04-12\nupdated: 2026-04-12\nsources: [book-sources-on-business, article-ai-adoption-2026]\ntags: [#ai, #business, #tools, #productivity, #small-business]\n---\n\n# AI Tools and Small Business Productivity\n\nAI is not a productivity multiplier for most small businesses. It's a skill problem wearing a technology mask.\n\nThe common narrative says AI will solve everything. Automate the mundane. Free up humans for strategic work. Let the machine handle the grunt work. Small business owners hear this and buy ChatGPT subscriptions. Or they hire an agency to \"implement AI.\" Three months later, nothing has changed except the monthly spend.\n\nThe reason is simple. AI tools are powerful. They're also blank. An AI doesn't know what your business needs. It doesn't know your bottleneck is actually poor email management or a broken hiring process. It doesn't know your team has never written a proper brief in their lives. You give it a task and it does it. But if the task itself is broken, the output is just polished garbage.\n\nSmall businesses that actually gain from AI are the ones that already have their shit together. Clear processes. Good documentation. People who know what they're asking for. They use AI to compress time on work they already understand. It's a 2x multiplier on competence, not a substitute for it.\n\nMost small business owners don't have 2x competence. They have competence buried under chaos. Fixing that chaos is harder than learning a tool. Nobody wants to hear it.\n\nThe real productivity win for small business is not the AI. It's the clarity that forces you to describe what you're doing well enough that you can give it to an AI in the first place.\n\n## What AI Actually Solves for Small Business\n\nAI is narrowly effective at a few things.\n\n**First, repetitive text generation.** Emails. Social media posts. Initial drafts of documents. If you know exactly what you want and you just need it written quickly, an AI saves you 30 minutes per task. Multiply that across a team and the math works. But the catch is you have to know what you want. You need a template in your head or a brief that's already crisp.\n\n**Second, research compression.** Instead of spending two hours reading industry articles, you paste a summary into an AI and ask specific questions. You get answers in seconds. But you still have to evaluate those answers. You still have to know whether the AI is wrong. If you don't understand the domain, you just get fast nonsense.\n\n**Third, code generation and debugging.** If you have developers, an AI that can write basic functions or spot errors in existing code saves hours per week. This is the clearest win in small business. Developer time is expensive. Fewer context-switching moments matter.\n\n**Fourth, structured thinking.** An AI can help you outline a strategy. Identify edge cases. Stress-test an idea. But only if you come to the conversation with a half-formed thought. Garbage in, polished garbage out.\n\nEverything else is theater.\n\n## The Productivity Trap\n\nSmall business owners watch agencies and large companies deploy AI systems and think scale. They think \"if Acme Corp saved millions on customer service automation, I can save money too.\"\n\nThe difference is scale. Acme Corp handles ten thousand emails a month. An AI chatbot handling half of that is a return. A small business with fifty emails a month doesn't have a productivity problem. The owner just spends an extra hour. The AI doesn't fix that. It creates overhead.\n\nThe real trap is the belief that productivity is a tool problem. It's not. It's a process problem, a discipline problem, a decision-making problem. A small business owner who doesn't know why they're working twelve-hour days won't know how to use an AI tool to stop. They'll just add the tool to their toolbox and keep doing whatever they were doing.\n\n## How Small Business Should Approach AI\n\n**First, map your actual bottleneck.** Not \"I think I need AI.\" Write down where your hours go. Where do you feel the friction. Where do you repeat yourself. Where do you wait on other people.\n\n**Second, ask whether the bottleneck is a tool problem or a system problem.** If your sales process is chaotic, a better CRM doesn't fix it. Better communication between you and your team does. An AI tool that summarizes discussions is nice. But a team that knows how to write a brief is better.\n\n**Third, if it's a tool problem, try the AI on that exact problem.** Don't buy the platform. Don't hire someone to implement it. Spend an afternoon with ChatGPT and see whether it actually saves you time on the specific task. Time it. Count the hours. Be honest about whether you'd actually use it.\n\n**Fourth, build a single workflow if it works.** Don't try to AI everything. Pick one process. Get good at using the tool on that process. Then move to the next one. Most small businesses fail at AI adoption because they try to transform everything at once.\n\n**The test of real productivity gain:** Do you have more hours in your week or the same hours doing different work? If you're just doing more work faster, you haven't gained anything.\n\n## See Also\n- [[small-business-operations]]\n- [[decision-making-systems]]\n- [[tool-evaluation-framework]]\n"}], "grading": null}, {"id": "eval-3-wiki-without_skill", "prompt": "Write a wiki synthesis page about the relationship between AI tools and small business productivity.", "eval_id": "3-wiki", "outputs": [{"name": "grading.json", "type": "text", "content": "{\n  \"eval_name\": \"eval-3-wiki\",\n  \"variant\": \"with_skillout\",\n  \"expectations\": [\n    {\n      \"text\": \"No em dashes (U+2014) or en dashes (U+2013) present in output\",\n      \"passed\": true,\n      \"evidence\": \"No em/en dashes found\"\n    },\n    {\n      \"text\": \"No AI slop phrases\",\n      \"passed\": true,\n      \"evidence\": \"No AI slop phrases found\"\n    },\n    {\n      \"text\": \"No more than 2 exclamation marks\",\n      \"passed\": true,\n      \"evidence\": \"Found 0 exclamation marks (within limit)\"\n    },\n    {\n      \"text\": \"No sentences longer than 40 words\",\n      \"passed\": true,\n      \"evidence\": \"All sentences within limit\"\n    },\n    {\n      \"text\": \"Voice matches David's established tone (direct, practical, no-bullshit)\",\n      \"passed\": null,\n      \"evidence\": \"Requires human review\"\n    }\n  ],\n  \"total_violations\": 2,\n  \"critical_violations\": 0,\n  \"warning_violations\": 0,\n  \"info_violations\": 2\n}"}, {"name": "synthesis.md", "type": "text", "content": "---\ntitle: AI Tools and Small Business Productivity\ntype: synthesis\ncreated: 2026-04-12\nupdated: 2026-04-12\nsources: [article-best-use-cases-cowork, article-cowork-10-use-cases-tested, article-project-vend, article-cowork-guide-2026, article-unusual-non-coding-uses]\ntags: [#small-business, #productivity, #ai-adoption, #tools, #economics, #roi]\n---\n\n# AI Tools and Small Business Productivity\n\nThe relationship between AI tools and small business productivity isn't about replacing humans or automating your entire operation. It's about understanding what AI is actually good at, matching that to the work that drains your time, and knowing where the ceiling is before you waste hours trying to push through it.\n\n## The Real Problem AI Solves for Small Business\n\nSmall business owners don't have hiring power. You can't afford a full-time assistant to triage email, organize files, draft proposals, or categorize receipts. Those tasks are necessary but not revenue-generating. They're the friction that keeps you from the work that matters.\n\nThat's where [[agentic-ai]] becomes relevant. Not as a replacement for thinking, but as a tool that handles the thinking you've already done a hundred times. The mechanical work. The pattern-matching on stuff that's well-defined.\n\n## What AI Is Demonstrably Good At\n\n**High-confidence use cases with measurable ROI:**\n\n- **Email triage and drafting.** AI can sort messages by urgency, identify which ones need a human response, and draft responses to routine stuff. One service business owner saved 5-10 hours per week with a [[claude-cowork]] setup that took 30 minutes to configure (from [[article-best-use-cases-cowork]]).\n\n- **File and information organization.** Dump a folder with hundreds of files across multiple formats and naming conventions at AI. It sorts logically, renames consistently, flags duplicates. Takes minutes instead of hours. The pattern is so reliable it's almost boring.\n\n- **Content and document drafting.** Initial blog posts, email sequences, social content, proposal templates. The output is 60-80% done. You edit for tone and correctness, but you're not starting from blank. Saves the staring-at-a-blank-screen problem entirely.\n\n- **Data synthesis and reporting.** Feed AI raw data - expense receipts, customer feedback, survey responses, sales transactions. It categorizes, summarizes, flags outliers, creates summaries. You get a structured report where there was unstructured chaos.\n\n- **Research and competitive analysis.** AI can pull together information from multiple sources, compare approaches, and present findings in a structured format. Again, not final work. But a solid starting point that cuts research time in half.\n\nThe pattern: mechanical tasks with clear inputs and well-defined outputs. Tasks you've done before and know what success looks like.\n\n## What AI Is Bad At (Despite Looking Confident)\n\nThis is where most people go wrong. AI is confidently wrong just as often as it's right.\n\n**Project Vend** (from [[article-project-vend]]) is the case study. [[anthropic]] let [[claude]] run an actual vending machine business for a month. Full autonomy. It could research suppliers, respond to customers, adjust operations. In a controlled environment, it worked fine.\n\nThen it faced real constraints: seasonal demand changes, pricing optimization, learning from unprofitable decisions, managing cash flow. The machine couldn't do those things. It made the same pricing mistakes repeatedly. It optimized for the wrong metric. It hallucinated supplier information. It couldn't learn.\n\nThat failure maps onto what AI can't do in your business:\n\n- **High-stakes decisions requiring judgment.** Whether to take a client, how to price a project, whether to hire or fire a vendor. AI can gather information and present options, but the decision is yours. Treat it otherwise and you'll make expensive mistakes.\n\n- **Tasks with frequent edge cases.** The vending machine worked until it didn't, because the edge cases required judgment the AI couldn't sustain. If your workflow is 80% pattern and 20% \"it depends,\" AI will handle the 80% and fail silently on the 20%.\n\n- **Anything you can't review.** [[claude-cowork]] is fast. Too fast. If you let it process 500 expense receipts unsupervised, some will be miscategorized and you won't catch it until tax time. Same with bulk email drafting. The cost of checking is almost as high as doing it yourself.\n\n- **Tasks requiring strategic learning.** AI can't optimize your business over time because it can't connect cause and effect. It doesn't know why a certain client relationship works and another doesn't. It can't learn \"we're more profitable at this price point, adjust accordingly.\"\n\nThe rule: **anything that touches money, relationships, or reputation needs human review.** Not because AI is stupid, but because AI is confident without accountability.\n\n## The Real ROI Pattern\n\nOne user quantified the real payoff (from [[article-best-use-cases-cowork]]): 49 hours of work completed in 63 minutes, at $2.60 cost, versus $16,313 equivalent freelancer expense. That's 47x faster and 99.98% cheaper.\n\nBut here's what that actually means: they had a well-defined, repetitive task (data entry, categorization, and reporting). They'd done it before. They knew what success looked like. They set up the AI once, reviewed the output once, and it worked.\n\nThe ROI compounds when you do this repeatedly. Spend 2 hours setting up AI to handle your email triage. Review it for a week to make sure it's not missing important messages. Once it's tuned, you save 10 hours a month every month. At $50/hour, that's $500/month in value recovered.\n\nFor a small business, that math looks like: $0 setup (if you know what you're doing), 30 minutes of Claude access ($1), and a return of $200-500/month. The payback period is measured in days.\n\n## Implementation: Where Most People Fail\n\nKnowing what works isn't the same as making it work. The failure mode: spin up [[claude-cowork]], point it at a vague task, and expect it to figure it out.\n\nInstead: (from [[article-best-use-cases-cowork]])\n\n1. Define a persona. Not \"do my work.\" But \"you are a chief of staff who knows that I close projects with a proposal, onboarding email, and invoice template. Our clients are small businesses. They care more about clarity than polish. Act from that understanding.\"\n\n2. Iterate the framework. Run the AI on one task. Review the output. What's wrong? Feed back what you learned. Run again. Do this 2-5 times until the output is reliable.\n\n3. Test on real work before scaling. Is the draft 80% done (saves time) or 20% done (wastes time)? Be honest about whether the output actually helps or just looks helpful.\n\n4. Once the framework works, execution becomes reliable. That's when you can run it at scale or automate it entirely.\n\nThis takes effort. But it's front-loaded effort that pays back continuously.\n\n## Tool Selection: Which AI, When\n\n- **Browser [[claude]].** Quick iteration, brainstorming, one-off questions. Good for \"I need to think through something.\" Fast feedback loop.\n\n- **[[claude-code]].** If you code, this is the tool for integrating AI into your actual workflow. Reading and writing files, running commands, building real things. For Dead Pixel Design, [[claude-code]] is where the work happens.\n\n- **[[claude-cowork]].** Best for file-based work and recurring tasks if you don't code. Connects to Gmail, Slack, Notion, your file system. Opens files, creates documents, organizes folders. For a solo business owner, this is the highest-ROI tool.\n\nModel selection matters less than people think. For small business: [[claude-sonnet]] covers 90% of tasks (email, documents, data categorization, simple analysis). [[claude-opus]] adds value only if you're doing complex research synthesis or novel problem-solving. Use Sonnet by default. Upgrade to Opus if Sonnet produces mediocre output.\n\n## The Boundary Between Tool and Business\n\nHere's the thing nobody says: AI tools won't improve your business fundamentals. They'll optimize your execution. If your business is built on sound economics, AI accelerates it. If it's built on bad fundamentals, AI just makes the bad thing faster.\n\nYou have to know:\n- What work creates value for your clients\n- What work is just overhead\n- What work requires your taste and judgment\n\nThen deploy AI against the overhead. Keep the value work and the judgment work.\n\nFor Dead Pixel Design: the value work is understanding a client's problem and designing a solution that actually moves their business. The overhead work is proposal drafting, project scoping, file organization, email management, scheduling. Those are perfect candidates for AI. The judgment work - whether this project is right for us, how to price it, how to communicate with this specific client - stays with you.\n\n## What Changes When You Deploy AI\n\nSmall business owners who integrate AI well report:\n\n- **More focus on strategy.** Grunt work disappears, so you have headspace for thinking about client relationships, business direction, pricing structure.\n\n- **Fewer excuses about scale.** You can handle more clients without hiring because the overhead isn't growing with headcount anymore.\n\n- **Better documentation.** AI can create knowledge bases, process documentation, templates. Boring stuff you never got around to because you were too busy working in the business instead of on it.\n\n- **Lower friction on decisions.** If you spend 3 hours a week on email triage, and AI handles it in 5 minutes of setup review, you're not just saving time. You're removing a cognitive load that was dragging down everything else.\n\n- **More mistakes caught earlier.** If [[claude-cowork]] is processing your data, you catch problems while they're small because you're reviewing the work, not doing it. You're more zoomed out.\n\nThe people who see no value usually tried it once, gave vague instructions, got mediocre output, and declared it useless. They skipped the iteration part. They didn't define what success looks like. They treated it like magic instead of a tool.\n\n## Relevance to David's Business\n\nDead Pixel Design + AI:\n\n**High-ROI applications right now:**\n- Client proposal and scope documents (you set tone, AI drafts structure)\n- Email triage (leads vs. tire-kickers, you respond to leads)\n- Meeting notes and project summaries\n- Blog and content drafting (you refine for voice)\n- Financial categorization and expense reporting\n\n**Medium ROI (worth exploring):**\n- Social media content for Wretcher promotion\n- Technical documentation for projects\n- Client onboarding materials\n\n**Low ROI / not yet viable:**\n- Autonomous client communication (you need the relationship)\n- Design decisions (requires taste [[claude]] doesn't have)\n- Strategic decisions about which clients or projects to take\n\nThe philosophy: use AI to protect your time so you can spend it on the work that requires you. Not to avoid having a business. Not to pretend the tool is doing the work. But to be smarter about what consumes your attention and what doesn't.\n\n## See Also\n- [[agentic-ai]] - the capability making this possible\n- [[cognitive-offloading]] - the principle of what to delegate\n- [[ai-for-small-business]] - the economic case in depth\n- [[claude-cowork]] - the tool for non-developers\n- [[claude-code]] - the tool for developers\n- [[claude-skills]] - how to encode frameworks that work\n- [[dead-pixel-design]] - the application\n"}], "grading": null}], "previous_feedback": {}, "previous_outputs": {}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

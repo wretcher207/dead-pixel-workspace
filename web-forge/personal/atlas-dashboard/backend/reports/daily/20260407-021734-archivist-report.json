@@ -1,0 +1,72 @@
+{
+  "reportId": "911ee7bc-33fb-402c-a278-d1e035c3fdaa",
+  "timestamp": "2026-04-07T02:17:34.228348+00:00",
+  "runType": "daily",
+  "source": "archivist",
+  "version": "1.0",
+  "payload": {
+    "status": "healthy",
+    "findings": [
+      {
+        "id": "047e2cca-0b5d-4ee7-abc0-e982ace240ac",
+        "category": "desktop_clutter",
+        "description": "1 Desktop file(s) older than 7 days: Aqua Voice.lnk (14d)",
+        "sourcePath": "C:\\Users\\david\\Desktop",
+        "suggestedPath": null,
+        "fileCount": 1,
+        "fileTypes": [
+          ".lnk",
+          ".txt",
+          ".pdf"
+        ],
+        "sizeBytes": 0,
+        "severity": "low",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Move old Desktop files to appropriate folders or delete them.",
+        "status": "pending"
+      },
+      {
+        "id": "1b97cbf3-56b2-489a-95a2-694218278adc",
+        "category": "misplaced_files",
+        "description": "36 audio file(s) found in Downloads folder. These belong in Music or a project folder.",
+        "sourcePath": "C:\\Users\\david\\Downloads",
+        "suggestedPath": "C:\\Users\\david\\Music",
+        "fileCount": 36,
+        "fileTypes": [
+          ".wav",
+          ".mp3"
+        ],
+        "sizeBytes": 51027964,
+        "severity": "low",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Move audio files from Downloads to Music or your audio project folder.",
+        "status": "pending"
+      },
+      {
+        "id": "0157def0-a1a3-486e-a879-24e369c06b7a",
+        "category": "misplaced_files",
+        "description": "49 video file(s) found in Downloads. These belong in Videos.",
+        "sourcePath": "C:\\Users\\david\\Downloads",
+        "suggestedPath": "C:\\Users\\david\\Videos",
+        "fileCount": 49,
+        "fileTypes": [
+          ".mp4"
+        ],
+        "sizeBytes": 649844473,
+        "severity": "low",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Move video files from Downloads to the Videos folder.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "organizationalScore": 57,
+      "organizationalScoreTrend": "flat",
+      "misplacedFileCount": 85,
+      "desktopFileCount": 14,
+      "desktopOldestFileDays": 14,
+      "migrationQueueCount": 85,
+      "structureCompliancePercent": 57
+    }
+  }
+}
