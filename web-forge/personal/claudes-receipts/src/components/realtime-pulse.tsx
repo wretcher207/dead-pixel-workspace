@@ -28,7 +28,9 @@ type RealtimePayload = {
   hasData: boolean;
   active: {
     sessionId: string;
+    isLive: boolean;
     startedAt: string;
+    endedAt: string | null;
     lastEventAt: string | null;
     secondsSinceLastEvent: number | null;
     project: string | null;
@@ -159,7 +161,7 @@ export function RealtimePulse() {
   }
 
   const { active, pulse, today, compare, topToolsHour, topAgentsHour, feed, tokenSparkline } = data;
-  const isLive = !!active;
+  const isLive = active?.isLive ?? false;
   const maxSpark = Math.max(1, ...tokenSparkline);
 
   const deltaYesterday = compare.todayCostCents - compare.yesterdayCostCents;
@@ -169,22 +171,25 @@ export function RealtimePulse() {
     <section className="rt-shell">
       <header className="rt-header">
         <span className={`rt-dot ${isLive ? "rt-dot-live" : "rt-dot-idle"}`} />
-        <span className="rt-title">{isLive ? "Live" : "Idle"}</span>
+        <span className="rt-title">{isLive ? "Live" : active ? "Idle" : "Dormant"}</span>
         {active && (
           <span className="rt-status">
-            {active.project ?? "unlabeled project"} · {active.model ?? "model unknown"} · {formatAge(active.startedAt, nowMs)} elapsed
+            {active.project ?? "unlabeled project"} · {active.model ?? "model unknown"} ·{" "}
+            {isLive
+              ? `${formatAge(active.startedAt, nowMs)} elapsed`
+              : `last active ${active.lastEventAt ? formatAge(active.lastEventAt, nowMs) : "—"} ago`}
           </span>
         )}
         {!active && (
           <span className="rt-status">
-            no session in the last 5 minutes
+            no session in the last 12 hours
           </span>
         )}
         {err && <span className="rt-err">· {err}</span>}
       </header>
 
       {active && (
-        <div className="rt-active">
+        <div className={`rt-active ${isLive ? "" : "rt-active-idle"}`}>
           <div className="rt-active-row">
             <div className="rt-active-stat">
               <p className="rt-k">Tokens (session)</p>

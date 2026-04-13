@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { and, desc, eq, gte, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, gte, sql } from "drizzle-orm";
 import {
   devices,
   projects,
@@ -51,7 +51,9 @@ type RealtimePayload = {
   hasData: boolean;
   active: {
     sessionId: string;
+    isLive: boolean;
     startedAt: string;
+    endedAt: string | null;
     lastEventAt: string | null;
     secondsSinceLastEvent: number | null;
     project: string | null;
@@ -163,11 +165,13 @@ async function handle(now: Date) {
     sparklineRows,
     feedRows,
   ] = await Promise.all([
-    // Active session: no ended_at AND last event within 5min
+    // Most recent session within 12h (live OR recently ended).
+    // Liveness is computed after we know last event time.
     db
       .select({
         id: sessions.id,
         startedAt: sessions.startedAt,
+        endedAt: sessions.endedAt,
         projectId: sessions.projectId,
         deviceId: sessions.deviceId,
         model: sessions.modelSummary,
@@ -180,7 +184,6 @@ async function handle(now: Date) {
       .where(
         and(
           eq(sessions.userId, userId),
-          isNull(sessions.endedAt),
           gte(sessions.startedAt, new Date(now.getTime() - 12 * HOUR)),
         ),
       )
@@ -348,31 +351,34 @@ async function handle(now: Date) {
     const staleSeconds = lastEventAt
       ? Math.floor((now.getTime() - lastEventAt.getTime()) / 1000)
       : null;
+    const isLive = !!lastEventAt && lastEventAt >= fiveMinAgo;
 
-    // Only consider "active" if last event within 5 min
-    if (!lastEventAt || lastEventAt >= fiveMinAgo) {
-      // Context window = peak (input_tokens + cache_tokens) across all
-      // api_request_completed events in this session. Claude's API splits
-      // uncached new input from cached read/creation; both count against
-      // the context limit. Summing both gives the actual context size.
-      const contextPeak = await db
-        .select({
-          peak: sql<number>`coalesce(max(coalesce(${sessionEvents.inputTokens},0) + coalesce(${sessionEvents.cacheTokens},0)), 0)::int`,
-        })
-        .from(sessionEvents)
-        .where(
-          and(
-            eq(sessionEvents.sessionId, activeCandidate.id),
-            eq(sessionEvents.eventType, "api_request_completed"),
-          ),
-        );
+    // Always populate the active panel — even when idle — so the dashboard
+    // preserves the last-known state (tokens, cost, context %) instead of
+    // hiding everything the moment events stop flowing.
+    const contextPeak = await db
+      .select({
+        peak: sql<number>`coalesce(max(coalesce(${sessionEvents.inputTokens},0) + coalesce(${sessionEvents.cacheTokens},0)), 0)::int`,
+      })
+      .from(sessionEvents)
+      .where(
+        and(
+          eq(sessionEvents.sessionId, activeCandidate.id),
+          eq(sessionEvents.eventType, "api_request_completed"),
+        ),
+      );
 
-      const contextTokens = contextPeak[0]?.peak ?? 0;
-      const contextLimit = contextLimitFor(activeCandidate.model);
+    const contextTokens = contextPeak[0]?.peak ?? 0;
+    const contextLimit = contextLimitFor(activeCandidate.model);
 
+    {
       active = {
         sessionId: activeCandidate.id,
+        isLive,
         startedAt: activeCandidate.startedAt.toISOString(),
+        endedAt: activeCandidate.endedAt
+          ? activeCandidate.endedAt.toISOString()
+          : null,
         lastEventAt: lastEventAt ? lastEventAt.toISOString() : null,
         secondsSinceLastEvent: staleSeconds,
         project:

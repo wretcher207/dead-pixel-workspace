@@ -1436,6 +1436,16 @@ video {
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--stroke);
   background: rgba(203, 181, 138, 0.04);
+  transition: opacity 320ms ease, background 320ms ease;
+}
+
+.rt-active-idle {
+  opacity: 0.55;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.rt-active-idle .rt-v {
+  color: var(--muted);
 }
 
 .rt-active-row {
