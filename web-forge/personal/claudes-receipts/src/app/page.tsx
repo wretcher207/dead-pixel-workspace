@@ -1,22 +1,13 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import {
-  AppShell,
-  DataList,
-  InsightPanels,
-  MetricCluster,
-  PageHeader,
-  SectionBlock,
-  Timeline,
-} from "@/components/receipts-ui";
+import { AppShell } from "@/components/receipts-ui";
 import { authOptions } from "@/lib/auth";
 import { siteNavigation } from "@/lib/navigation";
 import {
   dashboardHighlights,
   overviewStats,
   rankingSnapshot,
-  sessionAutopsy,
-  telemetryCoverage,
+  sessions,
 } from "@/lib/receipts-data";
 import { loadDashboardData } from "@/lib/receipts-queries";
 
@@ -33,107 +24,161 @@ export default async function Home() {
     liveData && liveData.hasRealData && liveData.highlights.length >= 3
       ? liveData.highlights
       : dashboardHighlights;
-  const demoMode = !liveData?.hasRealData;
   const effectiveRanking = liveData?.rankingSummary ?? rankingSnapshot;
+  const demoMode = !liveData?.hasRealData;
+
+  // Intelligence panels: first 3 highlights
+  const intelligencePanels = effectiveHighlights.slice(0, 3);
+
+  // Device mix from highlights (4th, if present) or fallback
+  const devicePanel = effectiveHighlights[3] ?? dashboardHighlights[3];
+
   return (
     <AppShell currentPath="/" navigation={siteNavigation}>
-      <PageHeader
-        eyebrow="Live Telemetry Overview"
-        title="Claude's Receipts"
-        description="A browser-accessible receipts engine for Claude Code. Expensive-looking. Metadata only. Mildly accusatory."
-        videoSrc="/videos/hero-damage.mp4"
-        stats={effectiveStats}
-      />
 
-      <section className="layout-grid pt-8">
-        <div className="section-frame section-frame-strong span-12">
-          <div className="section-split">
-            <div className="stack-lg">
-              <p className="eyebrow">
-                {demoMode ? "Demo Mode" : "Intelligence Wall"}
-              </p>
-              <h2 className="section-title">
-                {demoMode
-                  ? "Sign in and pair a device to replace these numbers with yours."
-                  : "The home screen starts with the damage, not the marketing."}
-              </h2>
-            </div>
-            <p className="copy-muted max-w-2xl">
-              {demoMode
-                ? "These panels are the shape the product takes when real telemetry lands. The helper app ships next."
-                : "Each panel is clickable and points toward the drill-downs defined in the PRD: sessions, projects, tools, devices, and share flows."}
+      {/* ── SECTION 1: HERO ────────────────────────────────── */}
+      <section className="home-hero">
+        <div className="layout-grid">
+
+          {/* Left: 60% */}
+          <div className="span-7 home-hero-left">
+            <p className="eyebrow">Live Telemetry Overview</p>
+            <h1 className="home-hero-title">Claude&apos;s<br />Receipts</h1>
+            <p className="home-hero-copy">
+              A browser-accessible receipts engine for Claude Code.
+              Metadata only. Mildly accusatory.
             </p>
+            <div className="home-hero-cta">
+              {demoMode ? (
+                <Link className="cta-primary" href="/login">
+                  Connect a Device
+                </Link>
+              ) : (
+                <Link className="cta-primary" href="/sessions">
+                  View Sessions
+                </Link>
+              )}
+              <Link className="cta-secondary" href="/sessions">
+                {demoMode ? "Browse demo data &rarr;" : "All sessions &rarr;"}
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: 40% — 3 stacked summary cards */}
+          <div className="span-5">
+            <div className="hero-stat-stack">
+              {effectiveStats.map((stat) => (
+                <div className="hero-stat-item" key={stat.label}>
+                  <p className="hero-stat-label">{stat.label}</p>
+                  <p className="hero-stat-value">{stat.value}</p>
+                  <p className="hero-stat-detail">{stat.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 2: INTELLIGENCE PANELS ─────────────────── */}
+      <section className="intel-section">
+        <div className="layout-grid">
+          {intelligencePanels.map((panel) => (
+            <Link
+              key={panel.title}
+              href={panel.href}
+              className="span-4 intel-card"
+            >
+              <p className="intel-card-label">{panel.label}</p>
+              <h2 className="intel-card-title">{panel.title}</h2>
+              <p className="intel-card-metric">{panel.value}</p>
+              <p className="intel-card-detail">{panel.detail}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── SECTION 3: DEEPER SIGNALS ───────────────────────── */}
+      <section className="signals-section">
+        <div className="layout-grid">
+
+          {/* Left: Internal Standing / Project Rankings */}
+          <div className="span-6 signal-card">
+            <p className="signal-card-eyebrow">Internal Standing</p>
+            <h2 className="signal-card-title">
+              {effectiveRanking.percentile} of users had a calmer week.
+            </h2>
+            <ul className="signal-dim-list">
+              {effectiveRanking.dimensions.map((dim) => (
+                <li className="signal-dim-row" key={dim.label}>
+                  <span className="signal-dim-label">{dim.label}</span>
+                  <span className="signal-dim-value">{dim.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right: Device & Tool Distribution */}
+          <div className="span-6 signal-card">
+            <p className="signal-card-eyebrow">Device & Tool Distribution</p>
+            <h2 className="signal-card-title">{devicePanel.title}</h2>
+            <ul className="signal-dim-list">
+              <li className="signal-dim-row">
+                <span className="signal-dim-label">Surface split</span>
+                <span className="signal-dim-value">{devicePanel.detail}</span>
+              </li>
+              <li className="signal-dim-row">
+                <span className="signal-dim-label">Primary tool</span>
+                <span className="signal-dim-value">shell_command — 38% share</span>
+              </li>
+              <li className="signal-dim-row">
+                <span className="signal-dim-label">Tool dependency index</span>
+                <span className="signal-dim-value">0.88</span>
+              </li>
+              <li className="signal-dim-row">
+                <span className="signal-dim-label">Remote control sessions</span>
+                <span className="signal-dim-value">13% of total</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 4: SESSION STRIP ─────────────────────────── */}
+      <section className="session-section">
+        <div className="layout-grid">
+          <div className="span-12">
+            <div className="session-strip-header">
+              <p className="session-strip-eyebrow">Recent Sessions</p>
+              <Link className="session-strip-link" href="/sessions">
+                Full archive &rarr;
+              </Link>
+            </div>
+            <div className="session-strip">
+              {sessions.slice(0, 3).map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/sessions/${s.id}`}
+                  className="session-strip-item"
+                >
+                  <p className="session-strip-project">{s.project}</p>
+                  <p className="session-strip-name">{s.name}</p>
+                  <div className="session-strip-footer">
+                    <p className="session-strip-cost">{s.costLabel}</p>
+                    <p className="session-strip-meta">
+                      {s.duration}
+                      <br />
+                      {s.retryLabel}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <InsightPanels panels={effectiveHighlights} />
-
-      <SectionBlock
-        id="autopsy"
-        eyebrow="Session Autopsy"
-        title="Most expensive conversation with a machine"
-        description="This detail view treats a Claude Code session like an incident review. Prompt text is absent by design. The metadata is enough."
-      >
-        <div className="grid gap-6 lg:grid-cols-[1.25fr_0.85fr]">
-          <div className="section-frame">
-            <div className="section-split section-split-tight">
-              <div>
-                <p className="subtle-kicker">Session</p>
-                <h3 className="record-title">{sessionAutopsy.name}</h3>
-              </div>
-              <Link className="inline-link" href={`/sessions/${sessionAutopsy.id}`}>
-                Open full autopsy
-              </Link>
-            </div>
-
-            <div className="metric-rail metric-rail-tight">
-              <MetricCluster items={sessionAutopsy.metrics} compact />
-            </div>
-
-            <Timeline items={sessionAutopsy.timeline} />
-          </div>
-
-          <div className="stack-md">
-            <div className="section-frame section-frame-soft">
-              <p className="subtle-kicker">Derived Signals</p>
-              <DataList items={sessionAutopsy.signals} />
-            </div>
-            <div className="section-frame section-frame-soft">
-              <p className="subtle-kicker">Internal Standing</p>
-              <div className="stack-sm">
-                <h3 className="record-title">
-                  {effectiveRanking.percentile} of users had a calmer week.
-                </h3>
-                <p className="copy-muted">{effectiveRanking.summary}</p>
-              </div>
-              <DataList items={effectiveRanking.dimensions} />
-            </div>
-          </div>
-        </div>
-      </SectionBlock>
-
-      <SectionBlock
-        id="truth"
-        eyebrow="Truth Model"
-        title="What counts, what does not, and who owns the facts"
-        description="The product is only useful if attribution quality is obvious. Local helper telemetry is canonical. Browser signals are convenience until proven otherwise."
-      >
-        <div className="grid gap-5 md:grid-cols-3">
-          {telemetryCoverage.map((item) => (
-            <article className="section-frame section-frame-soft" key={item.name}>
-              <p className="subtle-kicker">{item.confidence}</p>
-              <h3 className="record-title">{item.name}</h3>
-              <p className="copy-muted">{item.description}</p>
-              <ul className="detail-list">
-                {item.notes.map((note) => (
-                  <li key={note}>{note}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </SectionBlock>
     </AppShell>
   );
 }
