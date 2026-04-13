@@ -1,125 +1,126 @@
 # Claude's Receipts — Session Handoff
 
 **Branch:** `feat/claudes-receipts`
-**Last session ended:** 2026-04-13 (afternoon)
-**Status:** Realtime analytics dashboard shipped. `/api/realtime` endpoint polls every 4s, surfaces active session, tool calls, agent deployments, token burn, context window, and day-over-day comparisons. Homepage rewritten around realtime + time-window grid. Ranking theater and hardcoded metrics removed.
+**Last session ended:** 2026-04-13 (late afternoon)
+**Status:** Realtime analytics fully live on prod. Dashboard shows live pulse, context window, token burn, agent deployments, and idle skeleton. All three stacked bugs (compare-query SQL, chokidar on Windows, ingest auto-closing sessions) resolved. Polling tail replaces chokidar.
 
 ---
 
 ## What happened this session
 
-**Dashboard rebuild around realtime.** Prior dashboard was a static snapshot with hardcoded numbers (`shell_command — 38% share`, `0.88 tool dependency index`, "Internal Standing" percentile against nobody). David called it out: "this doesn't have the analytics I care about." Rebuilt from scratch against the live event stream.
+### Realtime analytics dashboard shipped
+- **New** `src/app/api/realtime/route.ts` — single GET returning active session + 60s/5m/1h pulse + context window + token sparkline + live event feed. 8 queries in parallel, ~8KB payload, ~200ms.
+- **New** `src/components/realtime-pulse.tsx` — polls every 4s, in-place updates.
+- **Rewrote** `src/app/page.tsx` — realtime panel as centerpiece, time-window grid (today/7d/lifetime), breakdowns (top projects 7d, agent deployments 7d), recent sessions strip.
+- **Added** `loadHomepageSummary()` to `src/lib/receipts-queries.ts`.
+- Killed: "Internal Standing" percentile theater, hardcoded `shell_command 38%`, `0.88 tool dependency index`, `Subscription Delusion Delta`.
 
-### New: `/api/realtime` — `src/app/api/realtime/route.ts`
+### Three stacked bugs fixed to get live data flowing
+1. **Compare query broke on prod** — `CASE WHEN started_at >= $1` with sum() aggregate failed postgres-js parameter-type inference. Rewrote to fetch rows and bucket in JS.
+2. **chokidar watcher silent on Windows** — polling + glob combo never fired change events for append-only JSONL writes. Wrote `helper/scripts/tail.mjs`, a dead-simple polling tail that stats every .jsonl every 3s, reads bytes past a per-file cursor, parses, and POSTs.
+3. **Ingest auto-closed live sessions** — `/api/ingest` was setting `ended_at = lastEventAt` on every batch, which prevented any session from ever appearing active. Patched so `ended_at` is only set via the explicit `sessionEnd` metadata path.
 
-Single `GET` endpoint returning:
-- `active` — current session with tokens accruing, cost, **context window estimate** (derived from latest `api_request_completed.input_tokens`), last event age
-- `pulse` — tool calls, agent deployments, prompts, API requests, errors, tokens, cost across **60s / 5m / 1h** windows (bucketed client-side from a single 1h event query)
-- `today` + `compare` — today vs yesterday vs same-day-last-week cost deltas
-- `topToolsHour` + `topAgentsHour` — real counts, not hardcoded
-- `tokenSparkline` — 60 per-minute buckets
-- `feed` — last 20 events with tool, project, duration, success
+### Context window polish
+- **Peak instead of latest** — was reading latest `api_request_completed.input_tokens`, which Claude's API excludes cache reads/creations from. Real context = `max(input_tokens + cache_tokens)`. Peak jumped from 1,576 to 219,590 on David's active session.
+- **Model-aware limits** — `contextLimitFor()` maps Opus 4.6 and Sonnet 4.6 to 1M, Haiku and unknown to 200k. Read from `session.model_summary`.
 
-Eight queries in parallel, typical response ~8KB, no caching (`Cache-Control: no-store`).
+### Idle skeleton
+- Active session panel no longer hides when last event > 5min ago. Stays rendered with final tokens, cost, and peak context visible, dimmed to 55% opacity.
+- Three states: **Live** (pulsing green, ≤5min), **Idle** (muted, session within 12h), **Dormant** (no session 12h+).
 
-### New: `<RealtimePulse />` — `src/components/realtime-pulse.tsx`
+### Error surfacing
+- `api/realtime` route wrapped in try/catch, returns error message + truncated stack in 500 body instead of crashing to Netlify's default page.
+- Client component shows `fetch failed: <reason>` in the empty state instead of perpetual "connecting…".
 
-Client component, polls every 4s. Features:
-- Pulsing green dot when a session has fired an event in the last 5 minutes, muted dot otherwise
-- Context window bar that turns gold at 60%, red at 85%
-- 60s/5m/1h pulse grid with agent deployments colored gold, errors red
-- Live sparkline, top tools, agent deployments card
-- Live feed: 20 most recent events animating in (time since, type, project, duration)
-
-### Homepage rewrite — `src/app/page.tsx`
-
-- Compact hero, CTA only
-- Realtime panel is the centerpiece
-- Time-window grid: **Today / 7d / Lifetime**, each with sessions, tokens, cost, active time
-- Breakdown row: top projects (7d), agent deployments (7d)
-- Recent sessions strip retained (real data from `loadHomepageSummary`)
-
-### Queries — `src/lib/receipts-queries.ts`
-
-- Renamed `Lifetime Damage` → `Lifetime tokens`
-- Dropped `Subscription Delusion Delta` highlight + unused `subscriptionValueDelta` import
-- Added `loadHomepageSummary()` returning the time-window grid + top projects + top agents + recent sessions
-- Kept `loadDashboardData` working for `/s/[slug]` share pages + opengraph images (they still reference `overviewStats`)
-
-### Styling — `src/app/globals.css`
-
-New classes (`.rt-*`, `.tw-*`, `.bd-*`) matching the existing tan-accent/dark-panel aesthetic. Mobile breakpoints at 1100px (two-column pulse) and 720px (single column, hide feed meta).
+### Backfill safety
+- `helper/scripts/backfill.mjs` no longer synthesizes `session_ended` for files modified in the last 20 minutes. Prevents backfill from closing the currently-running session.
 
 ---
 
-## Live data (as of session end)
+## Commits made this session
+
+| SHA | Message |
+| --- | --- |
+| `580a1b2` | feat: realtime analytics dashboard |
+| `afff1bb` | fix: bucket compare query in JS instead of SQL CASE |
+| `52883d4` | fix: ingest keeps live sessions open + polling tail for Windows |
+| `979efec` | fix: context window = peak (input+cache) · model-aware limit |
+| `1d9a3bf` | feat: idle skeleton preserves last-known session state |
+
+---
+
+## Live state at session end
 
 | Metric | Value |
 | --- | --- |
-| Sessions (lifetime) | 298 |
-| Sessions (today) | 61 |
-| Tokens (lifetime) | 1.43B |
-| Cost (lifetime) | $2,326.55 |
-| Cost (today) | $422.98 |
-| Top project 7d | `dead-pixel-design` — $877 |
-| Agent deployments 7d | 152 |
-| Bash calls last hour | 22 |
+| Production URL | https://claudes-receipts.netlify.app |
+| Sessions (lifetime) | 299 |
+| Sessions (today) | 61+ |
+| Cost (today) | $575+ |
+| Cost (yesterday) | $659 |
+| Context window (this session peak) | ~225k / 1M (22%) |
+| Agent deployments 24h | 89+ |
+| Polling tail pid (may be dead) | 228949 |
 
 ---
 
-## Verified
+## How to run
 
-- `tsc --noEmit` — clean
-- `next build` — clean, `/api/realtime` registered as dynamic route
-- SQL smoke-tested against production Neon with David's userId — all shapes return expected data
-
----
-
-## How to run locally
-
-**Dashboard:**
+**Tail (live data):**
 ```bash
-cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
-netlify dev:exec -- npm run dev
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts/helper
+node scripts/tail.mjs
 ```
 
-**Helper (live tail):**
-```bash
-cd helper
-node dist/cli.js run
-```
-If dashboard shows "Idle" / "no session in the last 5 minutes," the helper isn't running.
-
-**Backfill (idempotent):**
+**Backfill (idempotent, safe after tail has been running):**
 ```bash
 cd helper
 node scripts/backfill.mjs
+```
+
+**Dev dashboard:**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
+npx netlify dev
+```
+
+**Deploy to prod:**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
+npm run build && npx netlify deploy --prod --site 777f66fb-001d-485d-8142-44bad6482cea
 ```
 
 ---
 
 ## Open items
 
-### Context limit hardcoded to 200k
-`/api/realtime/route.ts` sets `contextLimit = 200_000`. If David uses Opus 4.6 1M or Sonnet 4.5 variants, this needs a model-name → limit map. Current model string comes from `sessions.modelSummary`.
+### Helper CLI still points at broken chokidar agent
+`helper/src/agent.ts` uses chokidar and doesn't fire on Windows file appends. `helper/dist/cli.js run` → `runAgent()` is effectively dead for live tailing. The working path is `node scripts/tail.mjs`. Options:
+- Swap `agent.ts` internals to use the tail.mjs polling logic, keep the CLI surface
+- Update `cli.ts` to invoke tail.mjs directly
+- Document that `helper run` is deprecated, use the tail script
+
+### Context window 1M heuristic
+`contextLimitFor()` treats all Opus 4.6 as 1M. If David runs a 200k Opus variant, the bar will under-report. To distinguish, we'd need the parser to capture actual context window from the API response, which it doesn't today.
+
+### Session-end still never fires for live sessions
+Without chokidar's idle-detection flush loop, sessions never get a `session_ended` event once tool calls stop. The realtime dashboard's 5min live cutoff + 12h idle visibility handles the UX, but the DB ends up with many `ended_at = null` rows over time. A cleanup pass (or restoring the idle-detection logic in tail.mjs) should close these.
+
+### Other pages still using old queries
+- `/sessions`, `/tools`, `/projects`, `/devices` use the pre-realtime query functions
+- Fine — they're not broken, just not live. Next session candidate.
 
 ### Tauri NSIS installer still blocked
-`cargo tauri build` compiles `claudes-receipts.exe` cleanly but NSIS bundler fails. `tauri.conf.json` → switch `bundle.targets` to `["msi"]` to unblock. Raw exe still runs.
-
-### Ingest session-end-only payloads
-`/api/ingest` zod schema requires `events.min(1)`. Backfill script synthesizes `session_ended` events to work around it. Fix: relax to `min(0)` when `session_end` present.
-
-### Cleanup
-- `sessions_tracked` counter has dead branch in `agent.rs`
-- `config::round_trips_config` needs `#[serial]` tag
-- Legacy Node helper can be removed once Tauri ships
+`cargo tauri build` compiles cleanly but NSIS bundler fails. `tauri.conf.json` → switch `bundle.targets` to `["msi"]` to unblock.
 
 ---
 
 ## Key files next session
 
-- `src/app/api/realtime/route.ts` — realtime endpoint, all the query logic
-- `src/components/realtime-pulse.tsx` — polling client, context bar, feed
-- `src/app/page.tsx` — homepage, uses `loadHomepageSummary` + `<RealtimePulse />`
-- `src/lib/receipts-queries.ts` — `loadHomepageSummary` at bottom, `loadDashboardData` still there for shares
-- `helper/scripts/backfill.mjs` — idempotent, safe to rerun if cursors wiped
+- `src/app/api/realtime/route.ts` — endpoint, all realtime queries + context + model limits
+- `src/components/realtime-pulse.tsx` — polling client, idle/live/dormant states
+- `src/app/page.tsx` — homepage, composed of RealtimePulse + loadHomepageSummary
+- `src/lib/receipts-queries.ts` — `loadHomepageSummary` (new) + `loadDashboardData` (for /s/[slug])
+- `helper/scripts/tail.mjs` — polling ingest tail, run this not `cli.js run`
+- `helper/scripts/backfill.mjs` — idempotent, skips live files (20-min threshold)
+- `src/app/api/ingest/route.ts` — only sets `ended_at` via explicit `sessionEnd` metadata
