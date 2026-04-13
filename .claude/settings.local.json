@@ -1,19 +1,29 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git init:*)",
-      "Bash(git branch:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m ':*)",
-      "Bash(gh repo:*)",
-      "Bash(where gh:*)",
-      "Bash(cmd.exe:*)",
-      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
-      "Bash(gh --version)",
-      "Bash(export PATH=\"$PATH:/c/Users/david/AppData/Local/GitHub CLI\")",
-      "Bash(where gh.exe)",
-      "Bash(winget install:*)",
-      "Bash(/c/Program Files/GitHub CLI/gh.exe repo:*)"
-    ]
-  }
+      "WebSearch",
+      "WebFetch",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__new_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__resize_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__wait_for",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_console_messages",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__evaluate_script",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__emulate",
+      "Skill(commit-commands:commit)",
+      "Skill(commit-commands:commit:*)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_snapshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__click"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "outputStyle": "Explanatory"
 }

@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/CormorantGaramond-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fanwood Text";
+  src: url("/fonts/FanwoodText-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fanwood Text";
+  src: url("/fonts/FanwoodText-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Elsie Swash Caps";
+  src: url("/fonts/ElsieSwashCaps-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Elsie Swash Caps";
+  src: url("/fonts/ElsieSwashCaps-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  --color-aethera-deep: #0A1411;
+  --color-aethera-forest: #0F1F19;
+  --color-aethera-moss: #1A2E25;
+  --color-aethera-teal: #0D2B2A;
+  --color-aethera-glow: #7AC9A0;
+  --color-aethera-glow-dim: #4A9B72;
+  --color-aethera-pale: #B8E0CC;
+  --color-aethera-mist: #D4EFE1;
+  --color-aethera-cream: #E8F5EE;
+  --color-aethera-white: #F0F7F3;
+  --color-aethera-charcoal: #1A1A1A;
+  --color-aethera-stone: #2A2A2A;
+  --color-aethera-text: #C8D8CF;
+  --color-aethera-text-dim: #7A8E82;
+
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "Fanwood Text", serif;
+  --font-accent: "Elsie Swash Caps", cursive;
+}
+
+:root {
+  --background: #0A1411;
+  --foreground: #C8D8CF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: rgba(122, 201, 160, 0.3);
+  color: #F0F7F3;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A1411;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A3E33;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4A9B72;
+}
+
+/* Ken Burns animation for hero */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ken-burns {
+  animation: kenBurns 30s ease-in-out infinite;
+}
+
+/* Glow pulse for CTA */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(122, 201, 160, 0.15), 0 0 40px rgba(122, 201, 160, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(122, 201, 160, 0.3), 0 0 60px rgba(122, 201, 160, 0.1);
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Logo glow */
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(122, 201, 160, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(122, 201, 160, 0.4));
+  }
+}
+
+.logo-glow {
+  animation: logoGlow 4s ease-in-out infinite;
+}
+
+/* Glassmorphism base */
+.glass {
+  background: rgba(10, 20, 17, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(122, 201, 160, 0.08);
+}
+
+/* Decorative separator */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(122, 201, 160, 0.3),
+    transparent
+  );
+}
+
+/* Focus styles */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(122, 201, 160, 0.6);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns,
+  .glow-pulse,
+  .logo-glow {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

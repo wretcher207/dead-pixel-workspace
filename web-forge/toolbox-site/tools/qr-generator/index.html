@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator — Dead Pixel Toolbox</title>
+  <meta name="description" content="Generate QR codes for URLs, text, WiFi credentials, and email. Customize colors, size, and error correction. Download as PNG or SVG. Free, no signup.">
+  <meta name="keywords" content="QR code generator, QR code maker, free QR code, WiFi QR code, URL QR code, download QR PNG SVG">
+  <link rel="canonical" href="https://toolbox.deadpixeldesign.com/tools/qr-generator/">
+  <meta property="og:title" content="QR Code Generator — Dead Pixel Toolbox">
+  <meta property="og:description" content="Generate and customize QR codes. Download as PNG or SVG. No signup, no tracking.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .qr-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .qr-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Input tabs and forms */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Color pickers */
+    .color-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .color-field input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-input);
+      cursor: pointer;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    .color-field input[type="color"]::-moz-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    .color-hex {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      min-width: 64px;
+    }
+
+    /* QR preview */
+    .qr-preview-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .qr-canvas-wrap {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 460px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-canvas-wrap canvas {
+      image-rendering: pixelated;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .qr-placeholder {
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Action buttons */
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .action-row .btn {
+      flex: 1;
+      justify-content: center;
+      min-width: 120px;
+    }
+
+    /* Settings section */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .settings-grid .form-group {
+      margin-bottom: 0;
+    }
+
+    /* Textarea sizing */
+    .input-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Separator */
+    .section-sep {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="/toolbox-site/">All Tools</a>
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="tool-container">
+      <div class="tool-header fade-in">
+        <div class="tool-breadcrumb">
+          <a href="/toolbox-site/">Home</a>
+          <span>/</span>
+          <span>QR Generator</span>
+        </div>
+        <h1 class="tool-title">QR Code Generator</h1>
+        <p class="tool-description">Generate QR codes for URLs, plain text, WiFi credentials, and email. Customize colors and size, then download as PNG or SVG.</p>
+      </div>
+
+      <div class="qr-layout">
+        <!-- Left: Input & Settings -->
+        <div class="fade-in fade-in-1" style="display:flex;flex-direction:column;gap:20px;">
+          <!-- Input type tabs -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-label">Input</span>
+            </div>
+
+            <div class="tabs" id="inputTabs" style="margin-bottom:16px;">
+              <button class="tab active" data-tab="url">URL</button>
+              <button class="tab" data-tab="text">Text</button>
+              <button class="tab" data-tab="wifi">WiFi</button>
+              <button class="tab" data-tab="email">Email</button>
+            </div>
+
+            <!-- URL tab -->
+            <div class="tab-content active" id="tab-url">
+              <div class="form-group">
+                <label for="inputUrl">URL</label>
+                <input type="url" id="inputUrl" placeholder="https://example.com" value="https://deadpixeldesign.com">
+              </div>
+            </div>
+
+            <!-- Text tab -->
+            <div class="tab-content" id="tab-text">
+              <div class="form-group">
+                <label for="inputText">Text</label>
+                <textarea id="inputText" class="input-textarea" placeholder="Enter any text..."></textarea>
+              </div>
+            </div>
+
+            <!-- WiFi tab -->
+            <div class="tab-content" id="tab-wifi">
+              <div class="form-group">
+                <label for="wifiSsid">Network Name (SSID)</label>
+                <input type="text" id="wifiSsid" placeholder="MyNetwork">
+              </div>
+              <div class="form-group">
+                <label for="wifiPassword">Password</label>
+                <input type="password" id="wifiPassword" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label for="wifiEncryption">Encryption</label>
+                <select id="wifiEncryption">
+                  <option value="WPA">WPA/WPA2</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">None</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Email tab -->
+            <div class="tab-content" id="tab-email">
+              <div class="form-group">
+                <label for="emailAddress">Email Address</label>
+                <input type="text" id="emailAddress" placeholder="hello@example.com">
+              </div>
+              <div class="form-group">
+                <label for="emailSubject">Subject</label>
+                <input type="text" id="emailSubject" placeholder="Subject line">
+              </div>
+              <div class="form-group">
+                <label for="emailBody">Body</label>
+                <textarea id="emailBody" class="input-textarea" placeholder="Email body text..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customization -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-label">Customize</span>
+            </div>
+
+            <div class="settings-grid">
+              <div class="form-group">
+                <label for="qrSize">Size</label>
+                <select id="qrSize">
+                  <option value="200">Small (200px)</option>
+                  <option value="400" selected>Medium (400px)</option>
+                  <option value="600">Large (600px)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="qrErrorCorrection">Error Correction</label>
+                <select id="qrErrorCorrection">
+                  <option value="L">L — Low (7%)</option>
+                  <option value="M" selected>M — Medium (15%)</option>
+                  <option value="Q">Q — Quartile (25%)</option>
+                  <option value="H">H — High (30%)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Foreground</label>
+                <div class="color-field">
+                  <input type="color" id="qrFgColor" value="#000000">
+                  <span class="color-hex" id="fgHex">#000000</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Background</label>
+                <div class="color-field">
+                  <input type="color" id="qrBgColor" value="#ffffff">
+                  <span class="color-hex" id="bgHex">#ffffff</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: QR Preview & Actions -->
+        <div class="fade-in fade-in-2" style="display:flex;flex-direction:column;gap:20px;">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-label">Preview</span>
+              <span class="badge" id="qrDataLength">0 chars</span>
+            </div>
+
+            <div class="qr-preview-area">
+              <div class="qr-canvas-wrap" id="canvasWrap">
+                <canvas id="qrCanvas"></canvas>
+                <div class="qr-placeholder" id="qrPlaceholder">Type something to<br>generate a QR code</div>
+              </div>
+
+              <div class="action-row">
+                <button class="btn btn-primary" id="btnDownloadPng" disabled>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  PNG
+                </button>
+                <button class="btn btn-secondary" id="btnDownloadSvg" disabled>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  SVG
+                </button>
+                <button class="btn btn-secondary" id="btnCopyImage" disabled>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+
+  <script src="../../js/shared.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script>
+    (function () {
+      // --- State ---
+      let activeTab = 'url';
+      let currentQrData = '';
+      let qrMatrix = null; // store for SVG export
+
+      // --- DOM refs ---
+      const canvas = document.getElementById('qrCanvas');
+      const ctx = canvas.getContext('2d');
+      const placeholder = document.getElementById('qrPlaceholder');
+      const dataLengthBadge = document.getElementById('qrDataLength');
+
+      const inputUrl = document.getElementById('inputUrl');
+      const inputText = document.getElementById('inputText');
+      const wifiSsid = document.getElementById('wifiSsid');
+      const wifiPassword = document.getElementById('wifiPassword');
+      const wifiEncryption = document.getElementById('wifiEncryption');
+      const emailAddress = document.getElementById('emailAddress');
+      const emailSubject = document.getElementById('emailSubject');
+      const emailBody = document.getElementById('emailBody');
+
+      const qrSize = document.getElementById('qrSize');
+      const qrErrorCorrection = document.getElementById('qrErrorCorrection');
+      const qrFgColor = document.getElementById('qrFgColor');
+      const qrBgColor = document.getElementById('qrBgColor');
+      const fgHex = document.getElementById('fgHex');
+      const bgHex = document.getElementById('bgHex');
+
+      const btnDownloadPng = document.getElementById('btnDownloadPng');
+      const btnDownloadSvg = document.getElementById('btnDownloadSvg');
+      const btnCopyImage = document.getElementById('btnCopyImage');
+
+      // --- Tab switching ---
+      document.getElementById('inputTabs').addEventListener('click', function (e) {
+        const tab = e.target.closest('.tab');
+        if (!tab) return;
+        activeTab = tab.dataset.tab;
+        document.querySelectorAll('#inputTabs .tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + activeTab).classList.add('active');
+        generateQR();
+      });
+
+      // --- Build QR data string from current tab ---
+      function getQrData() {
+        switch (activeTab) {
+          case 'url':
+            return inputUrl.value.trim();
+          case 'text':
+            return inputText.value;
+          case 'wifi': {
+            const ssid = wifiSsid.value.trim();
+            const pass = wifiPassword.value;
+            const enc = wifiEncryption.value;
+            if (!ssid) return '';
+            // WiFi QR format: WIFI:T:<enc>;S:<ssid>;P:<password>;;
+            const escapedSsid = ssid.replace(/([\\;,":])/, '\\$1');
+            const escapedPass = pass.replace(/([\\;,":])/, '\\$1');
+            return 'WIFI:T:' + enc + ';S:' + escapedSsid + ';P:' + escapedPass + ';;';
+          }
+          case 'email': {
+            const addr = emailAddress.value.trim();
+            if (!addr) return '';
+            const subj = emailSubject.value.trim();
+            const body = emailBody.value.trim();
+            let mailto = 'mailto:' + addr;
+            const params = [];
+            if (subj) params.push('subject=' + encodeURIComponent(subj));
+            if (body) params.push('body=' + encodeURIComponent(body));
+            if (params.length) mailto += '?' + params.join('&');
+            return mailto;
+          }
+          default:
+            return '';
+        }
+      }
+
+      // --- Error correction map ---
+      const ecMap = { L: 1, M: 0, Q: 3, H: 2 }; // qrcode-generator uses 0=M,1=L,2=H,3=Q
+
+      // --- Generate QR code ---
+      function generateQR() {
+        const data = getQrData();
+        currentQrData = data;
+        const len = data.length;
+        dataLengthBadge.textContent = len + ' char' + (len !== 1 ? 's' : '');
+
+        if (!data) {
+          canvas.style.display = 'none';
+          placeholder.style.display = 'block';
+          setButtonsDisabled(true);
+          qrMatrix = null;
+          return;
+        }
+
+        const ecLevel = ecMap[qrErrorCorrection.value];
+        const size = parseInt(qrSize.value, 10);
+        const fg = qrFgColor.value;
+        const bg = qrBgColor.value;
+
+        try {
+          // Auto-detect type number (0 = auto)
+          const qr = qrcode(0, ecLevel);
+          qr.addData(data);
+          qr.make();
+
+          const moduleCount = qr.getModuleCount();
+          const cellSize = Math.floor(size / moduleCount);
+          const totalSize = cellSize * moduleCount;
+
+          canvas.width = totalSize;
+          canvas.height = totalSize;
+
+          // Draw background
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, totalSize, totalSize);
+
+          // Draw modules
+          ctx.fillStyle = fg;
+          for (let row = 0; row < moduleCount; row++) {
+            for (let col = 0; col < moduleCount; col++) {
+              if (qr.isDark(row, col)) {
+                ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+              }
+            }
+          }
+
+          // Store matrix for SVG export
+          qrMatrix = { moduleCount, qr };
+
+          canvas.style.display = 'block';
+          placeholder.style.display = 'none';
+          setButtonsDisabled(false);
+        } catch (err) {
+          canvas.style.display = 'none';
+          placeholder.style.display = 'block';
+          placeholder.textContent = 'Data too long for\nselected error correction';
+          setButtonsDisabled(true);
+          qrMatrix = null;
+        }
+      }
+
+      function setButtonsDisabled(disabled) {
+        btnDownloadPng.disabled = disabled;
+        btnDownloadSvg.disabled = disabled;
+        btnCopyImage.disabled = disabled;
+      }
+
+      // --- Debounced generation ---
+      const debouncedGenerate = debounce(generateQR, 250);
+
+      // --- Bind all inputs ---
+      [inputUrl, inputText, wifiSsid, wifiPassword, emailAddress, emailSubject, emailBody].forEach(el => {
+        el.addEventListener('input', debouncedGenerate);
+      });
+
+      [wifiEncryption, qrSize, qrErrorCorrection].forEach(el => {
+        el.addEventListener('change', generateQR);
+      });
+
+      qrFgColor.addEventListener('input', function () {
+        fgHex.textContent = qrFgColor.value;
+        debouncedGenerate();
+      });
+
+      qrBgColor.addEventListener('input', function () {
+        bgHex.textContent = qrBgColor.value;
+        debouncedGenerate();
+      });
+
+      // --- Download PNG ---
+      btnDownloadPng.addEventListener('click', function () {
+        if (!currentQrData) return;
+        const dataUrl = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'qr-code.png';
+        a.click();
+        showToast('PNG downloaded');
+      });
+
+      // --- Download SVG ---
+      btnDownloadSvg.addEventListener('click', function () {
+        if (!qrMatrix) return;
+        const { moduleCount, qr } = qrMatrix;
+        const size = parseInt(qrSize.value, 10);
+        const cellSize = Math.floor(size / moduleCount);
+        const totalSize = cellSize * moduleCount;
+        const fg = qrFgColor.value;
+        const bg = qrBgColor.value;
+
+        let svg = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        svg += '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + totalSize + ' ' + totalSize + '" width="' + totalSize + '" height="' + totalSize + '">\n';
+        svg += '  <rect width="100%" height="100%" fill="' + bg + '"/>\n';
+
+        for (let row = 0; row < moduleCount; row++) {
+          for (let col = 0; col < moduleCount; col++) {
+            if (qr.isDark(row, col)) {
+              svg += '  <rect x="' + (col * cellSize) + '" y="' + (row * cellSize) + '" width="' + cellSize + '" height="' + cellSize + '" fill="' + fg + '"/>\n';
+            }
+          }
+        }
+
+        svg += '</svg>';
+        downloadFile('qr-code.svg', svg, 'image/svg+xml');
+        showToast('SVG downloaded');
+      });
+
+      // --- Copy image to clipboard ---
+      btnCopyImage.addEventListener('click', function () {
+        if (!currentQrData) return;
+        canvas.toBlob(function (blob) {
+          if (!blob) {
+            showToast('Failed to copy image');
+            return;
+          }
+          try {
+            navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]).then(function () {
+              showToast('Image copied to clipboard');
+            }).catch(function () {
+              showToast('Clipboard access denied');
+            });
+          } catch (e) {
+            showToast('Clipboard API not supported');
+          }
+        }, 'image/png');
+      });
+
+      // --- Initial generation ---
+      generateQR();
+    })();
+  </script>
+</body>
+</html>

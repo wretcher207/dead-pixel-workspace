@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator — Dead Pixel Toolbox</title>
+  <meta name="description" content="Generate strong, random passwords with configurable length, character sets, and real-time entropy calculation. Crypto-secure, entirely client-side.">
+  <meta name="keywords" content="password generator, random password, secure password, entropy, crypto random">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    /* ---- Password Display ---- */
+    .password-display {
+      position: relative;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 80px 28px 24px;
+      margin-bottom: 20px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      transition: border-color var(--transition);
+      overflow: hidden;
+    }
+
+    .password-display:hover {
+      border-color: var(--border-hover);
+    }
+
+    .password-text {
+      font-family: var(--font-mono);
+      font-size: 1.3rem;
+      color: var(--accent);
+      word-break: break-all;
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+      user-select: all;
+      flex: 1;
+    }
+
+    .password-actions {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* ---- Multi-password list ---- */
+    .password-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .password-list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      transition: border-color var(--transition);
+    }
+
+    .password-list-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .password-list-item .pw-text {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--accent);
+      word-break: break-all;
+      flex: 1;
+      user-select: all;
+    }
+
+    .password-list-item .btn-icon {
+      flex-shrink: 0;
+    }
+
+    /* ---- Strength Meter ---- */
+    .strength-section {
+      margin-bottom: 24px;
+    }
+
+    .strength-bar-track {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-card);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .strength-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1), background 300ms ease;
+      width: 0%;
+    }
+
+    .strength-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .strength-label {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .strength-entropy {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ---- Config Panel ---- */
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .config-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .slider-group {
+      margin-bottom: 20px;
+    }
+
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .slider-value {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 10px;
+      border-radius: 4px;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .toggle-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color var(--transition);
+    }
+
+    .toggle-option:hover {
+      border-color: var(--border-hover);
+    }
+
+    .toggle-option-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toggle-option-label {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .toggle-option-preview {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+    }
+
+    /* ---- Action Row ---- */
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .count-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .count-control label {
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    .count-select {
+      width: auto;
+      min-width: 60px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+    }
+
+    /* ---- History Panel ---- */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      word-break: break-all;
+      transition: border-color var(--transition);
+    }
+
+    .history-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .history-item .pw {
+      flex: 1;
+      user-select: all;
+    }
+
+    .history-item .meta {
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .history-empty {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      padding: 16px 0;
+      text-align: center;
+    }
+
+    /* ---- Layout ---- */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---- Misc ---- */
+    .panel + .panel {
+      margin-top: 20px;
+    }
+
+    .char-highlight-upper { color: #4d8dff; }
+    .char-highlight-lower { color: var(--text); }
+    .char-highlight-number { color: #00e87b; }
+    .char-highlight-symbol { color: #ff4466; }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="/toolbox-site/">All Tools</a>
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="tool-container">
+
+      <div class="tool-header fade-in">
+        <div class="tool-breadcrumb">
+          <a href="/toolbox-site/">Home</a>
+          <span>/</span>
+          <span>Password Generator</span>
+        </div>
+        <h1 class="tool-title">Password Generator</h1>
+        <p class="tool-description">Cryptographically secure random passwords. Everything runs in your browser — nothing leaves your machine.</p>
+      </div>
+
+      <div class="tool-grid">
+
+        <!-- Left column: main tool -->
+        <div>
+
+          <!-- Password Output -->
+          <div id="password-output" class="fade-in fade-in-1">
+            <!-- Single password display (count=1) or list (count>1) rendered by JS -->
+          </div>
+
+          <!-- Strength Meter -->
+          <div class="strength-section fade-in fade-in-1">
+            <div class="strength-bar-track">
+              <div class="strength-bar-fill" id="strength-bar"></div>
+            </div>
+            <div class="strength-info">
+              <span class="strength-label" id="strength-label">—</span>
+              <span class="strength-entropy" id="strength-entropy">0 bits of entropy</span>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stat-grid fade-in fade-in-2" style="margin-bottom: 24px;">
+            <div class="stat-item">
+              <div class="stat-value" id="stat-length">16</div>
+              <div class="stat-label">Length</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="stat-entropy">0</div>
+              <div class="stat-label">Entropy (bits)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="stat-charset">0</div>
+              <div class="stat-label">Charset Size</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="stat-crack">—</div>
+              <div class="stat-label">Crack Time</div>
+            </div>
+          </div>
+
+          <!-- Configuration Panel -->
+          <div class="panel fade-in fade-in-2">
+            <div class="panel-header">
+              <span class="panel-label">Configuration</span>
+            </div>
+
+            <!-- Length Slider -->
+            <div class="slider-group">
+              <div class="slider-header">
+                <label for="length-slider" style="margin-bottom: 0;">Password Length</label>
+                <span class="slider-value" id="length-display">16</span>
+              </div>
+              <input type="range" id="length-slider" min="8" max="128" value="16">
+            </div>
+
+            <!-- Character Toggles -->
+            <div class="config-grid">
+              <div class="toggle-option">
+                <div class="toggle-option-info">
+                  <span class="toggle-option-label">Uppercase</span>
+                  <span class="toggle-option-preview">A B C D E F</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="opt-upper" checked>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="toggle-option">
+                <div class="toggle-option-info">
+                  <span class="toggle-option-label">Lowercase</span>
+                  <span class="toggle-option-preview">a b c d e f</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="opt-lower" checked>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="toggle-option">
+                <div class="toggle-option-info">
+                  <span class="toggle-option-label">Numbers</span>
+                  <span class="toggle-option-preview">0 1 2 3 4 5</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="opt-numbers" checked>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="toggle-option">
+                <div class="toggle-option-info">
+                  <span class="toggle-option-label">Symbols</span>
+                  <span class="toggle-option-preview">! @ # $ % ^</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="opt-symbols" checked>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Row -->
+          <div class="action-row fade-in fade-in-3" style="margin-top: 20px;">
+            <button class="btn btn-primary" id="btn-generate" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Generate
+            </button>
+
+            <div class="count-control">
+              <label for="count-select">Count</label>
+              <select id="count-select" class="count-select">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: History -->
+        <div>
+          <div class="panel fade-in fade-in-3">
+            <div class="panel-header">
+              <span class="panel-label">History</span>
+              <button class="btn btn-ghost btn-sm" id="btn-clear-history" type="button">Clear</button>
+            </div>
+            <div class="history-list" id="history-list">
+              <div class="history-empty">No passwords generated yet</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+
+  <script src="../../js/shared.js"></script>
+  <script>
+  (() => {
+    'use strict';
+
+    // ---- Character Sets ----
+    const CHARSETS = {
+      upper:   'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      lower:   'abcdefghijklmnopqrstuvwxyz',
+      numbers: '0123456789',
+      symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?/~`'
+    };
+
+    // ---- DOM Refs ----
+    const els = {
+      output:       document.getElementById('password-output'),
+      strengthBar:  document.getElementById('strength-bar'),
+      strengthLabel:document.getElementById('strength-label'),
+      strengthEntropy: document.getElementById('strength-entropy'),
+      lengthSlider: document.getElementById('length-slider'),
+      lengthDisplay:document.getElementById('length-display'),
+      optUpper:     document.getElementById('opt-upper'),
+      optLower:     document.getElementById('opt-lower'),
+      optNumbers:   document.getElementById('opt-numbers'),
+      optSymbols:   document.getElementById('opt-symbols'),
+      btnGenerate:  document.getElementById('btn-generate'),
+      countSelect:  document.getElementById('count-select'),
+      historyList:  document.getElementById('history-list'),
+      btnClearHistory: document.getElementById('btn-clear-history'),
+      statLength:   document.getElementById('stat-length'),
+      statEntropy:  document.getElementById('stat-entropy'),
+      statCharset:  document.getElementById('stat-charset'),
+      statCrack:    document.getElementById('stat-crack'),
+    };
+
+    // ---- State ----
+    let history = [];
+    const MAX_HISTORY = 5;
+
+    // ---- Crypto Random ----
+    function secureRandom(max) {
+      const array = new Uint32Array(1);
+      crypto.getRandomValues(array);
+      return array[0] % max;
+    }
+
+    // ---- Build Pool ----
+    function getPool() {
+      let pool = '';
+      if (els.optUpper.checked)   pool += CHARSETS.upper;
+      if (els.optLower.checked)   pool += CHARSETS.lower;
+      if (els.optNumbers.checked) pool += CHARSETS.numbers;
+      if (els.optSymbols.checked) pool += CHARSETS.symbols;
+      return pool;
+    }
+
+    // ---- Generate Single Password ----
+    function generatePassword(length, pool) {
+      if (!pool) return '';
+      let pw = '';
+      for (let i = 0; i < length; i++) {
+        pw += pool[secureRandom(pool.length)];
+      }
+      return pw;
+    }
+
+    // ---- Entropy ----
+    function calcEntropy(length, poolSize) {
+      if (poolSize <= 1) return 0;
+      return Math.floor(length * Math.log2(poolSize));
+    }
+
+    // ---- Crack Time Estimate ----
+    function crackTimeString(entropyBits) {
+      // Assume 10 billion guesses/sec (modern GPU cluster)
+      const guessesPerSec = 1e10;
+      const totalGuesses = Math.pow(2, entropyBits);
+      const seconds = totalGuesses / guessesPerSec / 2; // average case
+
+      if (seconds < 1) return 'Instant';
+      if (seconds < 60) return Math.ceil(seconds) + 's';
+      if (seconds < 3600) return Math.ceil(seconds / 60) + 'm';
+      if (seconds < 86400) return Math.ceil(seconds / 3600) + 'h';
+      if (seconds < 86400 * 365) return Math.ceil(seconds / 86400) + 'd';
+      if (seconds < 86400 * 365 * 1000) return Math.ceil(seconds / (86400 * 365)) + 'y';
+      if (seconds < 86400 * 365 * 1e6) return Math.ceil(seconds / (86400 * 365 * 1000)) + 'K y';
+      if (seconds < 86400 * 365 * 1e9) return Math.ceil(seconds / (86400 * 365 * 1e6)) + 'M y';
+      if (seconds < 86400 * 365 * 1e12) return Math.ceil(seconds / (86400 * 365 * 1e9)) + 'B y';
+      return '10^' + Math.floor(Math.log10(seconds / (86400 * 365))) + ' y';
+    }
+
+    // ---- Strength Rating ----
+    function getStrength(entropy) {
+      if (entropy < 28)  return { label: 'Very Weak',  color: 'var(--danger)',  pct: 10 };
+      if (entropy < 36)  return { label: 'Weak',       color: '#ff6644',        pct: 25 };
+      if (entropy < 60)  return { label: 'Fair',       color: 'var(--warning)', pct: 45 };
+      if (entropy < 80)  return { label: 'Strong',     color: '#66dd88',        pct: 70 };
+      if (entropy < 128) return { label: 'Very Strong',color: 'var(--success)', pct: 90 };
+      return             { label: 'Overkill',    color: 'var(--accent-secondary)', pct: 100 };
+    }
+
+    // ---- Syntax-highlight password chars ----
+    function highlightPassword(pw) {
+      return pw.split('').map(c => {
+        if (CHARSETS.upper.includes(c))   return `<span class="char-highlight-upper">${escapeHtml(c)}</span>`;
+        if (CHARSETS.numbers.includes(c)) return `<span class="char-highlight-number">${escapeHtml(c)}</span>`;
+        if (CHARSETS.symbols.includes(c)) return `<span class="char-highlight-symbol">${escapeHtml(c)}</span>`;
+        return `<span class="char-highlight-lower">${escapeHtml(c)}</span>`;
+      }).join('');
+    }
+
+    function escapeHtml(s) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+      return s.replace(/[&<>"']/g, c => map[c]);
+    }
+
+    // ---- Render Passwords ----
+    function renderOutput(passwords) {
+      if (passwords.length === 1) {
+        els.output.innerHTML = `
+          <div class="password-display">
+            <div class="password-text">${highlightPassword(passwords[0])}</div>
+            <div class="password-actions">
+              <button class="btn-icon" onclick="copyToClipboard('${escapeAttr(passwords[0])}')" title="Copy" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>`;
+      } else {
+        let html = '<div class="password-list">';
+        passwords.forEach(pw => {
+          html += `
+            <div class="password-list-item">
+              <span class="pw">${highlightPassword(pw)}</span>
+              <button class="btn-icon" onclick="copyToClipboard('${escapeAttr(pw)}')" title="Copy" type="button">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>`;
+        });
+        html += '</div>';
+        els.output.innerHTML = html;
+      }
+    }
+
+    function escapeAttr(s) {
+      return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    // ---- Render Strength ----
+    function renderStrength(entropy, poolSize, length) {
+      const str = getStrength(entropy);
+
+      els.strengthBar.style.width = str.pct + '%';
+      els.strengthBar.style.background = str.color;
+      els.strengthLabel.textContent = str.label;
+      els.strengthLabel.style.color = str.color;
+      els.strengthEntropy.textContent = entropy + ' bits of entropy';
+
+      els.statLength.textContent = length;
+      els.statEntropy.textContent = entropy;
+      els.statCharset.textContent = poolSize;
+      els.statCrack.textContent = crackTimeString(entropy);
+    }
+
+    // ---- History ----
+    function addToHistory(passwords) {
+      passwords.forEach(pw => {
+        history.unshift({ pw, time: new Date() });
+      });
+      history = history.slice(0, MAX_HISTORY);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      if (history.length === 0) {
+        els.historyList.innerHTML = '<div class="history-empty">No passwords generated yet</div>';
+        return;
+      }
+
+      els.historyList.innerHTML = history.map(item => {
+        const display = item.pw.length > 32 ? item.pw.slice(0, 30) + '...' : item.pw;
+        const timeStr = item.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `
+          <div class="history-item">
+            <span class="pw">${escapeHtml(display)}</span>
+            <span class="meta">${item.pw.length}ch</span>
+            <button class="btn-icon" onclick="copyToClipboard('${escapeAttr(item.pw)}')" title="Copy" type="button" style="width:28px;height:28px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>`;
+      }).join('');
+    }
+
+    // ---- Ensure At Least One Toggle ----
+    function ensureOneChecked(changedEl) {
+      const toggles = [els.optUpper, els.optLower, els.optNumbers, els.optSymbols];
+      const anyChecked = toggles.some(t => t.checked);
+      if (!anyChecked) {
+        changedEl.checked = true;
+        showToast('At least one character type required');
+      }
+    }
+
+    // ---- Main Generate ----
+    function generate() {
+      const pool = getPool();
+      if (!pool) return;
+
+      const length = parseInt(els.lengthSlider.value, 10);
+      const count = parseInt(els.countSelect.value, 10);
+
+      const passwords = [];
+      for (let i = 0; i < count; i++) {
+        passwords.push(generatePassword(length, pool));
+      }
+
+      const entropy = calcEntropy(length, pool.length);
+
+      renderOutput(passwords);
+      renderStrength(entropy, pool.length, length);
+      addToHistory(passwords);
+    }
+
+    // ---- Event Listeners ----
+    els.lengthSlider.addEventListener('input', () => {
+      els.lengthDisplay.textContent = els.lengthSlider.value;
+      generate();
+    });
+
+    [els.optUpper, els.optLower, els.optNumbers, els.optSymbols].forEach(toggle => {
+      toggle.addEventListener('change', () => {
+        ensureOneChecked(toggle);
+        generate();
+      });
+    });
+
+    els.btnGenerate.addEventListener('click', generate);
+
+    els.countSelect.addEventListener('change', generate);
+
+    els.btnClearHistory.addEventListener('click', () => {
+      history = [];
+      renderHistory();
+      showToast('History cleared');
+    });
+
+    // Keyboard shortcut: Space or Enter to regenerate when focused on generate
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'g' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const tag = document.activeElement.tagName;
+        if (tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA') {
+          e.preventDefault();
+          generate();
+        }
+      }
+    });
+
+    // ---- Init ----
+    generate();
+
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{
+  "reportId": "4ad19682-6444-419a-bba3-238a115e7029",
+  "timestamp": "2026-04-07T01:18:44.146524+00:00",
+  "runType": "daily",
+  "source": "janitor",
+  "version": "1.0",
+  "payload": {
+    "status": "attention",
+    "findings": [
+      {
+        "id": "b8627305-9041-4101-af04-27643a16c0e8",
+        "category": "temp_files",
+        "description": "225 temp files older than 7 days found in Windows/User Temp folders.",
+        "location": "C:\\Windows\\Temp; C:\\Users\\david\\AppData\\Local\\Temp",
+        "fileCount": 225,
+        "sizeBytes": 502653105,
+        "severity": "low",
+        "reclaimableBytes": 502653105,
+        "autoResolvable": true,
+        "approvalLevel": "no_approval",
+        "suggestedAction": "Delete temp files older than 7 days. This is safe and automatic.",
+        "status": "pending"
+      },
+      {
+        "id": "1dbe0c0a-eca6-46d4-ae03-a3c6f7eb73a5",
+        "category": "downloads",
+        "description": "Downloads folder has 185 files (1.08 GB total). 21 files are older than 30 days.",
+        "location": "C:\\Users\\david\\Downloads",
+        "fileCount": 185,
+        "sizeBytes": 1155774623,
+        "severity": "medium",
+        "reclaimableBytes": 8447592,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review and clean out old files from your Downloads folder.",
+        "status": "pending"
+      },
+      {
+        "id": "659e9ebd-ad1d-4b80-954c-db4157e1db9f",
+        "category": "desktop",
+        "description": "Desktop has 14 files, 1 of which are older than 7 days. A cluttered desktop slows Windows Explorer.",
+        "location": "C:\\Users\\david\\Desktop",
+        "fileCount": 14,
+        "sizeBytes": 0,
+        "severity": "low",
+        "reclaimableBytes": 0,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Move or delete old files from the Desktop. Keep only active items there.",
+        "status": "pending"
+      },
+      {
+        "id": "d3306f11-4f1e-4777-a022-2dea6a9154e3",
+        "category": "duplicates",
+        "description": "8 groups of duplicate files found (8 duplicates, 229 MB reclaimable).",
+        "location": "Downloads, Desktop, Documents",
+        "fileCount": 8,
+        "sizeBytes": 240125574,
+        "severity": "low",
+        "reclaimableBytes": 240125574,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review duplicate files and delete the copies you no longer need.",
+        "status": "pending"
+      },
+      {
+        "id": "6c003f3c-b490-4fb2-ba03-8148446bb819",
+        "category": "large_files",
+        "description": "68 large file(s) over 500 MB found (123.41 GB total).",
+        "location": "Downloads, Desktop, Documents, Videos",
+        "fileCount": 68,
+        "sizeBytes": 132514684320,
+        "severity": "medium",
+        "reclaimableBytes": 132514684320,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review large files and delete or archive those you no longer need.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "totalReclaimableBytes": 133265910591,
+      "totalReclaimableGB": 124.11,
+      "duplicateGroupCount": 8,
+      "duplicateFileCount": 8,
+      "downloadsFileCount": 185,
+      "downloadsSizeBytes": 1155774623,
+      "desktopFileCount": 14,
+      "tempSizeBytes": 502653105,
+      "recycleBinSizeBytes": 0,
+      "recycleBinItemCount": 0,
+      "largeFileCount": 68,
+      "staleFileCount": 0,
+      "orphanedNodeModulesCount": 0,
+      "browserCacheSizeBytes": 0
+    }
+  }
+}

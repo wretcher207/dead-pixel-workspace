@@ -1,0 +1,73 @@
+{
+  "reportId": "95762f40-9440-4268-a787-7fcb717aa3d8",
+  "timestamp": "2026-04-07T12:06:25.299232+00:00",
+  "runType": "daily",
+  "source": "supervisor",
+  "version": "1.0",
+  "payload": {
+    "systemHealth": {
+      "score": 65,
+      "trend": "flat"
+    },
+    "agentStatuses": {
+      "gatekeeper": "critical",
+      "mechanic": "attention",
+      "janitor": "attention",
+      "archivist": "healthy",
+      "scout": "healthy"
+    },
+    "topPriorities": [
+      {
+        "rank": 1,
+        "agent": "gatekeeper",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "severity": "high",
+        "category": "credentials"
+      },
+      {
+        "rank": 2,
+        "agent": "gatekeeper",
+        "description": "1 pending Windows security update(s) detected. Unpatched systems are vulnerable to known exploits.",
+        "severity": "medium",
+        "category": "patches"
+      },
+      {
+        "rank": 3,
+        "agent": "mechanic",
+        "description": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. Th",
+        "severity": "medium",
+        "category": "startup"
+      },
+      {
+        "rank": 4,
+        "agent": "janitor",
+        "description": "68 large file(s) over 500 MB found (123.41 GB total).",
+        "severity": "medium",
+        "category": "large_files"
+      },
+      {
+        "rank": 5,
+        "agent": "janitor",
+        "description": "3 temp files older than 7 days found in Windows/User Temp folders.",
+        "severity": "low",
+        "category": "temp_files"
+      }
+    ],
+    "crossAgentPatterns": [
+      {
+        "pattern": "123 GB of reclaimable disk space identified",
+        "involvedAgents": [
+          "janitor",
+          "archivist"
+        ],
+        "severity": "medium",
+        "recommendation": "Run Janitor cleanup to reclaim disk space from temp files, duplicates, and large unused files."
+      }
+    ],
+    "maintenanceWindow": {
+      "recommended": "02:00 AM",
+      "reason": "System is typically idle overnight. Auto-cleanup tasks run fastest when disk is not in use.",
+      "estimatedDuration": "15\u201330 minutes"
+    }
+  }
+}

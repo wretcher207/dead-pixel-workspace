@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Caveat:wght@400..700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        'cream': '#fdf8f0',
+                        'beige': '#e8dfd4',
+                        'parchment': '#f5f0e8',
+                        'espresso-dark': '#3d2e24',
+                        'espresso-mid': '#8b5e3c',
+                        'sage': '#7a9e7e',
+                        'berry': '#b85c6e',
+                        'gold': '#c9a96e',
+                    },
+                    borderRadius: {
+                        'DEFAULT': '0.25rem',
+                        'lg': '0.5rem',
+                        'xl': '0.75rem',
+                        'full': '9999px'
+                    },
+                    fontFamily: {
+                        'headline': ['EB Garamond', 'serif'],
+                        'body': ['DM Sans', 'sans-serif'],
+                        'label': ['DM Sans', 'sans-serif'],
+                        'accent': ['Caveat', 'cursive'],
+                    }
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.paper-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAFg1fSScXaWe2HuXcxS3k1Wn7ZO9jzDJzpTR6p8z1yBtkw5iX6euufimk9O2UGnsdIABIZNcxw-I1br5boJkjhHmaO1STHZI-XofwpXhxQRRwWUvmH3pWPsHBEbo8wMdXNv4mVqXxTFa9XKo5lCu4QkQXcV3oMha_rA6IguRppaSzab0kNyiLbCDVTaW8YL5VVHIB-e8XHBZhG_eloBe9HjpUphJ2lI8i9SdPH21wkRsY15_RSU-y8UWA6jaqTe_FHDpgqsAFA5N8)
+    }
+.rotated-card-left {
+    transform: rotate(-1.5deg)
+    }
+.rotated-card-right {
+    transform: rotate(1.2deg)
+    }</style>
+</head>
+<body class="bg-parchment font-body text-espresso-dark overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-transparent">
+<nav class="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif italic text-[#fdf8f0] font-headline">Nutty Netties Cafe</div>
+<div class="hidden md:flex items-center space-gap-8 gap-8">
+<a class="font-['DM_Sans'] text-sm tracking-wide text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Menu</a>
+<a class="font-['DM_Sans'] text-sm tracking-wide text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Our Story</a>
+<a class="font-['DM_Sans'] text-sm tracking-wide text-[#fdf8f0] hover:text-[#c9a96e] transition-colors" href="#">Specials</a>
+<a class="font-['DM_Sans'] text-sm tracking-wide text-[#c9a96e] border-b-2 border-[#c9a96e] pb-1" href="#">Visit</a>
+</div>
+<button class="bg-[#c9a96e] text-espresso-dark px-6 py-2 rounded-lg font-bold hover:opacity-80 transition-opacity active:scale-95 duration-150">Order Now</button>
+</nav>
+</header>
+<!-- Visit Section -->
+<section class="bg-cream py-24 px-6 md:px-12 relative overflow-hidden">
+<!-- Background decorative squirrel motif -->
+<div class="absolute top-10 right-10 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-9xl">cruelty_free</span>
+</div>
+<div class="max-w-6xl mx-auto text-center mb-16">
+<span class="font-headline italic text-espresso-mid text-xl block mb-2">come find us</span>
+<h2 class="font-headline text-4xl md:text-5xl lg:text-6xl text-espresso-dark">We're Easy to Find. Harder to Leave.</h2>
+<div class="mt-6 flex justify-center">
+<div class="h-px w-24 bg-gold relative">
+<div class="absolute -top-1.5 left-1/2 -translate-x-1/2 text-gold">✦</div>
+</div>
+</div>
+</div>
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+<!-- Column 1: Hours Card -->
+<div class="rotated-card-left bg-white p-8 border-[6px] border-double border-gold shadow-[8px_8px_20px_-5px_rgba(61,46,36,0.15)] paper-texture flex flex-col items-center">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-sage font-bold mb-6">HOURS</span>
+<div class="space-y-4 text-center">
+<div>
+<p class="font-label text-espresso-mid text-[10px] uppercase tracking-widest mb-1">Weekdays</p>
+<p class="font-headline text-2xl">Mon–Fri</p>
+<p class="font-body text-lg text-espresso-dark">7am – 3pm</p>
+</div>
+<div class="w-12 h-px bg-beige mx-auto"></div>
+<div>
+<p class="font-label text-espresso-mid text-[10px] uppercase tracking-widest mb-1">Weekends</p>
+<p class="font-headline text-2xl">Sat–Sun</p>
+<p class="font-body text-lg text-espresso-dark">8am – 3pm</p>
+</div>
+</div>
+<div class="mt-8 text-berry font-accent text-xl">Fresh pastries daily!</div>
+</div>
+<!-- Column 2: Address & Map -->
+<div class="flex flex-col gap-6">
+<div class="bg-parchment border-2 border-gold rounded-xl overflow-hidden shadow-lg h-64 relative group">
+<img class="w-full h-full object-cover opacity-60 grayscale-[0.3]" data-alt="a minimalist vintage-style illustrated map of a coastal Maine town street with a coffee cup icon on Main Street" data-location="Biddeford, Maine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATREWs1J0xuYf2mVojOKqdXxmLfqOmXD09anB6nzAhxEDQyhvoTklQvo968xCVkTGBAYniHeIRGBSjaaVe9M0cHweQIIR__NqYRBm7fuGzAK8kFGiQrHdxs1B7QN-UUV3dGbZdftqk1L125EQ63umIZERxZyJPr2RxK3Y7dfWqpElo9MlSdIJ1dqoPu8wIyyXyPnXT3nZX2sy3qfHrwnC5eiLL8WRUSsGB3VSdoXcU5u2ibvhPZIbUllf6aqvbH70r8nLK-mfwF4M"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-gold shadow-md flex items-center gap-2">
+<span class="text-xl">☕</span>
+<span class="font-accent text-2xl text-espresso-dark">You Are Here</span>
+</div>
+</div>
+</div>
+<div class="text-center">
+<p class="font-headline text-2xl text-espresso-dark leading-tight">42 Main Street<br/>Biddeford, Maine 04005</p>
+<p class="font-body text-sm text-espresso-mid mt-3 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">local_parking</span>
+                        Free parking on Main St and the lot behind
+                    </p>
+</div>
+</div>
+<!-- Column 3: Details -->
+<div class="rotated-card-right bg-[#fdfdfd] p-8 rounded-lg shadow-xl flex flex-col gap-8">
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-gold mt-1">restaurant</span>
+<div>
+<p class="font-headline text-xl">Service Styles</p>
+<p class="font-body text-sm text-stone-600">Dine-in ✦ Takeout ✦ Local delivery Fridays</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-sage mt-1">pets</span>
+<div>
+<p class="font-headline text-xl">Furry Friends</p>
+<p class="font-body text-sm text-stone-600">Dogs welcome on the patio (most of them)</p>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-beige">
+<div class="flex items-center gap-4 mb-4">
+<a class="w-10 h-10 rounded-full border border-gold flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<span class="font-label text-sm font-bold">@nuttynetties</span>
+</div>
+<a class="group inline-flex items-center gap-2 text-gold font-headline text-xl hover:translate-x-2 transition-transform" href="#">
+                        Order Ahead 
+                        <span class="text-2xl">→</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#3d2e24] dark:bg-[#1a1410] w-full py-12 px-8 flex flex-col items-center gap-6 border-t border-[#8b5e3c]/20">
+<div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center md:text-left">
+<!-- Left: Wordmark -->
+<div class="text-3xl font-headline italic text-[#fdf8f0]">
+                Nutty Netties Cafe
+            </div>
+<!-- Center: Navigation -->
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-body font-bold text-[10px] uppercase tracking-wider text-[#8b5e3c] hover:text-[#c9a96e] transition-colors" href="#">Menu</a>
+<a class="font-body font-bold text-[10px] uppercase tracking-wider text-[#8b5e3c] hover:text-[#c9a96e] transition-colors" href="#">About</a>
+<a class="font-body font-bold text-[10px] uppercase tracking-wider text-[#fdf8f0]" href="#">Visit</a>
+<a class="font-body font-bold text-[10px] uppercase tracking-wider text-[#8b5e3c] hover:text-[#c9a96e] transition-colors" href="#">Order Ahead</a>
+</div>
+<!-- Right: Contact & Socials -->
+<div class="flex flex-col md:items-end gap-3">
+<p class="font-body text-xs text-stone-400">hello@nuttynetties.com</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-[#c9a96e] text-lg cursor-pointer opacity-90 hover:opacity-100">grocery</span>
+<span class="material-symbols-outlined text-[#c9a96e] text-lg cursor-pointer opacity-90 hover:opacity-100">social_leaderboard</span>
+<span class="material-symbols-outlined text-[#c9a96e] text-lg cursor-pointer opacity-90 hover:opacity-100">mail</span>
+</div>
+</div>
+</div>
+<!-- Full-width gold rule -->
+<div class="w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-[#c9a96e]/40 to-transparent mt-8"></div>
+<!-- Sign-off -->
+<div class="text-[#c9a96e] font-accent text-2xl py-4 flex items-center gap-3">
+            Still here. Still nutty. Come back soon. 
+            <span class="material-symbols-outlined text-xl">cruelty_free</span>
+</div>
+<!-- Privacy & Copyright -->
+<div class="flex flex-col items-center gap-2">
+<div class="flex gap-4 mb-2">
+<a class="font-body text-[10px] uppercase tracking-wider text-stone-400 hover:text-[#c9a96e]" href="#">Privacy</a>
+<a class="font-body text-[10px] uppercase tracking-wider text-stone-400 hover:text-[#c9a96e]" href="#">Accessibility</a>
+<a class="font-body text-[10px] uppercase tracking-wider text-stone-400 hover:text-[#c9a96e]" href="#">Contact</a>
+</div>
+<p class="font-body text-[10px] text-stone-500">© 2024 Nutty Netties Cafe. Biddeford's favorite corner.</p>
+</div>
+</footer>
+</body></html>

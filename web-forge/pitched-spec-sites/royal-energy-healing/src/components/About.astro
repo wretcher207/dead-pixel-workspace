@@ -1,0 +1,43 @@
+---
+---
+
+<section id="about" class="section relative overflow-hidden">
+  <div class="section-inner">
+    <div class="reveal grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
+      <!-- Visual -->
+      <div class="relative flex items-center justify-center lg:col-span-2" aria-hidden="true">
+        <div class="orb"></div>
+      </div>
+
+      <!-- Copy -->
+      <div class="lg:col-span-3">
+        <h2 class="text-neutral mb-6 reveal reveal-delay-1">
+          Meet Your<br />Practitioner
+        </h2>
+        <div class="space-y-5 text-neutral-dim text-sm sm:text-base leading-relaxed reveal reveal-delay-2">
+          <p>Jill brings a grounded, intentional approach to energy healing from her practice in Newport, Maine. No pretense. No pressure. Just focused, compassionate work designed to meet you exactly where you are.</p>
+          <p>She creates a safe, judgment-free space where your energy can recalibrate on its own terms. Every session is shaped around what your body and mind actually need &mdash; not a script. The goal is simple: restore balance so you can move through life with more ease.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .orb {
+    width: clamp(200px, 50vw, 320px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, oklch(0.65 0.1 290 / 0.45) 0%, transparent 55%),
+      radial-gradient(circle at 65% 70%, oklch(0.6 0.08 65 / 0.25) 0%, transparent 50%),
+      radial-gradient(circle, oklch(0.3 0.1 280 / 0.6) 0%, transparent 70%);
+    filter: blur(1px);
+    animation: breathe 8s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.04); opacity: 1; }
+  }
+</style>

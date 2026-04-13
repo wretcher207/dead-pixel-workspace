@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@400;500;700&amp;family=Work+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "primary-fixed": "#ffdad5",
+                  "surface-variant": "#252626",
+                  "primary-container": "#930005",
+                  "on-primary-container": "#ffc2b9",
+                  "on-background": "#e7e5e5",
+                  "on-error": "#490106",
+                  "surface-container": "#191a1a",
+                  "on-error-container": "#ff9993",
+                  "on-secondary-fixed-variant": "#545f4c",
+                  "on-primary-fixed": "#850004",
+                  "on-primary-fixed-variant": "#bb0009",
+                  "tertiary-container": "#faebb2",
+                  "on-surface": "#e7e5e5",
+                  "inverse-primary": "#c1000a",
+                  "surface": "#0e0e0e",
+                  "surface-container-highest": "#252626",
+                  "error-dim": "#bb5551",
+                  "inverse-surface": "#fcf9f8",
+                  "surface-dim": "#0e0e0e",
+                  "tertiary-fixed": "#fdeeb4",
+                  "surface-container-high": "#1f2020",
+                  "surface-container-low": "#131313",
+                  "on-secondary-container": "#b7c3ad",
+                  "error-container": "#7f2927",
+                  "tertiary-dim": "#eee0a7",
+                  "secondary": "#96a28c",
+                  "tertiary": "#fff9ed",
+                  "on-secondary-fixed": "#384231",
+                  "secondary-dim": "#96a28c",
+                  "outline-variant": "#474848",
+                  "primary": "#ffb4aa",
+                  "outline": "#757575",
+                  "inverse-on-surface": "#565555",
+                  "secondary-fixed": "#dae6cf",
+                  "error": "#ee7d77",
+                  "primary-fixed-dim": "#ffc7c0",
+                  "primary-dim": "#ff9f93",
+                  "background": "#0e0e0e",
+                  "surface-tint": "#ffb4aa",
+                  "on-tertiary-fixed-variant": "#6d6235",
+                  "secondary-fixed-dim": "#ccd8c1",
+                  "on-surface-variant": "#acabab",
+                  "surface-container-lowest": "#000000",
+                  "on-primary": "#870004",
+                  "on-tertiary-container": "#61572a",
+                  "surface-bright": "#2b2c2c",
+                  "tertiary-fixed-dim": "#eee0a7",
+                  "on-tertiary": "#695f32",
+                  "on-secondary": "#192314",
+                  "secondary-container": "#343e2e",
+                  "on-tertiary-fixed": "#4f461c"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "fontFamily": {
+                  "headline": ["Space Grotesk"],
+                  "body": ["Inter"],
+                  "label": ["Work Sans"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .lcd-texture {
+      background-image: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
+    }
+    .matte-noise {
+      position: relative;
+    }
+    .matte-noise::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+    .needle-pivot {
+      transform-origin: 50% 100%;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col items-center justify-center p-4">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e] shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)] flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#ffb4aa] active:opacity-70 transition-colors cursor-pointer">settings</span>
+<h1 class="text-[#acabab] font-bold tracking-widest text-sm font-label uppercase">HARDWARE VERACITY</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[#ffb4aa] font-['Work_Sans'] uppercase tracking-[0.05em] text-[12px]">CALIB MODE</span>
+<span class="material-symbols-outlined text-[#ffb4aa] active:opacity-70 transition-colors cursor-pointer">power_settings_new</span>
+</div>
+</header>
+<main class="w-full max-w-2xl mt-16 mb-24 flex flex-col items-center">
+<!-- Physical Device Chassis -->
+<div class="w-full aspect-[4/3] bg-surface-container-low rounded-xl matte-noise shadow-2xl p-8 flex flex-col gap-6 relative">
+<!-- Top Speaker/Logo Detail -->
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="text-[#acabab] font-label font-bold text-lg tracking-tighter">KORG</div>
+<div class="text-outline-variant font-label text-[10px] tracking-widest">CHROMATIC TUNER CA-30</div>
+</div>
+<!-- Speaker Grill Emulation -->
+<div class="w-24 h-12 flex flex-wrap gap-1 opacity-20">
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface rounded-full"></div>
+</div>
+</div>
+<!-- LCD Display Container (Recessed) -->
+<div class="flex-grow bg-surface-container-lowest rounded-lg p-1 shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)]">
+<div class="w-full h-full bg-secondary-container rounded-md lcd-texture relative flex flex-col p-4 overflow-hidden">
+<!-- LCD Header Info -->
+<div class="flex justify-between items-start text-on-secondary-fixed-variant font-headline uppercase font-medium text-sm">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-secondary-fixed-variant leading-none">AUTO</span>
+<span class="text-on-secondary-container">CHROMATIC</span>
+</div>
+<div class="text-right">
+<div class="flex items-baseline gap-1">
+<span class="text-[10px]">CALIB</span>
+<span class="text-2xl text-on-secondary-container font-bold">442</span>
+<span class="text-sm">Hz</span>
+</div>
+</div>
+</div>
+<!-- Main Tuning Display -->
+<div class="flex-grow flex flex-col items-center justify-center relative mt-2">
+<!-- Meter Scale -->
+<div class="w-full h-32 relative border-b border-on-secondary-fixed-variant/20">
+<div class="absolute inset-0 flex justify-between items-end pb-2 px-4">
+<div class="flex flex-col items-center"><div class="w-0.5 h-4 bg-on-secondary-fixed-variant"></div><span class="text-[8px] mt-1">-50</span></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-4 bg-on-secondary-fixed-variant"></div><span class="text-[8px] mt-1">-20</span></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-6 bg-on-secondary-container"></div><span class="text-[10px] mt-1 font-bold">0</span></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-4 bg-on-secondary-fixed-variant"></div><span class="text-[8px] mt-1">+20</span></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-2 bg-on-secondary-fixed-variant"></div></div>
+<div class="flex flex-col items-center"><div class="w-0.5 h-4 bg-on-secondary-fixed-variant"></div><span class="text-[8px] mt-1">+50</span></div>
+</div>
+<!-- Digital Needle -->
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-0.5 h-24 bg-on-secondary-container needle-pivot" style="transform: translateX(-50%) rotate(0deg);"></div>
+</div>
+<!-- Central Note Name -->
+<div class="mt-4 flex items-center gap-4">
+<span class="text-on-secondary-fixed-variant font-headline text-2xl">♭</span>
+<span class="text-6xl font-headline font-bold text-on-secondary-container">A</span>
+<span class="text-on-secondary-fixed-variant font-headline text-2xl">♯</span>
+</div>
+</div>
+<!-- LCD Bottom Labels -->
+<div class="mt-auto flex justify-between text-[10px] font-headline text-on-secondary-fixed-variant opacity-60">
+<span>CENT</span>
+<span>BATT LEVEL [||||]</span>
+</div>
+</div>
+</div>
+<!-- LED Indicators (Status) -->
+<div class="flex justify-center gap-12 items-center">
+<div class="flex flex-col items-center gap-1">
+<div class="w-3 h-3 rounded-full bg-surface-container-highest shadow-inner"></div>
+<span class="text-outline-variant font-label text-[8px] uppercase">Flat</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<!-- Active Green LED -->
+<div class="w-4 h-4 rounded-full bg-secondary brightness-125 shadow-[0_0_8px_rgba(150,162,140,0.8)] border border-secondary/50"></div>
+<span class="text-secondary font-label text-[10px] font-bold uppercase tracking-widest">In Tune</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-3 h-3 rounded-full bg-surface-container-highest shadow-inner"></div>
+<span class="text-outline-variant font-label text-[8px] uppercase">Sharp</span>
+</div>
+</div>
+<!-- Physical Buttons Cluster -->
+<div class="grid grid-cols-4 gap-4 px-4">
+<div class="flex flex-col items-center gap-2">
+<button class="w-12 h-8 bg-surface-container-high rounded-full shadow-md active:scale-95 transition-transform border-t border-white/5"></button>
+<span class="text-tertiary-fixed-dim font-label text-[10px] tracking-wider">SOUND</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<button class="w-12 h-8 bg-surface-container-high rounded-full shadow-md active:scale-95 transition-transform border-t border-white/5 ring-1 ring-primary/20"></button>
+<span class="text-primary font-label text-[10px] font-bold tracking-wider underline underline-offset-4">CALIB</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<button class="w-12 h-8 bg-surface-container-high rounded-full shadow-md active:scale-95 transition-transform border-t border-white/5"></button>
+<span class="text-tertiary-fixed-dim font-label text-[10px] tracking-wider">FLAT</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<!-- Power Button -->
+<button class="w-12 h-12 bg-primary-container rounded-full shadow-lg active:scale-90 transition-transform border-t border-primary brightness-110 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-xl">power_settings_new</span>
+</button>
+<span class="text-primary font-label text-[10px] font-bold tracking-wider">POWER</span>
+</div>
+</div>
+<!-- Input/Mic Port Simulation -->
+<div class="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-12 bg-surface-container-lowest rounded-l-md shadow-inner flex items-center">
+<div class="w-1 h-8 bg-outline/20 rounded-full ml-1"></div>
+</div>
+</div>
+<!-- Calibration Info Section -->
+<section class="w-full mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container p-6 rounded-xl border-l-4 border-primary">
+<h3 class="text-tertiary-fixed font-label text-xs uppercase tracking-widest mb-2">CALIB SETTING</h3>
+<p class="text-on-surface font-headline text-3xl font-bold">442 Hz</p>
+<p class="text-on-surface-variant text-sm mt-2 font-body">Standard concert pitch calibrated for orchestral performance. Precision offset +2Hz from base 440Hz.</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl">
+<h3 class="text-on-secondary-container font-label text-xs uppercase tracking-widest mb-2">INPUT SOURCE</h3>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">mic</span>
+<span class="text-on-surface font-headline text-xl">Internal Microphone</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-2 font-body">High-sensitivity condenser mic active. Noise reduction enabled.</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 h-20 bg-[#0e0e0e] bg-gradient-to-t from-[#000000] to-[#0e0e0e] shadow-[0_-4px_12px_rgba(0,0,0,0.5)] flex justify-around items-center pb-safe">
+<div class="flex flex-col items-center justify-center text-[#474848] hover:text-[#acabab] active:scale-95 transition-transform duration-150 cursor-pointer">
+<span class="material-symbols-outlined">graphic_eq</span>
+<span class="font-['Work_Sans'] uppercase text-[10px] tracking-tighter mt-1">TUNER</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#474848] hover:text-[#acabab] active:scale-95 transition-transform duration-150 cursor-pointer">
+<span class="material-symbols-outlined">volume_up</span>
+<span class="font-['Work_Sans'] uppercase text-[10px] tracking-tighter mt-1">SOUND</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#474848] hover:text-[#acabab] active:scale-95 transition-transform duration-150 cursor-pointer">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-['Work_Sans'] uppercase text-[10px] tracking-tighter mt-1">METRO</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffb4aa] brightness-125 drop-shadow-[0_0_4px_rgba(255,180,170,0.6)] active:scale-95 transition-transform duration-150 cursor-pointer">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-['Work_Sans'] uppercase text-[10px] tracking-tighter mt-1">CALIB</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/dead-pixel-design/davids-writing-style/**)",
+      "Read(//c/dead-pixel-design/web-forge/spec-sites/**)",
+      "Read(//c/dead-pixel-design/web-forge/davids-writing-style/**)",
+      "Bash(npx create-next-app@latest aethera-studio --typescript --tailwind --eslint --app --src-dir --no-import-alias --use-npm)",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp approved-fonts/Cormorant_Garamond/static/CormorantGaramond-Light.ttf aethera-studio/public/fonts/)",
+      "Bash(cp approved-fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf aethera-studio/public/fonts/)",
+      "Bash(cp approved-fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf aethera-studio/public/fonts/)",
+      "Bash(cp approved-fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf aethera-studio/public/fonts/)",
+      "Bash(cp approved-fonts/Cormorant_Garamond/static/CormorantGaramond-Bold.ttf aethera-studio/public/fonts/)",
+      "Bash(cp assets/logo.jpg aethera-studio/public/images/)",
+      "Bash(cp assets/logo2.jpg aethera-studio/public/images/)",
+      "Bash(cp assets/general/* aethera-studio/public/images/general/)",
+      "Bash(cp assets/services/* aethera-studio/public/images/services/)",
+      "Bash(cp assets/landing-pages/hf_20260409_035934_07e53766-610c-4a11-bbf0-fcbcef58549a.png aethera-studio/public/images/landing/misty-ferns.png)",
+      "Bash(npm run:*)",
+      "Bash(node -e \"const l = require\\('lucide-react'\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\('insta'\\)\\).join\\(', '\\)\\)\")",
+      "Bash(npx next:*)"
+    ]
+  }
+}

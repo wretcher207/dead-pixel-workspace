@@ -1,0 +1,82 @@
+{
+  "reportId": "b1d8dcac-ae8b-4e59-aee4-bc57c2f64b7e",
+  "timestamp": "2026-04-07T01:51:11.838461+00:00",
+  "runType": "daily",
+  "source": "supervisor",
+  "version": "1.0",
+  "payload": {
+    "systemHealth": {
+      "score": 65,
+      "trend": "flat"
+    },
+    "agentStatuses": {
+      "gatekeeper": "critical",
+      "mechanic": "attention",
+      "janitor": "attention",
+      "archivist": "healthy",
+      "scout": "healthy"
+    },
+    "topPriorities": [
+      {
+        "rank": 1,
+        "agent": "gatekeeper",
+        "description": "Windows Firewall is disabled for: Domain, Private, Public. Your system is exposed to network attacks.",
+        "severity": "high",
+        "category": "firewall"
+      },
+      {
+        "rank": 2,
+        "agent": "gatekeeper",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "severity": "high",
+        "category": "credentials"
+      },
+      {
+        "rank": 3,
+        "agent": "gatekeeper",
+        "description": "1 pending Windows security update(s) detected. Unpatched systems are vulnerable to known exploits.",
+        "severity": "medium",
+        "category": "patches"
+      },
+      {
+        "rank": 4,
+        "agent": "mechanic",
+        "description": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. Th",
+        "severity": "medium",
+        "category": "startup"
+      },
+      {
+        "rank": 5,
+        "agent": "janitor",
+        "description": "Downloads folder has 185 files (1.08 GB total). 21 files are older than 30 days.",
+        "severity": "medium",
+        "category": "downloads"
+      }
+    ],
+    "crossAgentPatterns": [
+      {
+        "pattern": "Heavy Chrome usage combined with Downloads folder overflow",
+        "involvedAgents": [
+          "mechanic",
+          "janitor"
+        ],
+        "severity": "medium",
+        "recommendation": "Close unused Chrome tabs and clean out the Downloads folder to recover performance and disk space."
+      },
+      {
+        "pattern": "124 GB of reclaimable disk space identified",
+        "involvedAgents": [
+          "janitor",
+          "archivist"
+        ],
+        "severity": "medium",
+        "recommendation": "Run Janitor cleanup to reclaim disk space from temp files, duplicates, and large unused files."
+      }
+    ],
+    "maintenanceWindow": {
+      "recommended": "02:00 AM",
+      "reason": "System is typically idle overnight. Auto-cleanup tasks run fastest when disk is not in use.",
+      "estimatedDuration": "15\u201330 minutes"
+    }
+  }
+}

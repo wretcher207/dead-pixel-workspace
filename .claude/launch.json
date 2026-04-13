@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "the-nail-room-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "web-forge/pitched-spec-sites/the-nail-room"],
+      "port": 3000
+    },
+    {
+      "name": "the-nail-room-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4321", "web-forge/pitched-spec-sites/the-nail-room/out"],
+      "port": 4321
+    },
+    {
+      "name": "luna-terra-studio",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4322", "web-forge/pitched-spec-sites/luna-terra-studio"],
+      "port": 4322
+    }
+  ]
+}

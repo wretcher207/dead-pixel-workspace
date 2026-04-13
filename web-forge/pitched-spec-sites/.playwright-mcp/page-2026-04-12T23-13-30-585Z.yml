@@ -1,0 +1,296 @@
+- generic [active] [ref=e1]:
+  - region "Announcement" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: ◌ Now open at Dana Warp Mill · Westbrook, Maine · Donation-based Pilates Sculpt every Tuesday & Thursday · Come move with us ◌
+      - generic [ref=e5]: ◌ Now open at Dana Warp Mill · Westbrook, Maine · Donation-based Pilates Sculpt every Tuesday & Thursday · Come move with us ◌
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "LunaTerra Studio home" [ref=e8] [cursor=pointer]:
+        - /url: "#top"
+        - img [ref=e9]
+        - generic [ref=e14]:
+          - generic [ref=e15]: LunaTerra
+          - generic [ref=e16]: studio
+      - navigation "Primary" [ref=e17]:
+        - link "About" [ref=e18] [cursor=pointer]:
+          - /url: "#about"
+        - link "Classes" [ref=e19] [cursor=pointer]:
+          - /url: "#offerings"
+        - link "Schedule" [ref=e20] [cursor=pointer]:
+          - /url: "#schedule"
+        - link "Visit" [ref=e21] [cursor=pointer]:
+          - /url: "#visit"
+        - link "Contact" [ref=e22] [cursor=pointer]:
+          - /url: "#contact"
+      - generic [ref=e23]:
+        - link "Schedule" [ref=e24] [cursor=pointer]:
+          - /url: "#schedule"
+        - link "Reserve a Spot" [ref=e25] [cursor=pointer]:
+          - /url: "#contact"
+  - region "Studio introduction" [ref=e26]:
+    - generic [ref=e30]:
+      - paragraph [ref=e31]: Westbrook, Maine · Dana Warp Mill · Now open
+      - heading "A new movement studio in a room full of light." [level=1] [ref=e33]:
+        - text: A new movement
+        - text: studio in a room
+        - emphasis [ref=e34]: full of light.
+      - paragraph [ref=e35]: Barre, pilates, mobility, and release on the fourth floor of Dana Warp Mill. Big windows, wood floors, donation classes most of the week, and a schedule that keeps growing.
+      - generic [ref=e36]:
+        - link "See the Schedule" [ref=e37] [cursor=pointer]:
+          - /url: "#schedule"
+        - link "How to Find Us →" [ref=e38] [cursor=pointer]:
+          - /url: "#visit"
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]: Formats
+          - text: Barre · Pilates · Mobility · Release
+        - generic [ref=e42]:
+          - generic [ref=e43]: Location
+          - text: Dana Warp Mill · 4th Floor
+        - generic [ref=e44]:
+          - generic [ref=e45]: Classes
+          - text: Mon, Tue & Thu · More coming
+    - link "Scroll to content" [ref=e46] [cursor=pointer]:
+      - /url: "#values"
+  - generic [ref=e49]:
+    - generic [ref=e50]:
+      - paragraph [ref=e51]: ◌ What we do
+      - heading "Three ways to use the room." [level=2] [ref=e52]:
+        - text: Three ways to use
+        - emphasis [ref=e53]: the room.
+    - list [ref=e54]:
+      - listitem [ref=e55]:
+        - img [ref=e57]
+        - heading "Weekly classes" [level=3] [ref=e62]
+        - paragraph [ref=e63]: Barre, pilates sculpt, myofascial rolling, and midday mindfulness. Most sessions run 45 minutes. Donation-based this season while we build out the schedule.
+      - listitem [ref=e64]:
+        - img [ref=e66]
+        - heading "Workshops" [level=3] [ref=e70]
+        - paragraph [ref=e71]: Guest-led sessions in breath, sound, dance, and longer-form mobility. New workshops get added to the calendar every month.
+      - listitem [ref=e72]:
+        - img [ref=e74]
+        - heading "Book the studio" [level=3] [ref=e77]
+        - paragraph [ref=e78]: Private classes, photo and video shoots, small pop-ups, and birthday movement parties. Rent the room by the hour. Email us what you’re planning.
+  - generic [ref=e80]:
+    - figure "The main room · afternoon light" [ref=e81]:
+      - img "Studio interior with hanging coral and saffron fabric installations above a wood floor" [ref=e82]
+      - generic [ref=e83]: The main room · afternoon light
+    - generic [ref=e84]:
+      - paragraph [ref=e85]: ◌ The space
+      - heading "Top floor of the Dana Warp Mill." [level=2] [ref=e86]:
+        - text: Top floor of the
+        - emphasis [ref=e87]: Dana Warp Mill.
+      - paragraph [ref=e88]: The mill is a 19th-century brick building on the Presumpscot River in Westbrook. We’re on the fourth floor, in a corner suite with tin ceilings, exposed beams, pine floors, and a wall of tall windows that does most of the lighting for us until late afternoon.
+      - paragraph [ref=e89]: The main room fits about fifteen mats, with wall mirrors on two sides, hanging fabric overhead, and enough props to run barre, pilates, or mobility without anyone sharing gear.
+      - list [ref=e90]:
+        - listitem [ref=e91]: ◌ Wood floor, wall mirrors, tall east-facing windows
+        - listitem [ref=e92]: ◌ Mats, blocks, balls, bands, and light weights provided
+        - listitem [ref=e93]: ◌ Elevator access · step-free from the Bridge Street entrance
+        - listitem [ref=e94]: ◌ Quiet neighbors, so voice and music are fine but heavy bass isn’t
+  - generic [ref=e96]:
+    - figure "East windows · morning class" [ref=e97]:
+      - img "Wood floor with sunlight falling through tall windows beside a lit arch mirror" [ref=e98]
+      - generic [ref=e99]: East windows · morning class
+    - generic [ref=e100]:
+      - paragraph [ref=e101]: ◌ Classes
+      - heading "What’s on the calendar." [level=2] [ref=e102]:
+        - text: What’s on the
+        - emphasis [ref=e103]: calendar.
+      - paragraph [ref=e104]: The current weekly schedule is below. Workshops and guest teachers get added as they’re booked. Drop in, sign up for updates, or rent the room for your own thing.
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: "01"
+          - heading "Barre" [level=4] [ref=e108]
+          - paragraph [ref=e109]: 45 min · Mondays 7 AM. Strength, tone, and core with a ballet base.
+        - generic [ref=e110]:
+          - generic [ref=e111]: "02"
+          - heading "Pilates Sculpt" [level=4] [ref=e112]
+          - paragraph [ref=e113]: 45 min · Tue 5:30 PM & Thu 8 AM. Donation-based.
+        - generic [ref=e114]:
+          - generic [ref=e115]: "03"
+          - heading "Myofascial Rolling" [level=4] [ref=e116]
+          - paragraph [ref=e117]: 45 min · Mondays 8 AM. Slow, guided release and recovery work.
+        - generic [ref=e118]:
+          - generic [ref=e119]: "04"
+          - heading "Midday Mindfulness" [level=4] [ref=e120]
+          - paragraph [ref=e121]: 45 min · Mondays 12 PM. Breath, stillness, gentle mobility.
+  - generic [ref=e123]:
+    - generic [ref=e124]:
+      - paragraph [ref=e125]: ◌ This week
+      - heading "Current schedule." [level=2] [ref=e126]:
+        - text: Current
+        - emphasis [ref=e127]: schedule.
+      - paragraph [ref=e128]: Pay-what-you-can while we get going. Usual donation is $10 to $15 per class. Less if it’s tight, more if it’s not. Cash or Venmo at the door.
+    - generic [ref=e129]:
+      - article [ref=e130]:
+        - generic [ref=e131]: Monday
+        - list [ref=e132]:
+          - listitem [ref=e133]:
+            - generic [ref=e134]: 7:00 AM
+            - strong [ref=e135]: Barre
+          - listitem [ref=e136]:
+            - generic [ref=e137]: 8:00 AM
+            - strong [ref=e138]: Myofascial Rolling
+          - listitem [ref=e139]:
+            - generic [ref=e140]: 12:00 PM
+            - strong [ref=e141]: Midday Mindfulness
+      - article [ref=e142]:
+        - generic [ref=e143]: Tuesday
+        - list [ref=e144]:
+          - listitem [ref=e145]:
+            - generic [ref=e146]: 5:30 PM
+            - strong [ref=e147]: Pilates Sculpt
+            - emphasis [ref=e148]: Donation
+        - paragraph [ref=e149]: 45 minutes. Pay what you can.
+      - article [ref=e150]:
+        - generic [ref=e151]: Thursday
+        - list [ref=e152]:
+          - listitem [ref=e153]:
+            - generic [ref=e154]: 8:00 AM
+            - strong [ref=e155]: Pilates Sculpt
+            - emphasis [ref=e156]: Donation
+        - paragraph [ref=e157]: Morning session. All levels welcome.
+      - article [ref=e158]:
+        - generic [ref=e159]: Coming up
+        - list [ref=e160]:
+          - listitem [ref=e161]:
+            - generic [ref=e162]: soon
+            - strong [ref=e163]: Dance classes
+          - listitem [ref=e164]:
+            - generic [ref=e165]: soon
+            - strong [ref=e166]: Guest workshops
+          - listitem [ref=e167]:
+            - generic [ref=e168]: soon
+            - strong [ref=e169]: Weekend mobility
+        - paragraph [ref=e170]: Email us to get on the list.
+  - generic [ref=e172]:
+    - generic [ref=e173]:
+      - paragraph [ref=e174]: ◌ Early feedback
+      - heading "What people have said so far." [level=2] [ref=e175]:
+        - text: What people have
+        - emphasis [ref=e176]: said
+        - text: so far.
+    - generic [ref=e177]:
+      - figure "Morning attendee · placeholder" [ref=e178]:
+        - blockquote [ref=e179]: “I came to pick up a mat and stayed for the whole class. The light in that room is unreal.”
+        - generic [ref=e180]: Morning attendee · placeholder
+      - figure "Barre regular · placeholder" [ref=e181]:
+        - blockquote [ref=e182]: “You can tell they actually thought about the room. It feels like a place you were invited to, not a gym you bought a membership at.”
+        - generic [ref=e183]: Barre regular · placeholder
+      - figure "Dana Warp Mill neighbor · placeholder" [ref=e184]:
+        - blockquote [ref=e185]: “Midday Mindfulness on a Monday genuinely reset my week. Don’t sleep on the noon class.”
+        - generic [ref=e186]: Dana Warp Mill neighbor · placeholder
+  - generic [ref=e188]:
+    - generic [ref=e189]:
+      - paragraph [ref=e190]: ◌ Visit
+      - heading "Find us in the mill, four stories up." [level=2] [ref=e191]:
+        - text: Find us in the
+        - emphasis [ref=e192]: mill
+        - text: ","
+        - text: four stories up.
+      - paragraph [ref=e193]: LunaTerra is on the fourth floor of the Dana Warp Mill in Westbrook. Use the main entrance on Bridge Street, take the elevator to floor four, and follow the hallway to Suite 4233. If it’s your first time, text ahead and someone will meet you at the door.
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - term [ref=e196]: Address
+          - definition [ref=e197]:
+            - text: 90 Bridge Street, Suite 4233
+            - text: Westbrook, ME 04092
+            - text: Dana Warp Mill · 4th Floor
+        - generic [ref=e198]:
+          - term [ref=e199]: Hours
+          - definition [ref=e200]:
+            - text: Class times as scheduled.
+            - text: Open studio and appointments by request.
+        - generic [ref=e201]:
+          - term [ref=e202]: Parking & access
+          - definition [ref=e203]:
+            - text: Free mill lot and street parking.
+            - text: Elevator on site. Step-free access.
+        - generic [ref=e204]:
+          - term [ref=e205]: Contact
+          - definition [ref=e206]:
+            - link "lunaterrastudio.llc@gmail.com" [ref=e207] [cursor=pointer]:
+              - /url: mailto:lunaterrastudio.llc@gmail.com
+      - generic [ref=e208]:
+        - link "Open in Google Maps" [ref=e209] [cursor=pointer]:
+          - /url: https://maps.google.com/?q=90+Bridge+Street+Westbrook+ME+04092
+        - link "Open in Apple Maps" [ref=e210] [cursor=pointer]:
+          - /url: https://maps.apple.com/?q=90+Bridge+Street+Westbrook+ME
+    - complementary "Studio address card" [ref=e211]:
+      - generic [ref=e212]:
+        - img [ref=e213]
+        - generic [ref=e227]:
+          - paragraph [ref=e228]: Dana Warp Mill
+          - heading "90 Bridge St · 4F Suite 4233" [level=3] [ref=e229]:
+            - text: 90 Bridge St · 4F
+            - text: Suite 4233
+          - paragraph [ref=e230]: Westbrook, Maine
+  - generic [ref=e232]:
+    - paragraph [ref=e233]: ◌ Come move with us
+    - heading "Drop in this week." [level=2] [ref=e234]:
+      - text: Drop in this
+      - emphasis [ref=e235]: week.
+    - paragraph [ref=e236]: Reserve a class, book the room for your own thing, or just come by and see the space. First visit is on us if you’ve never been.
+    - generic [ref=e237]:
+      - link "Reserve a Spot" [ref=e238] [cursor=pointer]:
+        - /url: mailto:lunaterrastudio.llc@gmail.com?subject=Reserving%20a%20class
+      - link "Book the Studio" [ref=e239] [cursor=pointer]:
+        - /url: mailto:lunaterrastudio.llc@gmail.com?subject=Private%20event%20inquiry
+    - paragraph [ref=e240]: New classes and workshops added through the spring.
+  - generic [ref=e242]:
+    - generic [ref=e243]:
+      - generic [ref=e244]:
+        - paragraph [ref=e245]: ◌ Inside the studio
+        - heading "A look around the room." [level=2] [ref=e246]:
+          - text: A look
+          - emphasis [ref=e247]: around
+          - text: the room.
+      - link "Back to top ↑" [ref=e248] [cursor=pointer]:
+        - /url: "#top"
+    - generic [ref=e249]:
+      - link "Studio main room" [ref=e250] [cursor=pointer]:
+        - /url: interior.jpg
+        - img "Studio main room with hanging coral fabric" [ref=e251]
+      - link "East windows" [ref=e252] [cursor=pointer]:
+        - /url: interior2.jpg
+        - img "East windows, wood floor, arch mirror" [ref=e253]
+      - link "Props and banner" [ref=e254] [cursor=pointer]:
+        - /url: interior3.jpg
+        - 'img "LunaTerra banner above props: balls, weights, baskets" [ref=e255]'
+      - link "Pilates Sculpt donation classes" [ref=e256] [cursor=pointer]:
+        - /url: classes.jpg
+        - img "Pilates Sculpt donation classes poster" [ref=e257]
+      - link "Grand opening" [ref=e258] [cursor=pointer]:
+        - /url: grand-opening.jpg
+        - img "Grand opening tonal graphic" [ref=e259]
+  - contentinfo [ref=e260]:
+    - generic [ref=e261]:
+      - generic [ref=e262]:
+        - img [ref=e263]
+        - paragraph [ref=e268]:
+          - emphasis [ref=e269]: Movement studio at
+          - text: Dana Warp Mill, Westbrook.
+      - generic [ref=e270]:
+        - heading "Visit" [level=4] [ref=e271]
+        - paragraph [ref=e272]:
+          - text: 90 Bridge St · Suite 4233
+          - text: Westbrook, ME 04092
+          - text: Dana Warp Mill · 4F
+      - generic [ref=e273]:
+        - heading "Contact" [level=4] [ref=e274]
+        - paragraph [ref=e275]:
+          - link "lunaterrastudio.llc@gmail.com" [ref=e276] [cursor=pointer]:
+            - /url: mailto:lunaterrastudio.llc@gmail.com
+      - generic [ref=e277]:
+        - heading "Follow" [level=4] [ref=e278]
+        - paragraph [ref=e279]:
+          - link "Instagram" [ref=e280] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=e281] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=e282]:
+      - paragraph [ref=e283]: © 2026 LunaTerra Studio. Westbrook, Maine.
+      - paragraph [ref=e284]:
+        - text: Site by
+        - link "Dead Pixel Design" [ref=e285] [cursor=pointer]:
+          - /url: https://deadpixeldesign.com

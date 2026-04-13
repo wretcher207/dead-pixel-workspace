@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #fffdf5;
+  --foreground: #1b3a5c;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #1b3a5c;
+  --secondary: #e63946;
+  --tertiary: #fbbf24;
+  --quaternary: #2d9f3f;
+  --border: #cbd5e1;
+  --card: #ffffff;
+  --ring: #1b3a5c;
+  --accent-shadow: #1b3a5c;
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --shadow-offset: 8px;
+}
+
+@theme {
+  --font-heading: "Outfit", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgba(27, 58, 92, 0.15);
+}
+
+::selection {
+  background: rgba(251, 191, 36, 0.45);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  border: 2px solid var(--accent-shadow);
+  border-radius: 999px;
+  background: white;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+.hero-circle {
+  position: absolute;
+  left: -6rem;
+  top: 4rem;
+  height: 20rem;
+  width: 20rem;
+  border-radius: 999px;
+  background: var(--tertiary);
+  opacity: 0.9;
+}
+
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(27, 58, 92, 0.16) 1.4px, transparent 1.4px);
+  background-size: 18px 18px;
+}
+
+.hero-image-frame {
+  border-radius: 40px 40px 28px 28px;
+}
+
+.hero-blob {
+  border-radius: 44px 44px 88px 26px;
+}
+
+.reveal,
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition:
+    opacity 520ms var(--bounce),
+    transform 520ms var(--bounce);
+  transition-delay: var(--delay, 0ms);
+}
+
+.reveal.is-visible,
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.sticker-card {
+  position: relative;
+  border: 2px solid var(--accent-shadow);
+  border-radius: 30px;
+  background: var(--card);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--card-shadow, var(--border));
+  transition:
+    transform 300ms var(--bounce),
+    box-shadow 300ms var(--bounce);
+}
+
+.sticker-card:hover {
+  transform: translate(-2px, -2px) rotate(-1deg) scale(1.01);
+  box-shadow: 12px 12px 0 0 var(--card-shadow, var(--border));
+}
+
+.floating-chip,
+.floating-icon {
+  position: absolute;
+  top: -1.35rem;
+  left: 1.25rem;
+  display: inline-flex;
+  height: 3.15rem;
+  width: 3.15rem;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--accent-shadow);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 0 var(--accent-shadow);
+}
+
+.featured-badge {
+  position: absolute;
+  right: 1rem;
+  top: -1rem;
+  max-width: 8rem;
+  border: 2px solid var(--accent-shadow);
+  background: var(--tertiary);
+  color: var(--foreground);
+  clip-path: polygon(50% 0%, 61% 18%, 82% 8%, 76% 31%, 98% 38%, 80% 53%, 93% 75%, 69% 73%, 65% 98%, 50% 82%, 35% 98%, 31% 73%, 7% 75%, 20% 53%, 2% 38%, 24% 31%, 18% 8%, 39% 18%);
+  padding: 1.4rem 1rem 1.6rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  transform: rotate(15deg);
+}
+
+.marquee-shell {
+  overflow: hidden;
+  border: 2px solid var(--accent-shadow);
+  border-radius: 999px;
+  background: white;
+  box-shadow: 8px 8px 0 0 var(--border);
+  padding: 1rem 0;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+}
+
+.marquee-pill {
+  margin: 0 0.75rem;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.7rem 1.1rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mobile-menu-panel {
+  animation: menu-pop 380ms var(--bounce);
+}
+
+.confetti-shape {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.92;
+}
+
+.confetti-shape.circle {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 999px;
+  background: var(--quaternary);
+}
+
+.confetti-shape.square {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.35rem;
+  background: var(--tertiary);
+  transform: rotate(18deg);
+}
+
+.confetti-shape.triangle {
+  border-bottom: 1rem solid var(--secondary);
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+}
+
+.footer-shape {
+  position: absolute;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 999px;
+  background: rgba(255, 253, 245, 0.16);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes menu-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --shadow-offset: 2px;
+  }
+
+  .hero-circle {
+    height: 14rem;
+    width: 14rem;
+    left: -5rem;
+    top: 3rem;
+  }
+
+  .featured-badge {
+    right: 0.65rem;
+    top: -0.85rem;
+    max-width: 6.5rem;
+    font-size: 0.62rem;
+    padding: 1.15rem 0.7rem 1.25rem;
+  }
+
+  .confetti-shape:nth-of-type(4),
+  .confetti-shape:nth-of-type(5) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "reportId": "021cbca5-cf30-4a15-b082-88c9d6e9a69a",
+  "timestamp": "2026-04-07T02:17:18.156949+00:00",
+  "runType": "daily",
+  "source": "gatekeeper",
+  "version": "1.0",
+  "payload": {
+    "status": "critical",
+    "findings": [
+      {
+        "id": "d3d0aa09-3db9-4f2f-bfee-d16098d1ce30",
+        "category": "credentials",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "target": "Credential Files",
+        "severity": "high",
+        "cveId": null,
+        "approvalLevel": "explicit_approval",
+        "suggestedAction": "Move credential files to a secure vault or password manager. Never store plaintext credentials in user directories.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "securityScore": 100,
+      "securityScoreTrend": "flat",
+      "defenderEnabled": true,
+      "defenderDefinitionAge": 0,
+      "defenderLastScan": "/Date(1775503626000)/",
+      "firewallEnabled": true,
+      "firewallProfiles": {
+        "domain": true,
+        "private": true,
+        "public": true
+      },
+      "pendingSecurityPatches": 0,
+      "riskyExtensionCount": 0,
+      "openPortCount": 0,
+      "vulnerableSoftwareCount": 0,
+      "exposedCredentialFiles": 2
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --color-void:        #0d0d0d;
+  --color-charcoal:    #1a1a1a;
+  --color-deep-brown:  #1e1410;
+  --color-surface:     #242424;
+  --color-surface-alt: #2e2e2e;
+  --color-neon:        #ff6b1a;
+  --color-amber:       #f0a030;
+  --color-ember:       #c0392b;
+  --color-text-primary:#f0ede8;
+  --color-text-muted:  #8a8278;
+  --color-text-faint:  #4a4642;
+  --font-display: "Lora", Georgia, serif;
+  --font-body:    "Rubik", system-ui, sans-serif;
+  --radius-card:  12px;
+  --radius-btn:   8px;
+  --radius-pill:  999px;
+  --glow-neon:    0 0 20px rgba(255,107,26,0.45), 0 0 60px rgba(255,107,26,0.15);
+  --glow-amber:   0 0 20px rgba(240,160,48,0.35), 0 0 50px rgba(240,160,48,0.10);
+}
+
+@theme inline {
+  --color-void:          var(--color-void);
+  --color-charcoal:      var(--color-charcoal);
+  --color-deep-brown:    var(--color-deep-brown);
+  --color-surface:       var(--color-surface);
+  --color-surface-alt:   var(--color-surface-alt);
+  --color-neon:          var(--color-neon);
+  --color-amber:         var(--color-amber);
+  --color-ember:         var(--color-ember);
+  --color-text-primary:  var(--color-text-primary);
+  --color-text-muted:    var(--color-text-muted);
+  --color-text-faint:    var(--color-text-faint);
+  --font-display:        var(--font-display);
+  --font-body:           var(--font-body);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--color-void);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+.text-glow-neon {
+  text-shadow: 0 0 20px rgba(255,107,26,0.6), 0 0 40px rgba(255,107,26,0.25);
+}
+
+.glass {
+  background: rgba(30,20,16,0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,107,26,0.12);
+}
+
+::selection {
+  background-color: var(--color-neon);
+  color: var(--color-void);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

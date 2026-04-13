@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surface hierarchy */
+  --color-surface: #131318;
+  --color-surface-dim: #131318;
+  --color-surface-bright: #39383e;
+  --color-surface-variant: #35343a;
+  --color-surface-tint: #bac3ff;
+  --color-surface-container-lowest: #0e0e13;
+  --color-surface-container-low: #1b1b20;
+  --color-surface-container: #1f1f25;
+  --color-surface-container-high: #2a292f;
+  --color-surface-container-highest: #35343a;
+
+  /* Primary */
+  --color-primary: #bac3ff;
+  --color-primary-container: #7287ff;
+  --color-primary-fixed: #dee0ff;
+  --color-primary-fixed-dim: #bac3ff;
+  --color-on-primary: #001f90;
+  --color-on-primary-container: #001a7f;
+
+  /* Secondary */
+  --color-secondary: #c6c4d9;
+  --color-secondary-container: #4a4a5b;
+  --color-on-secondary: #2f2f3f;
+  --color-on-secondary-container: #bbbace;
+
+  /* Tertiary (success/healthy) */
+  --color-tertiary: #3fdfa5;
+  --color-tertiary-container: #00a575;
+  --color-on-tertiary: #003825;
+  --color-on-tertiary-container: #003120;
+
+  /* Warning (attention) */
+  --color-warning: #FFB020;
+  --color-warning-container: #4D3800;
+
+  /* Error (critical) */
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+
+  /* Neutral */
+  --color-background: #131318;
+  --color-on-background: #e4e1e9;
+  --color-on-surface: #e4e1e9;
+  --color-on-surface-variant: #c5c5d8;
+  --color-outline: #8e8fa1;
+  --color-outline-variant: #444655;
+  --color-inverse-surface: #e4e1e9;
+  --color-inverse-on-surface: #303036;
+
+  /* Font families */
+  --font-headline: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
+
+/* Material Symbols config */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Pulse glow for active indicators */
+.pulse-glow {
+  box-shadow: 0 0 8px 2px rgba(186, 195, 255, 0.08);
+}
+
+/* Text selection */
+::selection {
+  background: rgba(114, 135, 255, 0.3);
+  color: #dee0ff;
+}
+
+/* Focus-visible ring for keyboard navigation */
+.focus-ring:focus-visible {
+  outline: 2px solid rgba(186, 195, 255, 0.5);
+  outline-offset: 2px;
+}
+
+body { margin: 0; }

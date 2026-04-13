@@ -1,0 +1,100 @@
+{
+  "reportId": "5a4c0e34-8902-410b-8161-dfa0bc312dc1",
+  "timestamp": "2026-04-07T01:49:44.366515+00:00",
+  "runType": "daily",
+  "source": "mechanic",
+  "version": "1.0",
+  "payload": {
+    "status": "attention",
+    "findings": [
+      {
+        "id": "b66c9e32-4a02-4d3e-aa74-45542512fb45",
+        "category": "startup",
+        "description": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. These slow down boot time.",
+        "processName": null,
+        "pid": null,
+        "memoryBytes": null,
+        "cpuPercent": null,
+        "severity": "medium",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Disable non-essential startup programs via Task Manager > Startup tab.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "bootTimeSeconds": 16563,
+      "totalRamBytes": 34229383168,
+      "usedRamBytes": 17151721472,
+      "ramUsagePercent": 50.1,
+      "chromeRamBytes": 4064972800,
+      "chromeTabCount": 18,
+      "cpuUsagePercent": 45.0,
+      "startupProgramCount": 28,
+      "startupNonEssentialCount": 6,
+      "ssdHealthPercent": 100,
+      "ssdTemperatureCelsius": null,
+      "topProcesses": [
+        {
+          "name": "vmmem",
+          "pid": 14180,
+          "ramBytes": 2331246592,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "MemCompression",
+          "pid": 3188,
+          "ramBytes": 1284300800,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 1640,
+          "ramBytes": 815960064,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "claude.exe",
+          "pid": 16992,
+          "ramBytes": 619159552,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "explorer.exe",
+          "pid": 13780,
+          "ramBytes": 519589888,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "claude.exe",
+          "pid": 7068,
+          "ramBytes": 487362560,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "claude.exe",
+          "pid": 10196,
+          "ramBytes": 439627776,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 13208,
+          "ramBytes": 402948096,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 11796,
+          "ramBytes": 386686976,
+          "cpuPercent": 0.0
+        },
+        {
+          "name": "chrome.exe",
+          "pid": 4976,
+          "ramBytes": 375967744,
+          "cpuPercent": 0.0
+        }
+      ]
+    }
+  }
+}

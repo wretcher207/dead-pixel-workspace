@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Read(//c/Users/david/Desktop/**)",
+      "Bash(cp \"Snipaste_2026-04-09_08-19-30.png\" tattoo-07/public/images/info.png)",
+      "Bash(cp \"Snipaste_2026-04-09_08-19-50.png\" tattoo-07/public/images/testimonials/allison-cates.png)",
+      "Bash(cp \"Snipaste_2026-04-09_08-20-01.png\" tattoo-07/public/images/testimonials/tammy-thibodeau-moore.png)",
+      "Bash(cp \"Snipaste_2026-04-09_08-20-09.png\" tattoo-07/public/images/testimonials/sarah-englund.png)",
+      "Bash(npx tsc:*)",
+      "Bash(node:*)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(ls -t C:/Users/david/.claude/projects/C--dead-pixel-design/*.jsonl)",
+      "Bash(npx viberank:*)"
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "reportId": "57ad16ec-23a9-47c0-a473-e9597028fe7b",
+  "timestamp": "2026-04-07T02:18:50.177201+00:00",
+  "runType": "daily",
+  "source": "supervisor",
+  "version": "1.0",
+  "payload": {
+    "systemHealth": {
+      "score": 65,
+      "trend": "flat"
+    },
+    "agentStatuses": {
+      "gatekeeper": "critical",
+      "mechanic": "attention",
+      "janitor": "attention",
+      "archivist": "healthy",
+      "scout": "healthy"
+    },
+    "topPriorities": [
+      {
+        "rank": 1,
+        "agent": "gatekeeper",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "severity": "high",
+        "category": "credentials"
+      },
+      {
+        "rank": 2,
+        "agent": "mechanic",
+        "description": "6 non-essential startup programs detected: GoogleDriveFS, OneDriveSetup, GoogleDriveFS, OneDriveSetup, GoogleDriveFS. Th",
+        "severity": "medium",
+        "category": "startup"
+      },
+      {
+        "rank": 3,
+        "agent": "janitor",
+        "description": "Downloads folder has 187 files (1.08 GB total). 21 files are older than 30 days.",
+        "severity": "medium",
+        "category": "downloads"
+      },
+      {
+        "rank": 4,
+        "agent": "janitor",
+        "description": "68 large file(s) over 500 MB found (123.41 GB total).",
+        "severity": "medium",
+        "category": "large_files"
+      },
+      {
+        "rank": 5,
+        "agent": "janitor",
+        "description": "Desktop has 14 files, 1 of which are older than 7 days. A cluttered desktop slows Windows Explorer.",
+        "severity": "low",
+        "category": "desktop"
+      }
+    ],
+    "crossAgentPatterns": [
+      {
+        "pattern": "124 GB of reclaimable disk space identified",
+        "involvedAgents": [
+          "janitor",
+          "archivist"
+        ],
+        "severity": "medium",
+        "recommendation": "Run Janitor cleanup to reclaim disk space from temp files, duplicates, and large unused files."
+      }
+    ],
+    "maintenanceWindow": {
+      "recommended": "02:00 AM",
+      "reason": "System is typically idle overnight. Auto-cleanup tasks run fastest when disk is not in use.",
+      "estimatedDuration": "15\u201330 minutes"
+    }
+  }
+}

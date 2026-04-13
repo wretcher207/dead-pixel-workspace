@@ -1,0 +1,40 @@
+<h2>Three Approaches for the Nutty Netties Build</h2>
+<p class="subtitle">All use Next.js + Tailwind + Framer Motion + Stitch-first workflow. The difference is architecture.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>App Router + Static Export <span style="color:#7c9e6b;font-size:0.8em;margin-left:8px">Recommended</span></h3>
+      <p>Next.js 14+ App Router, <code>output: 'export'</code> for static build. Modern RSC-ready patterns, but outputs portable static files. Easiest to demo or deploy. Matches where Next.js is heading.</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Modern, portfolio-impressive architecture</li><li>Fully static — deploy to Netlify, Vercel, or anywhere</li><li>No server required for demo</li><li>Showcases current Next.js best practices</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Slightly more complex mental model than Pages Router</li><li>Framer Motion needs <code>'use client'</code> directives</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Pages Router + SPA</h3>
+      <p>Classic Next.js Pages Router. Single-page feel with all sections on <code>/</code>. More familiar if you prefer the older pattern. Still fully featured for this use case.</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Simpler architecture you already know from DPD</li><li>Less boilerplate around client components</li><li>Framer Motion integrates without <code>'use client'</code> overhead</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Legacy pattern — less impressive in a portfolio context</li><li>No RSC benefits</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>App Router + Full Dynamic (No Static Export)</h3>
+      <p>Full Next.js App Router with server components, dynamic rendering, and potential for future API routes. More powerful but overkill for a spec site — adds complexity with no benefit here.</p>
+      <div class="pros-cons" style="margin-top:12px">
+        <div class="pros"><h4>Pros</h4><ul><li>Maximum flexibility</li><li>Easiest to add a CMS or API later</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Requires a Node server to run</li><li>No benefit for a static portfolio spec site</li><li>More deployment complexity</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>

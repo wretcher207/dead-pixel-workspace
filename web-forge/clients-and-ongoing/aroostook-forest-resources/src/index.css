@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0c1a0f;
+  --foreground: #f5f2eb;
+  --muted: #1a2e1d;
+  --muted-foreground: #8b9b8e;
+  --accent: #2d6a4f;
+  --accent-foreground: #f5f2eb;
+  --secondary-accent: #d4a843;
+  --border: #1e3a24;
+  --input: #1a2e1d;
+  --card: #0f2214;
+  --card-foreground: #f5f2eb;
+  --ring: #2d6a4f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background font-sans text-base tracking-body text-foreground antialiased;
+  margin: 0;
+  min-width: 320px;
+  position: relative;
+}
+
+body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  content: '';
+  inset: 0;
+  opacity: 0.015;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+}
+
+a,
+button,
+input,
+textarea {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+::selection {
+  background: rgba(45, 106, 79, 0.35);
+  color: var(--foreground);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto max-w-content px-6 md:px-12 lg:px-16;
+  }
+
+  .section-label {
+    @apply font-mono text-xs uppercase tracking-widerest text-accent md:text-sm;
+  }
+
+  .section-bar {
+    @apply mb-5 h-1 w-16 bg-accent;
+  }
+
+  .eyebrow-link {
+    @apply relative inline-flex min-h-11 items-center gap-3 font-mono text-xs font-medium uppercase tracking-wider text-accent transition-all duration-150 ease-editorial;
+  }
+
+  .eyebrow-link::after {
+    @apply absolute bottom-2 left-0 h-0.5 w-full origin-left scale-x-100 bg-accent transition-transform duration-150 ease-editorial;
+    content: '';
+  }
+
+  .eyebrow-link:hover::after,
+  .eyebrow-link:focus-visible::after {
+    transform: scaleX(1.1);
+  }
+
+  .ghost-link {
+    @apply relative inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors duration-150 ease-editorial hover:text-foreground;
+  }
+
+  .ghost-link::after {
+    @apply absolute bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-foreground transition-transform duration-150 ease-editorial;
+    content: '';
+  }
+
+  .ghost-link:hover::after,
+  .ghost-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .outline-button {
+    @apply inline-flex min-h-11 items-center justify-center border border-foreground px-6 py-3 font-mono text-xs font-medium uppercase tracking-wider text-foreground transition-all duration-150 ease-editorial hover:bg-foreground hover:text-background active:translate-y-px;
+  }
+
+  .service-card {
+    @apply border border-border bg-transparent p-6 transition-colors duration-150 ease-editorial hover:border-muted-foreground md:p-8;
+  }
+
+  .prospectus-rule {
+    @apply border-t border-white/15 pt-5;
+  }
+}

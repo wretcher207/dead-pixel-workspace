@@ -1,0 +1,48 @@
+{
+  "reportId": "1b801f19-c4ab-4be2-a99e-e6fe8d32fece",
+  "timestamp": "2026-04-07T02:18:50.177201+00:00",
+  "runType": "daily",
+  "source": "scout",
+  "version": "1.0",
+  "payload": {
+    "status": "healthy",
+    "findings": [
+      {
+        "id": "339b7d4d-6aa5-4af2-b67e-4f0216a6a507",
+        "category": "runtime",
+        "description": "Python 3.12.7 is installed. Latest stable is 3.13.0.",
+        "softwareName": "Python",
+        "currentVersion": "3.12.7",
+        "latestVersion": "3.13.0",
+        "releaseNotesUrl": null,
+        "isSecurityRelated": false,
+        "severity": "low",
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Update Python to 3.13.0 for latest security fixes and features.",
+        "projectPath": null,
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "totalUpdatesAvailable": 1,
+      "criticalUpdates": 0,
+      "securityPatches": 0,
+      "reaperVersion": {
+        "current": "7.67",
+        "latest": "7.0",
+        "daysBehind": 0
+      },
+      "nodeVersion": {
+        "current": "24.14.0",
+        "latestLTS": "22.0.0",
+        "daysBehind": 0
+      },
+      "pythonVersion": {
+        "current": "3.12.7",
+        "latest": "3.13.0",
+        "daysBehind": 0
+      },
+      "vulnerablePackageCount": 0
+    }
+  }
+}

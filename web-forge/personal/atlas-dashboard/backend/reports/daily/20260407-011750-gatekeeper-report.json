@@ -1,0 +1,63 @@
+{
+  "reportId": "179918db-188f-47b3-84ee-d85725e6fbb1",
+  "timestamp": "2026-04-07T01:17:50.144145+00:00",
+  "runType": "daily",
+  "source": "gatekeeper",
+  "version": "1.0",
+  "payload": {
+    "status": "critical",
+    "findings": [
+      {
+        "id": "4baa04d5-01ba-4394-bb8f-33d1a85404e4",
+        "category": "firewall",
+        "description": "Windows Firewall is disabled for: Domain, Private, Public. Your system is exposed to network attacks.",
+        "target": "Windows Firewall",
+        "severity": "high",
+        "cveId": null,
+        "approvalLevel": "explicit_approval",
+        "suggestedAction": "Enable Windows Firewall for all profiles (Domain, Private, Public).",
+        "status": "pending"
+      },
+      {
+        "id": "a90a69d9-95e7-4221-a515-3e196790b371",
+        "category": "patches",
+        "description": "1 pending Windows security update(s) detected. Unpatched systems are vulnerable to known exploits.",
+        "target": "Windows Update",
+        "severity": "medium",
+        "cveId": null,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Install pending Windows updates via Windows Update settings.",
+        "status": "pending"
+      },
+      {
+        "id": "762b3bd2-622b-4b21-bd80-1b4284504262",
+        "category": "credentials",
+        "description": "2 potentially exposed credential file(s) found: .env, cacert.pem",
+        "target": "Credential Files",
+        "severity": "high",
+        "cveId": null,
+        "approvalLevel": "explicit_approval",
+        "suggestedAction": "Move credential files to a secure vault or password manager. Never store plaintext credentials in user directories.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "securityScore": 60,
+      "securityScoreTrend": "flat",
+      "defenderEnabled": true,
+      "defenderDefinitionAge": 0,
+      "defenderLastScan": "/Date(1775492622000)/",
+      "firewallEnabled": false,
+      "firewallProfiles": {
+        "domain": false,
+        "private": false,
+        "public": false
+      },
+      "pendingSecurityPatches": 1,
+      "riskyExtensionCount": 0,
+      "openPortCount": 0,
+      "vulnerableSoftwareCount": 0,
+      "exposedCredentialFiles": 2
+    }
+  }
+}

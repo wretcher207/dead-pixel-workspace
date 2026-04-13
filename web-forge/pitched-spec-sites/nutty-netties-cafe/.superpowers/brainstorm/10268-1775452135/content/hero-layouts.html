@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Layouts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #f0ebe0;
+  font-family: 'DM Sans', sans-serif;
+  padding: 28px 24px 40px;
+}
+h1 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a6e62;
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 13px;
+  color: #9a9088;
+  margin-bottom: 28px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.card {
+  background: #fdf8f0;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.card.selected { border-color: #8b5e3c; box-shadow: 0 10px 30px rgba(139,94,60,0.18); }
+.card-preview {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.card-label {
+  padding: 16px 18px 18px;
+}
+.card-label h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #3d2e24;
+  margin-bottom: 5px;
+}
+.card-label p {
+  font-size: 12px;
+  color: #7a6e62;
+  line-height: 1.55;
+}
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.badge.rec { background: #8b5e3c; color: #fdf8f0; }
+.badge.alt { background: #e8dfd4; color: #7a6e62; }
+
+/* ── LAYOUT A: Full bleed layered ── */
+.hero-a {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #2a1f18 0%, #4a3428 60%, #3d2e24 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  position: relative;
+}
+.hero-a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='80' r='50' fill='%23c9a96e' opacity='0.12'/%3E%3Ccircle cx='140' cy='40' r='30' fill='%237a9e7e' opacity='0.08'/%3E%3C/svg%3E") center/cover;
+}
+.label-tag {
+  display: inline-block;
+  background: #c9a96e;
+  color: #2a1f18;
+  font-family: 'Caveat', cursive;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  transform: rotate(-1.5deg);
+  margin-bottom: 8px;
+  width: fit-content;
+}
+.hero-a-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #fdf8f0;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  position: relative;
+}
+.hero-a-headline em { font-style: italic; color: #c9a96e; }
+.hero-a-sub {
+  font-size: 10px;
+  color: #c4b8ac;
+  margin-bottom: 12px;
+  font-weight: 300;
+  position: relative;
+}
+.hero-a-btns { display: flex; gap: 6px; position: relative; }
+.btn-primary {
+  background: #c9a96e;
+  color: #2a1f18;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.btn-ghost {
+  background: transparent;
+  color: #fdf8f0;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.steam-dots {
+  position: absolute;
+  top: 14px; right: 18px;
+  display: flex; gap: 4px;
+}
+.steam-dot {
+  width: 6px; height: 6px;
+  background: rgba(249,244,235,0.15);
+  border-radius: 50%;
+}
+.steam-line {
+  position: absolute;
+  top: 12px; right: 20px;
+  width: 3px; height: 28px;
+  background: linear-gradient(to top, rgba(249,244,235,0.25), transparent);
+  border-radius: 2px;
+}
+.mug-icon {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 40px; height: 36px;
+  background: rgba(249,244,235,0.08);
+  border-radius: 4px 4px 8px 8px;
+  border: 1px solid rgba(249,244,235,0.15);
+}
+
+/* ── LAYOUT B: Split ── */
+.hero-b {
+  width: 100%; height: 100%;
+  display: flex;
+}
+.hero-b-img {
+  width: 55%;
+  background: linear-gradient(160deg, #3d2e24, #6b4a34);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-b-img::after {
+  content: '☕';
+  font-size: 48px;
+  opacity: 0.15;
+}
+.hero-b-text {
+  width: 45%;
+  background: #fdf8f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18px 16px;
+}
+.hero-b-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b85c6e;
+  margin-bottom: 6px;
+}
+.hero-b-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #3d2e24;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.hero-b-headline em { font-style: italic; }
+.hero-b-body {
+  font-size: 9px;
+  color: #7a6e62;
+  line-height: 1.55;
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+.squirrel-note {
+  font-family: 'Caveat', cursive;
+  font-size: 10px;
+  color: #8b5e3c;
+  margin-bottom: 10px;
+}
+.img-tag {
+  position: absolute;
+  bottom: 12px; left: 10px;
+  background: #c9a96e;
+  color: #2a1f18;
+  font-family: 'Caveat', cursive;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  transform: rotate(-2deg);
+}
+
+/* ── LAYOUT C: Typographic centered ── */
+.hero-c {
+  width: 100%; height: 100%;
+  background: #fdf8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+}
+.hero-c-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,169,110,0.08) 0%, transparent 70%);
+}
+.hero-c-ornament {
+  font-size: 28px;
+  opacity: 0.12;
+  margin-bottom: 6px;
+  position: relative;
+}
+.hero-c-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7a9e7e;
+  margin-bottom: 8px;
+  position: relative;
+}
+.hero-c-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #3d2e24;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  position: relative;
+}
+.hero-c-headline em { font-style: italic; color: #8b5e3c; }
+.hero-c-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  color: #9a9088;
+  margin-bottom: 10px;
+  position: relative;
+}
+.hero-c-divider {
+  width: 40px; height: 1px;
+  background: #c9a96e;
+  margin: 0 auto 10px;
+}
+.hero-c-body {
+  font-size: 9px;
+  color: #7a6e62;
+  max-width: 160px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-weight: 300;
+  position: relative;
+}
+.hero-c-btns { display: flex; gap: 6px; position: relative; }
+.btn-c-primary {
+  background: #3d2e24;
+  color: #fdf8f0;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.btn-c-ghost {
+  background: transparent;
+  color: #8b5e3c;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #c9a96e;
+}
+.squirrel-c {
+  position: absolute;
+  bottom: 12px; right: 14px;
+  font-size: 18px;
+  opacity: 0.18;
+}
+</style>
+</head>
+<body>
+  <h1>Hero Section Layout</h1>
+  <p class="page-sub">All three use the same type system and palette. Click to select your preferred direction.</p>
+
+  <div class="cards">
+
+    <!-- A: Full bleed -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <div class="card-preview">
+        <div class="hero-a">
+          <div class="label-tag">Southern Maine ✦</div>
+          <div class="hero-a-headline">A little <em>nutty.</em><br>Completely worth it.</div>
+          <div class="hero-a-sub">Cafe · Bakery · Good mornings since whenever</div>
+          <div class="hero-a-btns">
+            <div class="btn-primary">See the Menu</div>
+            <div class="btn-ghost">Find Us</div>
+          </div>
+          <div class="mug-icon"></div>
+          <div class="steam-line"></div>
+        </div>
+      </div>
+      <div class="card-label">
+        <span class="badge rec">Recommended</span>
+        <h3>Full-Bleed Dark</h3>
+        <p>Warm espresso background, floating paper label, gold accent headline. Most dramatic first impression. Steam animation lives here naturally.</p>
+      </div>
+    </div>
+
+    <!-- B: Split -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <div class="card-preview">
+        <div class="hero-b">
+          <div class="hero-b-img">
+            <div class="img-tag">open daily 7–3</div>
+          </div>
+          <div class="hero-b-text">
+            <div class="hero-b-eyebrow">Biddeford, Maine</div>
+            <div class="hero-b-headline">A little <em>nutty.</em><br>Completely worth it.</div>
+            <div class="hero-b-body">House-roasted coffee, scratch pastries, and a corner booth with your name on it.</div>
+            <div class="squirrel-note">🐿 worth the detour</div>
+            <div class="hero-a-btns">
+              <div class="btn-primary">See the Menu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-label">
+        <span class="badge alt">Editorial</span>
+        <h3>Split — Image + Text</h3>
+        <p>Magazine-style split. Cafe photo fills left half, cream-white text panel on right. Clean, editorial, slightly safer.</p>
+      </div>
+    </div>
+
+    <!-- C: Typographic centered -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <div class="card-preview">
+        <div class="hero-c">
+          <div class="hero-c-bg"></div>
+          <div class="hero-c-ornament">✦</div>
+          <div class="hero-c-eyebrow">Biddeford, Maine</div>
+          <div class="hero-c-headline">A little <em>nutty.</em><br>Completely worth it.</div>
+          <div class="hero-c-sub">— est. sometime around sunrise —</div>
+          <div class="hero-c-divider"></div>
+          <div class="hero-c-body">House-roasted coffee, scratch pastries, a corner booth with your name on it.</div>
+          <div class="hero-c-btns">
+            <div class="btn-c-primary">See the Menu</div>
+            <div class="btn-c-ghost">Find Us</div>
+          </div>
+          <div class="squirrel-c">🐿</div>
+        </div>
+      </div>
+      <div class="card-label">
+        <span class="badge alt">Typographic</span>
+        <h3>Centered Typography</h3>
+        <p>Light cream background, type as hero. More boutique-minimal. Less immersive than A but very polished. Good if the Stitch imagery needs room to breathe.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

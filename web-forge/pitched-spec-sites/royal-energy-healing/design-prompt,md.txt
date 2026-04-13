@@ -1,0 +1,82 @@
+PROMPT:
+
+Design a fully production-ready, multi-section landing page for a Reiki and energy healing brand called “Royal Energy Healing Experience.”
+
+This is not a concept or mockup. Generate a complete, build-ready layout with real UI structure, spacing systems, and component hierarchy. No placeholder lorem ipsum. All text should be intentional, minimal, and aligned with a high-end wellness brand voice.
+
+Core aesthetic direction:
+Elegant, calming, ethereal, and premium. A blend of spiritual minimalism and modern luxury. Avoid cliché “hippie” visuals. Think refined energy, not chaotic mysticism.
+
+Visual style:
+
+Soft gradients (lavender, gold, deep indigo, pearl white)
+Subtle glow effects and ambient lighting
+Light grain or texture for depth
+Smooth, flowing shapes (no sharp harsh edges)
+Glassmorphism or soft translucency where appropriate
+High-end spa meets celestial atmosphere
+
+Typography:
+
+Elegant serif for headings (luxury, editorial feel)
+Clean modern sans-serif for body text
+Strong hierarchy, generous spacing
+Typography used as a visual anchor, not filler
+
+Layout structure (must include):
+
+Hero Section
+Full viewport height
+Abstract, ethereal background (no obvious stock imagery)
+Brand name “Royal Energy Healing Experience”
+Subtle, minimal tagline (healing, balance, energy alignment)
+Primary CTA button (Book Session)
+Secondary CTA (Learn More)
+About / Philosophy Section
+Clean two-column layout
+Calm, grounded messaging about energy healing and balance
+Visual element that feels organic and fluid
+Services Section
+Card-based layout
+Reiki sessions, energy alignment, spiritual guidance
+Each card with subtle hover animation
+Experience / Benefits Section
+Focus on transformation and emotional outcome
+Use icons or soft visual markers (not cartoonish)
+Testimonials Section
+Minimal, elegant
+Real-feeling quotes (short, intentional)
+Booking / CTA Section
+Clear call to action
+Simple, clean booking emphasis
+Designed to convert without feeling aggressive
+Footer
+Minimal navigation
+Contact info
+Social links (subtle, not dominant)
+
+Interaction & animation direction:
+
+Smooth fade-ins and gentle motion
+Subtle parallax or scroll-based transitions
+Hover states that feel soft and responsive
+No flashy or distracting effects
+
+Technical requirements:
+
+Clean grid system (8pt or 12-column)
+Proper spacing and alignment throughout
+Mobile-first responsive design
+Components should be reusable and structured for development
+No unnecessary elements, everything serves purpose
+
+Important constraints:
+
+NO placeholder text
+NO generic stock layouts
+NO clutter
+NO overly mystical or cheesy spiritual tropes
+Everything should feel intentional, refined, and premium
+
+End result:
+A visually stunning, calming, high-conversion landing page that looks like it belongs to a luxury wellness brand and is immediately ready to be developed without redesign.

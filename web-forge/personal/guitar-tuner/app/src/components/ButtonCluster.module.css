@@ -1,0 +1,91 @@
+.cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.funcButton {
+  width: 42px;
+  height: 18px;
+  background: var(--surface-container-high);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 9px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.06s;
+}
+
+.funcButton:active:not(:disabled) {
+  transform: scale(0.93);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.funcButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.activeBtn {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 180, 170, 0.15);
+}
+
+.funcLabel {
+  font-family: var(--font-label);
+  font-size: 0.45rem;
+  color: var(--tertiary-fixed-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  user-select: none;
+}
+
+.calibLabel {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.activeLabel {
+  color: var(--primary);
+}
+
+.powerButton {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-container);
+  border: none;
+  border-top: 1px solid var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  color: var(--on-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.08s;
+  filter: brightness(1.1);
+  margin-top: 4px;
+}
+
+.powerButton:active {
+  transform: scale(0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.powerLabel {
+  font-family: var(--font-label);
+  font-size: 0.45rem;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  user-select: none;
+}

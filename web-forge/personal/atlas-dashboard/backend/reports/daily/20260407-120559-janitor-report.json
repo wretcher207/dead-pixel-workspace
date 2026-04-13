@@ -1,0 +1,56 @@
+{
+  "reportId": "d83cacd1-c5d0-4950-a293-b26bd6256f56",
+  "timestamp": "2026-04-07T12:05:59.179961+00:00",
+  "runType": "daily",
+  "source": "janitor",
+  "version": "1.0",
+  "payload": {
+    "status": "attention",
+    "findings": [
+      {
+        "id": "34516723-3dc5-455a-ad1d-1162cded91a0",
+        "category": "temp_files",
+        "description": "3 temp files older than 7 days found in Windows/User Temp folders.",
+        "location": "C:\\Windows\\Temp; C:\\Users\\david\\AppData\\Local\\Temp",
+        "fileCount": 3,
+        "sizeBytes": 30343821,
+        "severity": "low",
+        "reclaimableBytes": 30343821,
+        "autoResolvable": true,
+        "approvalLevel": "no_approval",
+        "suggestedAction": "Delete temp files older than 7 days. This is safe and automatic.",
+        "status": "pending"
+      },
+      {
+        "id": "e5f4a23b-4365-4807-adb4-de35a5e11528",
+        "category": "large_files",
+        "description": "68 large file(s) over 500 MB found (123.41 GB total).",
+        "location": "Downloads, Desktop, Documents, Videos",
+        "fileCount": 68,
+        "sizeBytes": 132514684320,
+        "severity": "medium",
+        "reclaimableBytes": 132514684320,
+        "autoResolvable": false,
+        "approvalLevel": "approval_recommended",
+        "suggestedAction": "Review large files and delete or archive those you no longer need.",
+        "status": "pending"
+      }
+    ],
+    "metrics": {
+      "totalReclaimableBytes": 132545028141,
+      "totalReclaimableGB": 123.44,
+      "duplicateGroupCount": 0,
+      "duplicateFileCount": 0,
+      "downloadsFileCount": 1,
+      "downloadsSizeBytes": 2119793,
+      "desktopFileCount": 2,
+      "tempSizeBytes": 30343821,
+      "recycleBinSizeBytes": 0,
+      "recycleBinItemCount": 0,
+      "largeFileCount": 68,
+      "staleFileCount": 0,
+      "orphanedNodeModulesCount": 0,
+      "browserCacheSizeBytes": 0
+    }
+  }
+}

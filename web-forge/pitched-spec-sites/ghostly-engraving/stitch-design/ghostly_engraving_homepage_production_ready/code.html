@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#32343f",
+                      "on-primary-container": "#341667",
+                      "tertiary-fixed-dim": "#d1ca56",
+                      "on-surface-variant": "#cbc4d2",
+                      "background": "#11131d",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#d2bbff",
+                      "on-secondary-container": "#c0ace4",
+                      "inverse-primary": "#6a4fa0",
+                      "outline": "#958e9b",
+                      "surface-container-low": "#191b26",
+                      "surface": "#11131d",
+                      "inverse-surface": "#e1e1f0",
+                      "error": "#ffb4ab",
+                      "secondary-container": "#4e3e6e",
+                      "secondary-fixed-dim": "#d1bdf6",
+                      "primary-fixed": "#eaddff",
+                      "on-tertiary-fixed-variant": "#4c4900",
+                      "on-primary-fixed": "#250059",
+                      "error-container": "#93000a",
+                      "inverse-on-surface": "#2e303b",
+                      "on-surface": "#e1e1f0",
+                      "surface-bright": "#373844",
+                      "surface-dim": "#11131d",
+                      "on-error": "#690005",
+                      "on-secondary-fixed": "#221240",
+                      "on-background": "#e1e1f0",
+                      "tertiary-fixed": "#eee76f",
+                      "secondary-fixed": "#ebddff",
+                      "primary-fixed-dim": "#d2bbff",
+                      "secondary": "#d1bdf6",
+                      "primary-container": "#9e82d7",
+                      "primary": "#d2bbff",
+                      "tertiary": "#d1cb57",
+                      "surface-container-lowest": "#0c0e18",
+                      "on-tertiary-fixed": "#1e1c00",
+                      "on-primary-fixed-variant": "#523787",
+                      "outline-variant": "#494550",
+                      "surface-container-highest": "#32343f",
+                      "on-secondary-fixed-variant": "#4e3e6e",
+                      "tertiary-container": "#b5af3e",
+                      "on-tertiary": "#343200",
+                      "on-secondary": "#372856",
+                      "surface-container": "#1d1f2a",
+                      "on-primary": "#3b1e6f",
+                      "surface-container-high": "#282934",
+                      "on-tertiary-container": "#444100"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Noto Serif"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+            color: #d1bdf6
+        }
+        .grain-overlay {
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuABH7JcBtv_PZdGaZKgxCNeIIPawCA43nthTMxL5WIcagbcWEjG4AgK8EBAuOkTtQMvW-nl115dI2pK6eawopkAJApOe2dUw1jmtfyuQS-OGrMgD7VHIRbORiFDzUMIGrvgxHg7ZEG7Hjdgadc5ox_TebAeKwSggtQcmnx294LaiVV_G9qJmSsFnhduofVjVV4a-PN8GuQ8OZ1cE7iMp8ob-Un9Z-qTzqIJEwg70L3L07Pm_BILXRQYRAgZnEv5VwHfFayRZTnWgs_F);
+            opacity: 0.03;
+            pointer-events: none
+        }
+        .text-glow:hover {
+            text-shadow: 0 0 10px rgba(210, 187, 255, 0.4)
+        }
+        .ghost-dog-watermark {
+            mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent);
+            -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent)
+        }
+        .vignette-mask {
+            mask-image: radial-gradient(circle, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle, black 60%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- Grain texture for atmosphere -->
+<div class="fixed inset-0 grain-overlay z-[100]"></div>
+<!-- Navigation (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-[#11131d]/70 backdrop-blur-xl border-b border-[#e1e1f0]/15 flex justify-between items-center px-8 py-4 w-full shadow-[0px_0px_20px_rgba(11,13,23,0.4)] transition-all duration-500 ease-out">
+<div class="font-headline text-xl font-bold tracking-widest text-[#e1e1f0]">
+            Ghostly Engraving
+        </div>
+<div class="hidden md:flex space-x-8">
+<a class="font-headline tracking-[0.05em] uppercase text-sm text-[#e1e1f0] transition-all duration-300 hover:tracking-[0.08em] hover:text-[#d1bdf6]" href="#">Collections</a>
+<a class="font-headline tracking-[0.05em] uppercase text-sm text-[#e1e1f0] transition-all duration-300 hover:tracking-[0.08em] hover:text-[#d1bdf6]" href="#">Services</a>
+<a class="font-headline tracking-[0.05em] uppercase text-sm text-[#e1e1f0] transition-all duration-300 hover:tracking-[0.08em] hover:text-[#d1bdf6]" href="#">Process</a>
+<a class="font-headline tracking-[0.05em] uppercase text-sm text-[#e1e1f0] transition-all duration-300 hover:tracking-[0.08em] hover:text-[#d1bdf6]" href="#">About</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label font-semibold text-sm hover:shadow-[0_0_15px_#d2bbff] transition-all duration-300">
+            Request a Quote
+        </button>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center px-12 overflow-hidden bg-gradient-to-b from-[#0B0D17] to-[#1d1f2a]">
+<div class="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
+<div class="flex flex-col justify-center space-y-6">
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight tracking-[0.02em] text-on-surface">
+                    Precision Engraving.<br/>
+<span class="text-primary italic font-normal">Personal Touch.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-lg leading-relaxed">
+                    Custom-crafted keepsakes, gifts, and branded pieces — made in Maine.
+                </p>
+<div class="flex space-x-4 pt-4">
+<button class="px-8 py-3 bg-primary-container text-on-primary-container rounded-lg font-semibold hover:shadow-[0_0_20px_#9e82d7] transition-all">
+                        Shop Collections
+                    </button>
+<button class="px-8 py-3 bg-transparent border border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-all">
+                        Start a Custom Order
+                    </button>
+</div>
+</div>
+<div class="relative flex justify-center items-center">
+<div class="absolute inset-0 bg-primary/10 blur-[100px] rounded-full"></div>
+<img alt="Artisan engraved wooden board" class="relative z-10 w-4/5 rounded-xl shadow-2xl transform rotate-3" data-alt="Close-up of a dark walnut cutting board with detailed laser engraving of a family crest, dramatic warm side lighting, dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDUDGs4QUTVOXsUSrkDuHhslSKhvH1FBJBr5MGmMOw2rdDCiuopGLcXnESuqvLkHYQETi4YPsdZEmmdWXc46WyM_KKkVXwMdYf7ltfaLTgy-O3OcSQDS43ZfsDTNMxiJyFEquog9p42zbAqfW8FiEra0C32uRCKJ8UDutW6k988laR8QfGrKlt0A36gdsKTCylijmJXxgfHHL62wQEoefh8s-pj9jG8MKlzI3INAhC4SV9QtKpo2j31Pu6mI2DCouj3nqyn4ySSRGU"/>
+</div>
+</div>
+<!-- Watermark -->
+<div class="absolute bottom-10 right-10 opacity-5 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[300px]" data-icon="pets">pets</span>
+</div>
+</section>
+<!-- Featured Collections -->
+<section class="py-24 px-8 bg-surface">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Drinkware -->
+<div class="group flex flex-col items-center p-12 bg-surface-container-low rounded-xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="h-64 flex items-center justify-center mb-8">
+<img alt="Engraved tumbler" class="max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Matte black stainless steel tumbler with intricate celestial laser engraving, centered with soft purple glow highlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFMy12Ud44O9oZX2oADw9sS-9j_9TomzUh8SXXUu1cyofpU0M7EvcO6guoj8d2P-lcubaQnriJT3o-elKsV7FO8Ro5Ws1mfL0kyDIiBf6MYdxkgY24ckGkBsuzbveZ_5RVLTRaMIxlkeevqcaBIChmBCbHeZvYVkhgBc8LqTSMLJ08ZSsntBVpr-qKKOESiCA7iYLm93GBjTQ6yOrhxj4fgWVFVAFjZ8afVp_nwP7Hf4F3TMoCpri9xfGuzEdTo9RGWzQhHW73cfWi"/>
+</div>
+<span class="font-headline text-xs tracking-[0.2em] uppercase text-outline group-hover:text-primary transition-colors">Drinkware</span>
+</div>
+<!-- Cutting Boards -->
+<div class="group flex flex-col items-center p-12 bg-surface-container-low rounded-xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="h-64 flex items-center justify-center mb-8">
+<img alt="Engraved board" class="max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Elegant olive wood serving board with customized engraving of a script font, side lighting on dark slate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBq9_5y0QJ8asWcuI_bW8YXkxNAG_uldHelUqKb346WghsjTyYm4mofoJv2QDAlexAhCLGcMKx3s8RmKhQMELaMpv0-CwQvKGj3MZcaq1PYqTjuJG6qEyhAwDNsJy5BFsB3W_Ni1wc9-dn-ct2yZKOlylGmzZ-dTkjaWsO4A8Iy4Jspf-lihPnx3UcKe7J2kPu_oA9FdF1Kt64TR4HvWdLz-rgp4MlJqAqB7fla3k6uPkYaWGB37u31QSYed5iKuKUUUXyZ3-OY_WC"/>
+</div>
+<span class="font-headline text-xs tracking-[0.2em] uppercase text-outline group-hover:text-primary transition-colors">Kitchenware</span>
+</div>
+<!-- Custom Gifts -->
+<div class="group flex flex-col items-center p-12 bg-surface-container-low rounded-xl transition-all hover:bg-surface-container-high cursor-pointer">
+<div class="h-64 flex items-center justify-center mb-8">
+<img alt="Custom gift box" class="max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Curated gift set in a dark wooden box with laser-engraved logo, minimal professional product photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk8RltL24-7-2YShRPvrjUA1jV2xojmxUSxNKGRK0wXrH_gTwhwfL_k6RuwpuwW3iU2grvwZwOJ9Eqwl4GYAQ_QvNZg9eXIfEPUWopBF2HpT1zBSo9UbSxfHpu6lhw4V78EcmI8F4M4zCFMKZ-R2H6nMhuoORAmhpr1jh8gUElB5hwpUWRUNOi36Db2HC-ic0yLzp1e3CNlEb2DwKTyrH1uVXM_Oi1JeIk9_rMfJCMuLpO0uWzjU5JmBaB6B47tnfgtUxZfe8CAb5j"/>
+</div>
+<span class="font-headline text-xs tracking-[0.2em] uppercase text-outline group-hover:text-primary transition-colors">Bespoke Gifting</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Ghostly Engraving -->
+<section class="py-24 px-8 bg-surface-container-low">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+<div class="flex flex-col items-center space-y-4">
+<span class="material-symbols-outlined text-4xl" data-icon="precision_manufacturing">precision_manufacturing</span>
+<h3 class="font-headline text-xl text-on-surface">Sub-Millimeter Precision</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed px-4">Our fiber and CO2 laser systems achieve intricate details that hand-etching simply cannot replicate, ensuring clean lines on every substrate.</p>
+</div>
+<div class="flex flex-col items-center space-y-4">
+<span class="material-symbols-outlined text-4xl" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-headline text-xl text-on-surface">Collaborative Design</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed px-4">We work directly with you to refine your artwork. Every custom order receives a high-fidelity digital proof for approval before production begins.</p>
+</div>
+<div class="flex flex-col items-center space-y-4">
+<span class="material-symbols-outlined text-4xl" data-icon="landscape">landscape</span>
+<h3 class="font-headline text-xl text-on-surface">Maine Craftsmanship</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed px-4">Based in Lewiston, we combine advanced digital manufacturing with traditional hand-finishing techniques for a product that feels as good as it looks.</p>
+</div>
+</div>
+</section>
+<!-- Custom Order Process -->
+<section class="py-32 px-8 bg-surface">
+<div class="max-w-6xl mx-auto">
+<div class="text-center mb-20">
+<h2 class="font-headline text-4xl font-bold mb-4">From Concept to Keepsake</h2>
+<div class="w-24 h-1 bg-primary mx-auto opacity-40"></div>
+</div>
+<div class="relative flex flex-col md:flex-row justify-between items-start md:items-center space-y-12 md:space-y-0">
+<!-- Connecting Line -->
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -translate-y-1/2 z-0"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/4">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary-container font-bold mb-6 shadow-[0_0_15px_rgba(210,187,255,0.3)]">1</div>
+<h4 class="font-bold text-on-surface mb-2">Submit Your Idea</h4>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/4">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary-container font-bold mb-6 shadow-[0_0_15px_rgba(210,187,255,0.3)]">2</div>
+<h4 class="font-bold text-on-surface mb-2">Review Proofs</h4>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/4">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary-container font-bold mb-6 shadow-[0_0_15px_rgba(210,187,255,0.3)]">3</div>
+<h4 class="font-bold text-on-surface mb-2">Expert Engraving</h4>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center w-full md:w-1/4">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary-container font-bold mb-6 shadow-[0_0_15px_rgba(210,187,255,0.3)]">4</div>
+<h4 class="font-bold text-on-surface mb-2">Secure Shipping</h4>
+</div>
+</div>
+<div class="mt-20 text-center">
+<button class="px-12 py-4 bg-primary-container text-on-primary-container rounded-full font-bold text-lg hover:shadow-[0_0_30px_#9e82d7] transition-all transform hover:-translate-y-1">
+                    Begin Your Project
+                </button>
+</div>
+</div>
+</section>
+<!-- Best Sellers -->
+<section class="py-24 px-8 bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto">
+<h2 class="font-headline text-3xl mb-12 border-l-4 border-primary pl-6">Signature Pieces</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-low p-8 rounded-xl flex flex-col">
+<img alt="The Executive Glassware Set" class="w-full h-80 object-cover rounded-lg mb-6 vignette-mask" data-alt="A wide shot of a luxury barware set, engraved with geometric patterns, on a dark velvet surface with soft purple lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_FlJ89OHjX4X0iFlUhTLwqc0lOVBOcQyYZ11DMGBDzyNMdmcTtgS42MACqq0ltOcmQ4xGrpyUVp5WT-BW_uQfahNOfF7TEAlk9_ujGRaGvtNHbDiXNwhjFhrdTVuktx2t9uxI1RdgWehDtP2eTGE3ydX7gbJ-gi-eKTKW9R8xwejNUrNn-R0Vg3uf3a8ZZivbIBiSJHXM1aoNNx2oPprzfTRMCz-QFEAS9WoVv3zSA2BuiU2R7mnESX5A9NG8B-Mt3fKH1iMMN75M"/>
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline text-2xl text-on-surface mb-2">The Executive Glassware Set</h3>
+<p class="text-on-surface-variant max-w-md">Signature heavy-base rocks glasses, laser-etched with permanent, dishwasher-safe precision patterns or custom logos.</p>
+</div>
+<a class="text-primary font-semibold flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                            View Details <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-xl group transition-all hover:bg-surface-container-high">
+<img alt="Artisan Knife Collection" class="w-full h-40 object-cover rounded-lg mb-4" data-alt="Macro photo of an engraved leather knife sheath, high contrast shadows, artisanal quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMGoNjPaCEKDXSH2uweBtEy6NeBlO1bw6Xerz8sFYCOm50kUcXzShJP-gV5ZLydGiM_O8Y5FyfxkHuBpjmw9lzA7QBP7tZXBdjkO_6j_ugvepbM3z1YEl5d7Euk75KXGqXMM2fjPRkw7D1hW-VQcXuBgVF019s0BMsYMzRok9svSj4n4_QXf_1mATHcJtf3o6VSPlJigmLBgJ5Pq23nllI2kokxxDjNF6VJPMoM2vvRlGlwmGYUpPM8_PkjHiNJbLxe9B-0Y6mL9wZ"/>
+<h3 class="font-headline text-lg text-on-surface mb-2">Heritage Knife Series</h3>
+<a class="text-primary text-sm font-semibold" href="#">Explore Collection</a>
+</div>
+<!-- Small Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-xl group transition-all hover:bg-surface-container-high">
+<img alt="Celestial Slate Coasters" class="w-full h-40 object-cover rounded-lg mb-4" data-alt="Set of four slate coasters with minimal constellation engravings, stacked on a dark stone surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqSWEqt9MAP4xpF9Q0UeFEsH2yCk71zrbgPV00f35ceADOyFZRZFl5lXoNBOoxiXwc-SaSdyoft-pX1eNVBnH4WFb8yy0q58O2CG5LMNU2DaEeQOsvZGsdsd8Cl0NWjWjbU6Ouh95SyYleAPYinwTeVayPdMfvmx1xF6Ayfza9AoEaYqrf3vAOKaHvtC7RQQ3S2EMSMmVrnw3PGQvhiHX8MD03F0py3r8sFS-AdSsI82u9w6i8-RWwmVa2VUf86rB7b6DoeKk6sGyu"/>
+<h3 class="font-headline text-lg text-on-surface mb-2">Celestial Slate Set</h3>
+<a class="text-primary text-sm font-semibold" href="#">Personalize Yours</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Occasions -->
+<section class="py-24 px-8 bg-gradient-to-b from-[#191b26] to-[#0c0e18]">
+<div class="max-w-7xl mx-auto text-center">
+<h2 class="font-headline text-2xl tracking-[0.1em] uppercase text-outline mb-16 italic">Marks for Every Occasion</h2>
+<div class="flex flex-wrap justify-center gap-12">
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Weddings" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Blurred wedding rings on a dark silk background, elegant and soft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjvOEHg4ygDoohz1Ll5n49hzr8tkqW4yR8ojD0JYVGvvXORBUO9lh7zxEPQr0GwMo591wvgDCNOFwfvFphzNfOHsTbCvsWc6l5kMzIfBKgly4g4HLPZ94gytg6-f7iHaiG0IRn2CWdf6oQeyHhKkl7PIUGY2OEYbGePKsxvVPOpLKuB0Pz2QTyFkcVNPvlvYRjgDaE398dt3lHrfpQPY6Q10GFXBUELvwJriDjz9IeIbCcE9ic8hYtycdKJm1sp4BBF0Ac5Ghza6Pd"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Weddings</span>
+</div>
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Milestones" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Atmospheric shot of a single lit candle on a dark cake, mood lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmnuRUPTeSlmTjb6bpeioqOp-iJHfCz4PH6zBwP5n5gL9Xqy8s8DTHk2jkegezqgPV_OmFB42T_1Asvf5rkMbdIheesZS4l8pxdyHCe1EmU5u2yYTNR4UGPBj45Sks-3N56Pa5XmizGMnnD-mkJYnBquamk8gSGzoJFcgb-GLu0pp9zjbZ3hs-tZrTehLpKyyUqSVA7WAN0m7LuYD0OqCx8W0YKkTh084gXLTxE6ET_bfQwm8Hrmh4Cfr0f9Alcdl0hYM2LF0dTr6-"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Milestones</span>
+</div>
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Tributes" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Soft focused white flower on a dark textured background, somber and peaceful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDobrwxiGQbOGLYwatSz0-toICrXmEm-qcVUCVcL_-iljfktetg56KeAUP37fgWUlBUSpKGr765VKAlrdSLgTjrX11VBivgV5F5J2y0c6-3zb0Ljd0omU3E_htkLg0vh-un3frh2DUMLKvnCqXa1fN7zQEpOCjY2tLFyrnx1bKzBXJqGqvIMrkGTKR9GABeIUKjxr6dfYmMkWvJRH_fXH80uOCAqEcMVIqoOoKDfoQAQGzRoSZrk4BKneDjVXRDbV0J12cKRwxarpsC"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Tributes</span>
+</div>
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Corporate" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Modern high-rise architecture reflection in dark glass window, corporate and sleek." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Yu-izkgP98KeY879ZcdIr0RrnVi4TnriMLJxRQQ2EYPU8p_ZWF3txgYrC1xvFbIFxEP-tDVLZNV5Jbwm4tyUodk3buDiWmX8yzRzGmRR1hXFRJNS9TMOG2MafRk_mh70-e2apTvmpzLJGCEhwgY5uurc69nvAH57Cj3T9Lwce5SR2PaslkI_INdRzm-ucovMH0e7L1W8Qcyde7cSPNCTp6ZOsAkTRJAgJyb7RlD7sV9sLYrj0vbH2tp7GPDKeybbP2Ybgrsi__MR"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Branding</span>
+</div>
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Seasonal" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Close up of dark pine branches with subtle warm fairy lights, moody festive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkjcUbxKAbOm1eZuRmenjHaT5rC6sJ-c6kPmnyazAHYAmx1-FiuRreRDRo1pYhrRbqMWzoqeu48I489C2uMhhgN8Z3oRz5buXa2ECtsp94WmyQWhG7HzxMGmdUrhyCUWmZj2sqcre7tCCNSjWxAZNDHZ91ruhnRhxtFk7jR_fEpusFPkwyv01Q_iZ7VxnBvVrRpO76gC_c2teZFl0s9pFz4LXkCdqOa7OqrvuBdvnMTeDCVreZjvEHJSVt8mvq0GDx8xTRQT7cojAt"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Seasonal</span>
+</div>
+<div class="flex flex-col items-center group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-primary/30 p-1 group-hover:border-primary transition-all duration-500 mb-4 overflow-hidden">
+<img alt="Bespoke" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700" data-alt="Artistic motion blur of light trails on a deep purple background, abstract and ethereal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwOsx7MXZ2g8ZZM10tEsztHtVYpSeWmPXZ5Jm61gZq9_A_zRwn5S44Y1eb8wMis-TV-MJMZ6IFZ3Njib1eWUNrRLaNg2q_nREm55FHIksibb4jXvdUydujB9qLFCSpWOwEdjDBs5SaxAHmEHBwsYCLtzJY7y0bGe9g01NHKMbg4j-LM2tQ4qwuf_hK77mMls8jtXzH-Lk2CgeO9cUmUqKhTuBOmeOyAe3HPv3kZwUb_eV9HvNLhYpJgtyopVztb381C7WlGOPO9cp7"/>
+</div>
+<span class="text-sm font-label tracking-wide text-on-surface-variant group-hover:text-on-surface">Custom</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial -->
+<section class="py-32 bg-surface flex justify-center px-8">
+<div class="max-w-4xl text-center">
+<span class="material-symbols-outlined text-primary text-6xl opacity-40 mb-8" data-icon="format_quote">format_quote</span>
+<blockquote class="font-headline italic text-3xl md:text-4xl text-on-surface leading-snug">
+                "The attention to detail is ghost-like—it’s as if the design was always meant to be part of the material. A truly hauntingly beautiful piece."
+            </blockquote>
+<cite class="block mt-8 font-label text-sm tracking-widest text-outline uppercase">— Elena V., Kennebunkport, ME</cite>
+</div>
+</section>
+<!-- Business Gifting -->
+<section class="grid grid-cols-1 md:grid-cols-2">
+<div class="h-[500px] relative overflow-hidden">
+<img alt="Branded Corporate Tumblers" class="absolute inset-0 w-full h-full object-cover" data-alt="A row of identical matte navy tumblers with high-contrast corporate logo engravings, professional office setting in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh7Zv-3mJMejtPnVhXATVBoPuxaY4hGIVS_j-NE1__a9gbnR5lBxU3rapyFVvFevOKg6E2c5Z7AXbuOrCEiP0dmrsZfuZG4npOsfc7LOAm_2JSC2XrhKfhbAOgF-872MTRw6cWC0gkDhFafl-QEhPWNXGpZuQmEPinFSUe2v-drOBPPDBpa8RhGdK6_HWUyy1vTVTILsZqTG8CCPPjOzbJzHRQCfNEc_EyLOPguzzciqT1dIHm8AgP1d1PRNyYj-MXF5eOBTNYrtqi"/>
+<div class="absolute inset-0 bg-background/20 backdrop-brightness-75"></div>
+</div>
+<div class="bg-surface-container-low flex flex-col justify-center p-16 md:p-24 space-y-8">
+<h2 class="font-headline text-4xl text-on-surface leading-tight">Elevate Your Corporate Identity</h2>
+<p class="text-on-surface-variant leading-relaxed text-lg">
+                Impression matters. We specialize in high-volume, precision-branded assets for firms that value craftsmanship. From client appreciation gifts to internal awards, we ensure your logo is rendered with absolute fidelity.
+            </p>
+<div>
+<button class="px-10 py-4 bg-transparent border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-on-primary-container transition-all">
+                    Inquire for Bulk Orders
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer (Shared Component) -->
+<footer class="bg-[#191b26] w-full pt-16 pb-8 border-t border-[#e1e1f0]/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto px-8">
+<div class="col-span-1">
+<div class="font-headline text-2xl text-[#e1e1f0] mb-4">Ghostly Engraving</div>
+<p class="text-[#e1e1f0]/60 font-body text-sm leading-relaxed max-w-xs">
+                    Fine laser engraving studio specializing in custom-designed gifts and corporate branding. Hand-finished in Maine.
+                </p>
+</div>
+<div class="flex flex-col space-y-4">
+<span class="font-headline text-[#d2bbff] text-sm tracking-widest uppercase">Collections</span>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Drinkware</a>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Kitchen &amp; Home</a>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Office Essentials</a>
+</div>
+<div class="flex flex-col space-y-4">
+<span class="font-headline text-[#d2bbff] text-sm tracking-widest uppercase">Support</span>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Shipping &amp; Returns</a>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Terms of Service</a>
+<a class="text-[#e1e1f0]/60 font-body text-sm hover:text-[#d2bbff] transition-colors duration-300" href="#">Privacy Policy</a>
+</div>
+<div class="flex flex-col space-y-4">
+<span class="font-headline text-[#d2bbff] text-sm tracking-widest uppercase">Contact</span>
+<span class="text-[#e1e1f0]/60 font-body text-sm">Lewiston, Maine</span>
+<span class="text-[#e1e1f0]/60 font-body text-sm">hello@ghostlyengraving.com</span>
+<div class="flex space-x-4 pt-2">
+<span class="material-symbols-outlined text-[#e1e1f0]/60 cursor-pointer hover:text-primary" data-icon="share">share</span>
+<span class="material-symbols-outlined text-[#e1e1f0]/60 cursor-pointer hover:text-primary" data-icon="alternate_email">alternate_email</span>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 mt-16 pt-8 border-t border-[#e1e1f0]/5 flex flex-col md:flex-row justify-between items-center text-[#e1e1f0]/40 font-body text-xs tracking-wide">
+<div>© 2024 Ghostly Engraving LLC. Handcrafted in Lewiston, ME.</div>
+<div class="flex space-x-6 mt-4 md:mt-0">
+<a class="hover:text-[#d2bbff]" href="#">Privacy Policy</a>
+<a class="hover:text-[#d2bbff]" href="#">Terms of Service</a>
+<a class="hover:text-[#d2bbff]" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+</body></html>

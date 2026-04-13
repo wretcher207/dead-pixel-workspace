@@ -1,0 +1,242 @@
+{
+  "name": "AI Receptionist — Voice (Vapi)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "receptionist-voice",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "vapi-webhook",
+      "name": "Vapi Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "receptionist-voice"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse incoming Vapi server message\n// Vapi sends different message types — we care about:\n// - 'assistant-request' (initial setup)\n// - 'tool-calls' (function calling)\n// - 'end-of-call-report' (call summary)\n\nconst body = $input.item.json.body;\nconst messageType = body.message?.type || 'unknown';\n\n// For conversation messages, extract the latest user transcript\nlet userMessage = '';\nlet callId = body.message?.call?.id || 'unknown';\n\nif (messageType === 'tool-calls') {\n  // Vapi is asking us to execute tool calls\n  const toolCalls = body.message.toolCalls || [];\n  return [{\n    json: {\n      type: 'tool-calls',\n      call_id: callId,\n      tool_calls: toolCalls,\n      raw: body\n    }\n  }];\n} else if (messageType === 'assistant-request') {\n  // Initial call setup — respond with assistant config\n  return [{\n    json: {\n      type: 'assistant-request',\n      call_id: callId,\n      raw: body\n    }\n  }];\n} else if (messageType === 'conversation-update') {\n  // Get the latest user message from the conversation\n  const messages = body.message?.conversation || [];\n  const lastUserMsg = messages.filter(m => m.role === 'user').pop();\n  userMessage = lastUserMsg?.content || '';\n  return [{\n    json: {\n      type: 'conversation-update',\n      call_id: callId,\n      user_message: userMessage,\n      conversation: messages,\n      raw: body\n    }\n  }];\n} else if (messageType === 'end-of-call-report') {\n  return [{\n    json: {\n      type: 'end-of-call-report',\n      call_id: callId,\n      summary: body.message?.summary || '',\n      transcript: body.message?.transcript || '',\n      duration_seconds: body.message?.durationSeconds || 0,\n      raw: body\n    }\n  }];\n}\n\n// Unknown message type — pass through\nreturn [{\n  json: {\n    type: messageType,\n    call_id: callId,\n    raw: body\n  }\n}];"
+      },
+      "id": "parse-vapi-message",
+      "name": "Parse Vapi Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-tool-calls",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "tool-calls",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "route-message-type",
+      "name": "Is Tool Call?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process Vapi tool calls and return results\n// This is where the AI receptionist logic lives for voice mode\n\nconst config = {\n  \"business\": {\n    \"name\": \"Aroostook Family Dental\",\n    \"phone\": \"(207) 555-0142\",\n    \"address\": \"45 Main Street, Presque Isle, ME 04769\",\n    \"website\": \"aroostookfamilydental.com\"\n  },\n  \"hours\": {\n    \"monday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"tuesday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"wednesday\": { \"open\": \"08:00\", \"close\": \"17:00\" },\n    \"thursday\": { \"open\": \"08:00\", \"close\": \"15:00\" },\n    \"friday\": { \"open\": \"08:00\", \"close\": \"12:00\" },\n    \"saturday\": \"closed\",\n    \"sunday\": \"closed\"\n  },\n  \"services\": [\n    { \"name\": \"Cleaning & Exam\", \"price\": \"$150-$250\", \"duration\": \"60 min\" },\n    { \"name\": \"Filling\", \"price\": \"$175-$350\", \"duration\": \"45 min\" },\n    { \"name\": \"Crown\", \"price\": \"$800-$1500\", \"duration\": \"90 min\" },\n    { \"name\": \"Emergency Visit\", \"price\": \"Varies\", \"duration\": \"30 min\" },\n    { \"name\": \"Whitening\", \"price\": \"$300-$500\", \"duration\": \"60 min\" }\n  ],\n  \"faq\": {\n    \"insurance\": \"We accept most major dental insurance plans including Delta Dental, Cigna, Aetna, and MetLife.\",\n    \"new_patients\": \"Yes, we're always welcoming new patients.\",\n    \"payment_plans\": \"We offer CareCredit financing and in-house payment plans for procedures over $500.\",\n    \"cancellation\": \"Please give us at least 24 hours notice to cancel or reschedule.\"\n  }\n};\n\nconst toolCalls = $json.tool_calls || [];\nconst results = [];\n\nfor (const call of toolCalls) {\n  const funcName = call.function?.name;\n  const args = typeof call.function?.arguments === 'string'\n    ? JSON.parse(call.function.arguments)\n    : call.function?.arguments || {};\n  \n  let result = '';\n\n  switch (funcName) {\n    case 'get_business_info':\n      const query = (args.query || '').toLowerCase();\n      if (query.includes('hour')) {\n        result = JSON.stringify(config.hours);\n      } else if (query.includes('service') || query.includes('pricing') || query.includes('price')) {\n        result = JSON.stringify(config.services);\n      } else if (query.includes('insurance')) {\n        result = config.faq.insurance;\n      } else if (query.includes('location') || query.includes('address')) {\n        result = `We're located at ${config.business.address}`;\n      } else if (query.includes('new patient')) {\n        result = config.faq.new_patients;\n      } else if (query.includes('payment') || query.includes('financing')) {\n        result = config.faq.payment_plans;\n      } else {\n        result = JSON.stringify(config.business);\n      }\n      break;\n\n    case 'check_availability':\n      // In production, this queries Google Calendar\n      // For now, return a simulated response\n      result = JSON.stringify({\n        available: true,\n        date: args.date,\n        time: args.time,\n        appointment_type: args.appointment_type,\n        note: 'Connect Google Calendar API for real availability'\n      });\n      break;\n\n    case 'book_appointment':\n      // In production, this creates a Google Calendar event\n      result = JSON.stringify({\n        booked: true,\n        patient_name: args.patient_name,\n        date: args.date,\n        time: args.time,\n        appointment_type: args.appointment_type,\n        confirmation: `Appointment booked for ${args.patient_name} on ${args.date} at ${args.time}`,\n        note: 'Connect Google Calendar API for real booking'\n      });\n      break;\n\n    case 'take_message':\n      result = JSON.stringify({\n        taken: true,\n        message: `Message from ${args.caller_name} (${args.caller_phone}): ${args.message}`,\n        urgency: args.urgency\n      });\n      break;\n\n    case 'transfer_to_human':\n      result = JSON.stringify({\n        transferred: true,\n        reason: args.reason,\n        message: 'A staff member will follow up shortly.'\n      });\n      break;\n\n    default:\n      result = JSON.stringify({ error: `Unknown function: ${funcName}` });\n  }\n\n  results.push({\n    toolCallId: call.id,\n    result: result\n  });\n}\n\n// Return in Vapi's expected format\nreturn [{\n  json: {\n    results: results\n  }\n}];"
+      },
+      "id": "process-tool-calls",
+      "name": "Process Tool Calls",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ results: $json.results }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-tool-results",
+      "name": "Respond with Tool Results",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1050, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-other",
+      "name": "Acknowledge Other Messages",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [850, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-end-of-call",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "end-of-call-report",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "check-end-of-call",
+      "name": "End of Call?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [850, 500]
+    },
+    {
+      "parameters": {
+        "chatId": "REPLACE_WITH_CHAT_ID",
+        "text": "=📞 *Call Summary*\n\nDuration: {{ $json.duration_seconds }} seconds\n\nSummary: {{ $json.summary }}\n\nTranscript:\n{{ $json.transcript }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-call-summary",
+      "name": "Send Call Summary (Telegram)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1050, 450],
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Vapi Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Vapi Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Vapi Message": {
+      "main": [
+        [
+          {
+            "node": "Is Tool Call?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Tool Call?": {
+      "main": [
+        [
+          {
+            "node": "Process Tool Calls",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check End of Call?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Acknowledge Other Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Tool Calls": {
+      "main": [
+        [
+          {
+            "node": "Respond with Tool Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check End of Call?": {
+      "main": [
+        [
+          {
+            "node": "Send Call Summary (Telegram)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "AI Receptionist",
+      "createdAt": "2026-04-09T00:00:00.000Z",
+      "updatedAt": "2026-04-09T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-09T00:00:00.000Z",
+  "versionId": "1"
+}

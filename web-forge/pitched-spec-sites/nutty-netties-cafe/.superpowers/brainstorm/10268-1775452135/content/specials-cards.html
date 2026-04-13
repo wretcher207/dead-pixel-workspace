@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Specials Card Styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #ede8dc;
+  font-family: 'DM Sans', sans-serif;
+  padding: 28px 24px 48px;
+}
+h1 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a6e62;
+  margin-bottom: 4px;
+}
+.page-sub { font-size: 13px; color: #9a9088; margin-bottom: 32px; }
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.option-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.option-frame {
+  border-radius: 10px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
+  background: transparent;
+}
+.option-frame:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+.option-frame.selected { border-color: #8b5e3c; box-shadow: 0 12px 36px rgba(139,94,60,0.2); }
+.preview-area {
+  padding: 24px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px;
+}
+.option-meta { padding: 0 4px; }
+.option-meta h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #3d2e24;
+  margin-bottom: 5px;
+}
+.option-meta p { font-size: 12px; color: #7a6e62; line-height: 1.55; }
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.badge.rec { background: #8b5e3c; color: #fdf8f0; }
+.badge.alt { background: #e8dfd4; color: #7a6e62; }
+
+/* ═══════════════════════════════
+   A: ROTATED PAPER CARDS ON TABLE
+═══════════════════════════════ */
+.table-scene {
+  background: #d4c9b8;
+  width: 100%;
+  position: relative;
+  height: 200px;
+  border-radius: 6px;
+  overflow: visible;
+}
+.paper-card {
+  position: absolute;
+  background: #fdf8f0;
+  border-radius: 4px;
+  padding: 14px 13px 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14), 0 1px 3px rgba(0,0,0,0.08);
+  width: 130px;
+}
+.card-a1 {
+  top: 18px; left: 14px;
+  transform: rotate(-3.5deg);
+  z-index: 1;
+}
+.card-a2 {
+  top: 24px; left: 76px;
+  transform: rotate(1.8deg);
+  z-index: 2;
+}
+.card-a3 {
+  top: 20px; left: 138px;
+  transform: rotate(-1.2deg);
+  z-index: 3;
+}
+.pc-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d2e24;
+  margin-bottom: 3px;
+}
+.pc-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px;
+  color: #7a6e62;
+  line-height: 1.5;
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+.pc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.pc-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8b5e3c;
+}
+.pc-note {
+  font-family: 'Caveat', cursive;
+  font-size: 9px;
+  color: #b85c6e;
+}
+.pin {
+  width: 8px; height: 8px;
+  background: #b85c6e;
+  border-radius: 50%;
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.ruled-line {
+  height: 1px;
+  background: #e8dfd4;
+  margin: 5px 0;
+}
+.card-divider {
+  width: 20px; height: 1px;
+  background: #c9a96e;
+  margin: 5px 0;
+}
+
+/* ═══════════════════════════════
+   B: RECIPE CARDS
+═══════════════════════════════ */
+.recipe-card {
+  background: #fdf8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 150px;
+}
+.recipe-header {
+  background: #8b5e3c;
+  padding: 8px 12px 6px;
+  position: relative;
+}
+.recipe-number {
+  font-family: 'Caveat', cursive;
+  font-size: 10px;
+  color: rgba(253,248,240,0.6);
+  margin-bottom: 1px;
+}
+.recipe-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fdf8f0;
+  line-height: 1.2;
+}
+.recipe-body {
+  padding: 10px 12px 10px;
+}
+.recipe-ruled {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #e8dfd4 0px, #e8dfd4 8px, transparent 8px, transparent 12px);
+  margin: 5px 0;
+}
+.recipe-desc {
+  font-size: 9px;
+  color: #7a6e62;
+  line-height: 1.55;
+  font-weight: 300;
+}
+.recipe-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px 10px;
+  border-top: 1px dashed #e8dfd4;
+}
+.recipe-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3d2e24;
+}
+.recipe-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 9px;
+  color: #7a9e7e;
+}
+.recipe-scene {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.recipe-card2 {
+  margin-top: 16px;
+}
+
+/* ═══════════════════════════════
+   C: BAKERY DISPLAY LABELS
+═══════════════════════════════ */
+.display-case {
+  background: linear-gradient(180deg, #e8f0ec 0%, #d4e4da 100%);
+  border-radius: 8px;
+  padding: 14px 12px;
+  width: 100%;
+  position: relative;
+}
+.display-case::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 8px 8px 0 0;
+}
+.display-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.display-item {
+  background: #fdf8f0;
+  border-radius: 4px;
+  padding: 8px 9px 7px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.display-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: #c9a96e;
+  border-radius: 0 0 4px 4px;
+}
+.di-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3d2e24;
+  margin-bottom: 2px;
+}
+.di-desc {
+  font-size: 8px;
+  color: #7a6e62;
+  line-height: 1.45;
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+.di-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  color: #8b5e3c;
+  font-weight: 500;
+}
+.di-note {
+  font-family: 'Caveat', cursive;
+  font-size: 8px;
+  color: #b85c6e;
+  position: absolute;
+  top: 5px; right: 7px;
+}
+.display-title {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a9e7e;
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+  <h1>Featured Specials — Card Treatment</h1>
+  <p class="page-sub">How the signature items section is presented. Hover interaction will add lift/straighten effect. Click to select.</p>
+
+  <div class="options-grid">
+
+    <!-- A: Rotated paper cards -->
+    <div class="option-wrap">
+      <div class="option-frame" onclick="this.classList.toggle('selected')">
+        <div class="preview-area" style="background:#d4c9b8; min-height:220px; padding: 30px 16px 20px;">
+          <div style="position:relative;width:100%;height:190px;">
+            <div class="paper-card card-a1">
+              <div class="pin"></div>
+              <div class="pc-item">Hazelnut Fog</div>
+              <div class="ruled-line"></div>
+              <div class="pc-desc">Oat milk cortado with house hazelnut, a tiny pinch of sea salt</div>
+              <div class="card-divider"></div>
+              <div class="pc-footer">
+                <div class="pc-price">$5.50</div>
+                <div class="pc-note">✦ fan fave</div>
+              </div>
+            </div>
+            <div class="paper-card card-a2" style="z-index:3">
+              <div class="pin" style="background:#7a9e7e"></div>
+              <div class="pc-item">Brown Butter<br>Morning Bun</div>
+              <div class="ruled-line"></div>
+              <div class="pc-desc">Brioche dough, cardamom sugar, burnished edges</div>
+              <div class="card-divider"></div>
+              <div class="pc-footer">
+                <div class="pc-price">$4.25</div>
+                <div class="pc-note">🐿 nettie's pick</div>
+              </div>
+            </div>
+            <div class="paper-card card-a3">
+              <div class="pin" style="background:#c9a96e"></div>
+              <div class="pc-item">Maine Cold<br>Brew</div>
+              <div class="ruled-line"></div>
+              <div class="pc-desc">24-hr steep, single origin, served over Maine ice</div>
+              <div class="card-divider"></div>
+              <div class="pc-footer">
+                <div class="pc-price">$5.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="option-meta">
+        <span class="badge rec">Recommended</span>
+        <h3>Rotated Paper Cards</h3>
+        <p>Cards scattered at slight angles like they've been pinned to a table. Hover straightens them with a satisfying snap. Most tactile, most distinctive.</p>
+      </div>
+    </div>
+
+    <!-- B: Recipe cards -->
+    <div class="option-wrap">
+      <div class="option-frame" onclick="this.classList.toggle('selected')">
+        <div class="preview-area" style="background:#f0ebe0; justify-content:center;">
+          <div class="recipe-scene">
+            <div class="recipe-card">
+              <div class="recipe-header">
+                <div class="recipe-number">No. 01</div>
+                <div class="recipe-title">Hazelnut Fog</div>
+              </div>
+              <div class="recipe-body">
+                <div class="recipe-desc">Oat milk cortado with house hazelnut syrup and a pinch of sea salt.</div>
+                <div class="recipe-ruled"></div>
+              </div>
+              <div class="recipe-footer">
+                <div class="recipe-price">$5.50</div>
+                <div class="recipe-tag">fan fave ✦</div>
+              </div>
+            </div>
+            <div class="recipe-card recipe-card2">
+              <div class="recipe-header" style="background:#7a9e7e">
+                <div class="recipe-number">No. 02</div>
+                <div class="recipe-title">Morning Bun</div>
+              </div>
+              <div class="recipe-body">
+                <div class="recipe-desc">Brown butter brioche, cardamom sugar, burnished edges.</div>
+                <div class="recipe-ruled"></div>
+              </div>
+              <div class="recipe-footer">
+                <div class="recipe-price">$4.25</div>
+                <div class="recipe-tag">🐿 pick</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="option-meta">
+        <span class="badge alt">Structured</span>
+        <h3>Recipe Cards</h3>
+        <p>Numbered cards with a colored header band per item. Grid-based, very readable. Feels like a physical menu card. Hover lifts the card off the page.</p>
+      </div>
+    </div>
+
+    <!-- C: Bakery display labels -->
+    <div class="option-wrap">
+      <div class="option-frame" onclick="this.classList.toggle('selected')">
+        <div class="preview-area" style="background:#e8f0ec; padding: 20px 14px;">
+          <div style="width:100%;">
+            <div class="display-case">
+              <div class="display-title">Today's Specials</div>
+              <div class="display-grid">
+                <div class="display-item">
+                  <div class="di-note">✦ fave</div>
+                  <div class="di-name">Hazelnut Fog</div>
+                  <div class="di-desc">Oat cortado, sea salt</div>
+                  <div class="di-price">$5.50</div>
+                </div>
+                <div class="display-item">
+                  <div class="di-note">🐿</div>
+                  <div class="di-name">Morning Bun</div>
+                  <div class="di-desc">Cardamom brioche</div>
+                  <div class="di-price">$4.25</div>
+                </div>
+                <div class="display-item">
+                  <div class="di-name">Cold Brew</div>
+                  <div class="di-desc">24hr steep, Maine ice</div>
+                  <div class="di-price">$5.00</div>
+                </div>
+                <div class="display-item" style="border-bottom: 3px solid #b85c6e;">
+                  <div class="di-name">Jam Scone</div>
+                  <div class="di-desc">Blueberry preserves</div>
+                  <div class="di-price">$3.75</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="option-meta">
+        <span class="badge alt">Display Case</span>
+        <h3>Bakery Display Labels</h3>
+        <p>Items shown inside a frosted glass display case, each with a small label card. Very cafe-authentic. Hover illuminates individual items.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

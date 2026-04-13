@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-midnight: #0B0D17;
+  --color-charcoal: #161822;
+  --color-charcoal-light: #1E2030;
+  --color-violet: #9B7FD4;
+  --color-violet-bright: #B08FE8;
+  --color-lilac: #C4B0E8;
+  --color-cream: #F0ECF5;
+  --color-cream-dim: #B0A8C0;
+  --color-ghost-purple: rgba(155, 127, 212, 0.06);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-dm-sans);
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-midnight);
+  color: var(--color-cream);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Cosmic grain overlay */
+.cosmic-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* Frosted glass navbar */
+.frosted-nav {
+  background: rgba(11, 13, 23, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(155, 127, 212, 0.1);
+}
+
+.frosted-nav.scrolled {
+  background: rgba(11, 13, 23, 0.92);
+}
+
+/* Ghost watermark */
+.ghost-watermark {
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Glow effects */
+.glow-violet {
+  box-shadow: 0 0 30px rgba(155, 127, 212, 0.15);
+}
+
+.glow-violet-hover:hover {
+  box-shadow: 0 0 40px rgba(155, 127, 212, 0.25);
+}
+
+/* Card surface */
+.card-surface {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(155, 127, 212, 0.08);
+}
+
+.card-surface:hover {
+  border-color: rgba(155, 127, 212, 0.2);
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(155, 127, 212, 0.2) 50%,
+    transparent
+  );
+}
+
+/* Cosmic gradient backgrounds */
+.bg-cosmic-hero {
+  background: linear-gradient(
+    175deg,
+    #0B0D17 0%,
+    #12142a 35%,
+    #1a1640 60%,
+    #241850 80%,
+    #1a1640 100%
+  );
+}
+
+.bg-cosmic-subtle {
+  background: linear-gradient(
+    180deg,
+    var(--color-midnight) 0%,
+    #0f1125 50%,
+    var(--color-midnight) 100%
+  );
+}
+
+/* Premium button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-violet), #8A6FC0);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-violet-bright), var(--color-violet));
+  box-shadow: 0 0 30px rgba(155, 127, 212, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-cream);
+  padding: 14px 32px;
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(155, 127, 212, 0.4);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-violet);
+  background: rgba(155, 127, 212, 0.08);
+  box-shadow: 0 0 20px rgba(155, 127, 212, 0.15);
+}
+
+/* Star particles for hero */
+.star-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.star-field::before,
+.star-field::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(196, 176, 232, 0.4);
+  box-shadow:
+    120px 80px 0 rgba(196, 176, 232, 0.2),
+    340px 150px 0 rgba(196, 176, 232, 0.15),
+    560px 60px 0 rgba(196, 176, 232, 0.3),
+    780px 200px 0 rgba(196, 176, 232, 0.12),
+    200px 300px 0 rgba(196, 176, 232, 0.18),
+    450px 350px 0 rgba(196, 176, 232, 0.25),
+    680px 280px 0 rgba(196, 176, 232, 0.1),
+    900px 100px 0 rgba(196, 176, 232, 0.22),
+    100px 450px 0 rgba(196, 176, 232, 0.16),
+    820px 380px 0 rgba(196, 176, 232, 0.2),
+    300px 500px 0 rgba(196, 176, 232, 0.14),
+    1000px 250px 0 rgba(196, 176, 232, 0.18),
+    1150px 120px 0 rgba(196, 176, 232, 0.12),
+    50px 180px 0 rgba(196, 176, 232, 0.2),
+    1300px 350px 0 rgba(196, 176, 232, 0.15);
+}
+
+.star-field::after {
+  width: 1px;
+  height: 1px;
+  box-shadow:
+    80px 200px 0 rgba(196, 176, 232, 0.3),
+    250px 90px 0 rgba(196, 176, 232, 0.2),
+    490px 400px 0 rgba(196, 176, 232, 0.15),
+    720px 320px 0 rgba(196, 176, 232, 0.25),
+    1050px 180px 0 rgba(196, 176, 232, 0.18),
+    150px 380px 0 rgba(196, 176, 232, 0.12),
+    600px 150px 0 rgba(196, 176, 232, 0.22),
+    850px 450px 0 rgba(196, 176, 232, 0.16),
+    380px 250px 0 rgba(196, 176, 232, 0.2),
+    1200px 80px 0 rgba(196, 176, 232, 0.14);
+}
+
+/* Form styles */
+.form-input {
+  background: rgba(22, 24, 34, 0.8);
+  border: 1px solid rgba(155, 127, 212, 0.15);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--color-cream);
+  width: 100%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-violet);
+  box-shadow: 0 0 15px rgba(155, 127, 212, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--color-cream-dim);
+  opacity: 0.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-midnight);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 127, 212, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(155, 127, 212, 0.5);
+}

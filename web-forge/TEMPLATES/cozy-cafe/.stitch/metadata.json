@@ -1,0 +1,19 @@
+{
+  "title": "Cozy Cafe Template",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "headlineFont": "EB_GARAMOND",
+    "bodyFont": "DM_SANS",
+    "roundness": "ROUND_EIGHT",
+    "customColor": "#c9a96e",
+    "colorVariant": "TONAL_SPOT",
+    "overridePrimaryColor": "#8b5e3c",
+    "overrideSecondaryColor": "#7a9e7e",
+    "overrideTertiaryColor": "#b85c6e",
+    "overrideNeutralColor": "#e8dfd4"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__n8n-mcp__n8n_health_check",
+      "mcp__n8n-mcp__n8n_list_workflows",
+      "mcp__n8n-mcp__n8n_get_workflow",
+      "mcp__n8n-mcp__n8n_executions",
+      "mcp__n8n-mcp__search_nodes",
+      "mcp__n8n-mcp__get_node",
+      "mcp__n8n-mcp__n8n_update_partial_workflow",
+      "mcp__n8n-mcp__tools_documentation",
+      "mcp__n8n-mcp__n8n_validate_workflow",
+      "mcp__n8n-mcp__n8n_test_workflow",
+      "Bash(curl:*)",
+      "Bash(tasklist)",
+      "Bash(wmic process:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(netstat -ano)",
+      "Bash(python -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(m['name'], m.get\\('size','?'\\)\\) for m in data.get\\('models',[]\\)]\")",
+      "Bash(kill 11932)",
+      "Bash(kill 11780)",
+      "Bash(N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true npx n8n start)",
+      "Bash(echo \"n8n PID: $!\")",
+      "Bash(export N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true)",
+      "Bash(npx n8n:*)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(python -c ':*)"
+    ]
+  }
+}

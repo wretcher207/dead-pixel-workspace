@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dead Pixel Toolbox — Free Developer & Design Tools</title>
+  <meta name="description" content="Free online tools for developers and designers. JSON formatter, password generator, color palette creator, image compressor, and more. No signup required.">
+  <meta name="keywords" content="developer tools, online tools, JSON formatter, password generator, color palette, image compressor, base64, QR code, markdown preview, CSS gradient">
+  <link rel="canonical" href="https://toolbox.deadpixeldesign.com">
+  <meta property="og:title" content="Dead Pixel Toolbox — Free Developer & Design Tools">
+  <meta property="og:description" content="Free online tools for developers and designers. No signup, no BS.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero {
+      padding: 80px 0 48px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .hero-tag::before,
+    .hero-tag::after {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent-dim);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      padding-bottom: 80px;
+    }
+
+    .tool-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 250ms ease;
+    }
+
+    .tool-card:hover {
+      border-color: var(--accent-dim);
+      background: var(--bg-card);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--accent-dim);
+    }
+
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+
+    .tool-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .tool-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .tool-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .tool-card .arrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      margin-top: auto;
+      transition: color var(--transition);
+    }
+
+    .tool-card:hover .arrow {
+      color: var(--accent);
+    }
+
+    /* Icon colors */
+    .icon-json { background: #4d8dff22; color: #4d8dff; }
+    .icon-password { background: #ff446622; color: #ff4466; }
+    .icon-color { background: #ff88ff22; color: #ff88ff; }
+    .icon-gradient { background: #ffaa2222; color: #ffaa22; }
+    .icon-base64 { background: #00e87b22; color: #00e87b; }
+    .icon-qr { background: #ffffff18; color: #ffffff; }
+    .icon-image { background: #44bbff22; color: #44bbff; }
+    .icon-markdown { background: #88aaff22; color: #88aaff; }
+    .icon-lorem { background: #ffcc6622; color: #ffcc66; }
+    .icon-word { background: #66eebb22; color: #66eebb; }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      margin-bottom: 20px;
+      padding-left: 4px;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1495111704142071"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="page-wrapper">
+      <a href="/toolbox-site/" class="logo">
+        <span class="logo-icon"></span>
+        <span>DEAD PIXEL <span class="logo-text-dim">TOOLBOX</span></span>
+      </a>
+      <div class="header-links">
+        <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <section class="hero fade-in">
+      <div class="hero-tag">Free Online Tools</div>
+      <h1>Dev tools that don't <span class="accent">suck.</span></h1>
+      <p>No signups. No ads. No tracking. Just tools that work, built by a developer who actually uses them.</p>
+    </section>
+
+    <div class="section-label fade-in fade-in-1">10 Tools Available</div>
+
+    <div class="tools-grid">
+      <a href="tools/json-formatter/" class="tool-card fade-in fade-in-1">
+        <div class="tool-card-icon icon-json">{ }</div>
+        <h3>JSON Formatter</h3>
+        <p>Validate, format, and minify JSON. Syntax highlighting and error detection built in.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/password-generator/" class="tool-card fade-in fade-in-1">
+        <div class="tool-card-icon icon-password">🔐</div>
+        <h3>Password Generator</h3>
+        <p>Generate strong, random passwords with customizable length, characters, and entropy display.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/color-palette/" class="tool-card fade-in fade-in-2">
+        <div class="tool-card-icon icon-color">◆</div>
+        <h3>Color Palette</h3>
+        <p>Generate harmonious color palettes. Extract, adjust, and export colors in any format.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/css-gradient/" class="tool-card fade-in fade-in-2">
+        <div class="tool-card-icon icon-gradient">▧</div>
+        <h3>CSS Gradient</h3>
+        <p>Build linear and radial gradients visually. Copy the CSS with one click.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/base64-encoder/" class="tool-card fade-in fade-in-2">
+        <div class="tool-card-icon icon-base64">&lt;/&gt;</div>
+        <h3>Base64 Encoder</h3>
+        <p>Encode and decode Base64 strings instantly. Supports text and file input.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/qr-generator/" class="tool-card fade-in fade-in-3">
+        <div class="tool-card-icon icon-qr">▣</div>
+        <h3>QR Generator</h3>
+        <p>Generate QR codes for URLs, text, WiFi, and more. Download as PNG or SVG.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/image-compressor/" class="tool-card fade-in fade-in-3">
+        <div class="tool-card-icon icon-image">◑</div>
+        <h3>Image Compressor</h3>
+        <p>Compress images in-browser. No upload to any server. Adjust quality and see the savings.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/markdown-preview/" class="tool-card fade-in fade-in-3">
+        <div class="tool-card-icon icon-markdown">M↓</div>
+        <h3>Markdown Preview</h3>
+        <p>Write markdown, see the rendered output live. Export to HTML when you're done.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/lorem-ipsum/" class="tool-card fade-in fade-in-4">
+        <div class="tool-card-icon icon-lorem">¶</div>
+        <h3>Lorem Ipsum</h3>
+        <p>Generate placeholder text by paragraphs, sentences, or words. Multiple styles available.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+
+      <a href="tools/word-counter/" class="tool-card fade-in fade-in-4">
+        <div class="tool-card-icon icon-word">#</div>
+        <h3>Word Counter</h3>
+        <p>Count words, characters, sentences, and paragraphs. Estimate reading time instantly.</p>
+        <span class="arrow">→ Open tool</span>
+      </a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <p>Built by <a href="https://deadpixeldesign.com" target="_blank" rel="noopener">Dead Pixel Design</a> &mdash; Houlton, Maine</p>
+    </div>
+  </footer>
+</body>
+</html>
