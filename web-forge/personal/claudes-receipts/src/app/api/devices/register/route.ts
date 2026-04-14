@@ -59,11 +59,15 @@ export async function POST(request: Request) {
     ingestKeyHash: hashIngestKey(ingestKey),
   });
 
+  const endpoint = process.env.NEXTAUTH_URL ?? "https://claudes-receipts.netlify.app";
+  const deepLinkUrl = `claudes-receipts://auth?device-id=${encodeURIComponent(deviceId)}&ingest-key=${encodeURIComponent(ingestKey)}&endpoint=${encodeURIComponent(endpoint)}`;
+
   return Response.json(
     {
       ok: true,
       deviceId,
       ingestKey,
+      deepLinkUrl,
       note: "Store the ingest key once. Only the hash is persisted.",
     },
     { status: 201 },

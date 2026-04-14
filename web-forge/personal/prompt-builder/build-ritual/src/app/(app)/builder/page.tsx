@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { TopMetaBar } from "@/components/app-shell/TopMetaBar";
 import { DraftProjectState } from "@/components/app-shell/DraftProjectState";
+import { TeachingNote } from "@/components/teaching/TeachingNote";
 import { Button } from "@/components/ui/Buttons";
 import { Chip } from "@/components/ui/Chip";
 import { getContext, resolveSlug } from "@/lib/project-context";
@@ -328,6 +329,24 @@ const sections: SectionDef[] = [
   },
 ];
 
+// Teaching notes — expanded rationale shown when Teaching Mode is on.
+// Keyed by section ID. Each explains _why_ this section exists as a
+// web-design concern, not just what to fill in.
+const teachingNotes: Record<string, string> = {
+  "business-reality":
+    "This section is the raw material for every copy decision the site makes. Research shows visitors form a first impression in 0.05 seconds. The difference between 'body piercing studio' and 'APP-certified piercer working solo by appointment' changes the entire site's tone, CTA language, and trust strategy.",
+  audience:
+    "Most small business sites talk about themselves. The best ones talk to the visitor's anxiety. 28% of homepages skip trust signals entirely. When you name the exact pain point ('surprise jewelry upsells,' 'vague sterilization info'), the site copy can address it directly instead of hoping generic reassurance works.",
+  brand:
+    "Tone isn't decoration. It's the filter that catches bad copy before it ships. If you define 'monastic, deliberate, archival' here, then a headline like 'Unlock Your Piercing Journey!' gets caught immediately. Data shows specific language converts 12% better than generic marketing speak.",
+  "site-shape":
+    "Page count is a design decision, not an inventory exercise. Users expect to reach any important page within 3 clicks from the homepage. A 3-page site with one clear path converts better than a 12-page site where visitors get lost. The page list here becomes the sitemap in the Build prompt.",
+  assets:
+    "The gap between 'what they have' and 'what the site needs' is where most projects stall. Studies show visuals paired with text get 65% retention vs. 10% for text alone. Being honest here means the AI review can flag gaps before anyone starts building.",
+  tech:
+    "53% of mobile users leave if a page takes more than 3 seconds to load. Each extra second costs 7% in conversions. Setting 'mobile-first' here means the Build prompt specifies a mobile-first CSS strategy. Core Web Vitals are both a UX metric and a Google ranking factor.",
+};
+
 const outputOptions = [
   {
     name: "Build Prompt",
@@ -528,14 +547,14 @@ function BuilderPageBody() {
         {/* ─── Central Workspace ─── */}
         <section className="flex-1 px-12 py-10 space-y-16 overflow-y-auto warm-wash">
           <header className="space-y-3 max-w-[58ch]">
-            <p className="editorial-label">Workspace · Project Brief</p>
+            <p className="editorial-label">Step 1 of 3</p>
             <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
-              Ritual Builder
+              Brief Builder
             </h3>
             <p className="font-body text-[15px] leading-[1.7] text-on-surface-variant">
               Fill this in the order that makes sense to you. Skip what you
-              don&rsquo;t know yet &mdash; gaps get flagged in the DNA review
-              before any prompts are generated. Your answers save as you go.
+              don&rsquo;t know yet. The AI review will flag any gaps before
+              prompts are generated.
             </p>
           </header>
 
@@ -582,10 +601,10 @@ function BuilderPageBody() {
           <div className="flex items-center gap-3 pt-2">
             <Button variant="ghost">Save Draft</Button>
             <Link href={`/dna${query}`}>
-              <Button variant="secondary">Review DNA</Button>
+              <Button variant="secondary">Review Brief</Button>
             </Link>
             <Link href={`/output${query}`}>
-              <Button variant="primary">Generate Outputs</Button>
+              <Button variant="primary">Generate Prompts</Button>
             </Link>
           </div>
         </section>
@@ -656,6 +675,7 @@ function FormSection({
   section: SectionDef;
   useDefaults: boolean;
 }) {
+  const note = teachingNotes[section.id];
   return (
     <section id={section.id} className="space-y-7 scroll-mt-24">
       <div className="space-y-2 max-w-[58ch]">
@@ -666,6 +686,7 @@ function FormSection({
         <p className="font-body text-[14px] leading-[1.7] text-on-surface-variant">
           {section.intro}
         </p>
+        {note && <TeachingNote>{note}</TeachingNote>}
       </div>
 
       <div className="atmospheric-line" />

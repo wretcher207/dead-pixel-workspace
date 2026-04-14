@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070707;
+  --foreground: #ede5d9;
+  --muted: #a99d8d;
+  --panel: rgba(26, 24, 20, 0.96);
+  --stroke: rgba(233, 222, 205, 0.12);
+  --accent: #cbb58a;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}

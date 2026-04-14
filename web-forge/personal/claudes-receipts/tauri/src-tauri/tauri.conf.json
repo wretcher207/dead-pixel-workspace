@@ -1,0 +1,57 @@
+{
+  "productName": "Claude's Receipts",
+  "version": "0.1.0",
+  "identifier": "app.claudes-receipts",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "status",
+        "title": "Claude's Receipts",
+        "width": 320,
+        "height": 220,
+        "resizable": false,
+        "decorations": false,
+        "visible": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true
+      },
+      {
+        "label": "settings",
+        "title": "Claude's Receipts — Settings",
+        "width": 520,
+        "height": 420,
+        "resizable": false,
+        "visible": false
+      }
+    ],
+    "trayIcon": {
+      "iconPath": "icons/watching.png",
+      "tooltip": "Claude's Receipts"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["icons/watching.png"],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "schemes": ["claudes-receipts"]
+    },
+    "autostart": {
+      "args": []
+    }
+  }
+}

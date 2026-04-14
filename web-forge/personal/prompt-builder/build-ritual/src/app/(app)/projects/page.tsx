@@ -2,34 +2,62 @@ import Link from "next/link";
 import { TopMetaBar } from "@/components/app-shell/TopMetaBar";
 import { Button } from "@/components/ui/Buttons";
 import { Chip } from "@/components/ui/Chip";
+import { TeachingNote } from "@/components/teaching/TeachingNote";
 import { projects } from "@/lib/projects";
+import { getPrinciplesForProject } from "@/lib/principles";
 
 export default function ProjectsPage() {
   return (
     <>
       <TopMetaBar
-        environment="Library"
-        title="The Studio Archive"
-        meta={[{ label: "Projects on File", value: `${projects.length}` }]}
+        environment="Projects"
+        title="Your Projects"
+        meta={[{ label: "Projects", value: `${projects.length}` }]}
       />
 
       <section className="flex-1 px-12 py-10 flex flex-col space-y-10 overflow-y-auto warm-wash">
-        {/* Page header — editorial label → serif title pattern */}
+        {/* Page header */}
         <header className="flex items-end justify-between gap-8">
           <div className="space-y-3 max-w-2xl">
-            <p className="editorial-label">Archive</p>
+            <p className="editorial-label">Projects</p>
             <h3 className="font-headline text-[44px] leading-[1.02] tracking-tight text-on-surface">
-              Projects
+              Your Projects
             </h3>
             <p className="font-body text-[15px] leading-[1.7] text-on-surface-variant max-w-[58ch]">
               Every website you&rsquo;ve briefed so far. Open one to keep
-              working, duplicate it to spin up a similar job, or start fresh.
-              Everything here is local to your workspace &mdash; nothing leaves
-              until you say so.
+              working, or start a new one from scratch.
             </p>
           </div>
           <Button variant="primary">+ New Project</Button>
         </header>
+
+        {/* How it works — 3-step flow for new users */}
+        <div className="flex items-start gap-12 bg-surface-container-low/40 px-7 py-6 rounded-sm ghost-border">
+          <p className="editorial-label shrink-0 pt-0.5">How it works</p>
+          <div className="flex items-start gap-10">
+            <div className="flex items-start gap-3">
+              <span className="font-label text-[11px] text-tertiary mt-0.5">1.</span>
+              <div>
+                <p className="font-label text-[11px] uppercase tracking-[0.22em] text-on-surface">Fill out the brief</p>
+                <p className="font-body text-[12px] text-on-surface-variant mt-1">Tell us about the business</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="font-label text-[11px] text-tertiary mt-0.5">2.</span>
+              <div>
+                <p className="font-label text-[11px] uppercase tracking-[0.22em] text-on-surface">Review the AI summary</p>
+                <p className="font-body text-[12px] text-on-surface-variant mt-1">Make sure it understood you</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="font-label text-[11px] text-tertiary mt-0.5">3.</span>
+              <div>
+                <p className="font-label text-[11px] uppercase tracking-[0.22em] text-on-surface">Get your prompts</p>
+                <p className="font-body text-[12px] text-on-surface-variant mt-1">Ready to paste into Claude</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Utility row — search, type filter, status, sort */}
         <div className="flex flex-wrap items-end gap-8 ghost-border-b pb-6">
@@ -96,6 +124,19 @@ export default function ProjectsPage() {
                   </span>
                 </div>
               </div>
+
+              {(() => {
+                const projectPrinciples = getPrinciplesForProject(p.slug);
+                if (projectPrinciples.length === 0) return null;
+                return (
+                  <TeachingNote label="What you'll learn">
+                    {projectPrinciples
+                      .slice(0, 3)
+                      .map((pr) => pr.rule)
+                      .join(" · ")}
+                  </TeachingNote>
+                );
+              })()}
 
               <div className="mt-6 pt-5 ghost-border-b flex items-center justify-between">
                 <div className="flex items-center gap-6">

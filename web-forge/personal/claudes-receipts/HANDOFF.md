@@ -1,160 +1,126 @@
 # Claude's Receipts — Session Handoff
 
-**Branch:** `feat/claudes-receipts` (8 commits ahead of `feat/drum-apparatus-web`, which is ahead of `main`)
-**Last session ended:** 2026-04-12 (evening, second session)
-**Status:** Milestones 1–3 complete from prior session. This session completed items 1–6 of the known gaps list. App is live at https://claudes-receipts.netlify.app.
+**Branch:** `feat/claudes-receipts`
+**Last session ended:** 2026-04-13 (late afternoon)
+**Status:** Realtime analytics fully live on prod. Dashboard shows live pulse, context window, token burn, agent deployments, and idle skeleton. All three stacked bugs (compare-query SQL, chokidar on Windows, ingest auto-closing sessions) resolved. Polling tail replaces chokidar.
 
 ---
 
-## What lives on this branch
+## What happened this session
 
-### 1. Next.js 16 dashboard (`./`)
+### Realtime analytics dashboard shipped
+- **New** `src/app/api/realtime/route.ts` — single GET returning active session + 60s/5m/1h pulse + context window + token sparkline + live event feed. 8 queries in parallel, ~8KB payload, ~200ms.
+- **New** `src/components/realtime-pulse.tsx` — polls every 4s, in-place updates.
+- **Rewrote** `src/app/page.tsx` — realtime panel as centerpiece, time-window grid (today/7d/lifetime), breakdowns (top projects 7d, agent deployments 7d), recent sessions strip.
+- **Added** `loadHomepageSummary()` to `src/lib/receipts-queries.ts`.
+- Killed: "Internal Standing" percentile theater, hardcoded `shell_command 38%`, `0.88 tool dependency index`, `Subscription Delusion Delta`.
 
-- **App Router**, React 19, Tailwind v4, Drizzle ORM, NextAuth (GitHub), Zod
-- `AGENTS.md` warns: **Next.js 16 has breaking changes** — consult `node_modules/next/dist/docs/` before writing new route code
-- **All dashboard pages are `force-dynamic`** and server-rendered with `getServerSession(authOptions)`
-- Lint clean, `npm run build` green, deployed to production
+### Three stacked bugs fixed to get live data flowing
+1. **Compare query broke on prod** — `CASE WHEN started_at >= $1` with sum() aggregate failed postgres-js parameter-type inference. Rewrote to fetch rows and bucket in JS.
+2. **chokidar watcher silent on Windows** — polling + glob combo never fired change events for append-only JSONL writes. Wrote `helper/scripts/tail.mjs`, a dead-simple polling tail that stats every .jsonl every 3s, reads bytes past a per-file cursor, parses, and POSTs.
+3. **Ingest auto-closed live sessions** — `/api/ingest` was setting `ended_at = lastEventAt` on every batch, which prevented any session from ever appearing active. Patched so `ended_at` is only set via the explicit `sessionEnd` metadata path.
 
-#### Routes
-| Route | Status | Source |
-| --- | --- | --- |
-| `/` | dynamic | `loadDashboardData(userId)` → mocks fallback |
-| `/sessions` | dynamic | `loadSessionsIndex(userId)` → mocks fallback |
-| `/sessions/[sessionId]` | dynamic | `loadSessionDetail(userId, id)` → mocks fallback |
-| `/projects` | dynamic | `loadProjectCards(userId)` → mocks fallback |
-| `/tools` | dynamic | `loadToolCards(userId)` → mocks fallback |
-| `/devices` | dynamic | `loadDeviceCards(userId)` → mocks fallback |
-| `/share` | dynamic | `loadUserShares(userId)` + `ShareCreator` client component |
-| `/s/[slug]` | dynamic, public | `loadShare(slug)` + redaction config |
-| `/s/[slug]/opengraph-image` | dynamic | ImageResponse — dark/gold 1200×630, live DB data |
-| `/login` | static | NextAuth GitHub button |
+### Context window polish
+- **Peak instead of latest** — was reading latest `api_request_completed.input_tokens`, which Claude's API excludes cache reads/creations from. Real context = `max(input_tokens + cache_tokens)`. Peak jumped from 1,576 to 219,590 on David's active session.
+- **Model-aware limits** — `contextLimitFor()` maps Opus 4.6 and Sonnet 4.6 to 1M, Haiku and unknown to 200k. Read from `session.model_summary`.
 
-#### API routes
-| Endpoint | Auth | Purpose |
-| --- | --- | --- |
-| `POST /api/auth/[...nextauth]` | — | NextAuth handler |
-| `POST /api/devices/register` | session | Mints device + ingest key (hashed in DB) |
-| `POST /api/ingest` | device key | Upserts session + session_events |
-| `POST /api/rankings/rebuild` | session | Recomputes + persists `rank_snapshots` |
-| `POST /api/shares` | session | Creates private/public share with redaction config |
-| `GET /api/health` | — | Sanity |
+### Idle skeleton
+- Active session panel no longer hides when last event > 5min ago. Stays rendered with final tokens, cost, and peak context visible, dimmed to 55% opacity.
+- Three states: **Live** (pulsing green, ≤5min), **Idle** (muted, session within 12h), **Dormant** (no session 12h+).
 
-### 2. Metrics engine (`src/lib/metrics.ts`)
+### Error surfacing
+- `api/realtime` route wrapped in try/catch, returns error message + truncated stack in 500 body instead of crashing to Netlify's default page.
+- Client component shows `fetch failed: <reason>` in the empty state instead of perpetual "connecting…".
 
-Pure functions. No DB dependency beyond type imports. Unchanged — see prior handoff.
+### Backfill safety
+- `helper/scripts/backfill.mjs` no longer synthesizes `session_ended` for files modified in the last 20 minutes. Prevents backfill from closing the currently-running session.
 
-### 3. Rankings engine (`src/lib/rankings.ts`)
+---
 
-All 10 PRD dimensions. `computeRankings` + `persistRankingSnapshots` + `loadLatestRankings`. Unchanged — see prior handoff.
+## Commits made this session
 
-### 4. Share pages
+| SHA | Message |
+| --- | --- |
+| `580a1b2` | feat: realtime analytics dashboard |
+| `afff1bb` | fix: bucket compare query in JS instead of SQL CASE |
+| `52883d4` | fix: ingest keeps live sessions open + polling tail for Windows |
+| `979efec` | fix: context window = peak (input+cache) · model-aware limit |
+| `1d9a3bf` | feat: idle skeleton preserves last-known session state |
 
-- **`/share`** (authenticated): creator widget + existing shares list
-- **`/s/[slug]`** (public): standalone editorial treatment, Fraunces serif, gold-on-charcoal
-- **`/s/[slug]/opengraph-image`** (new): dynamic OG image. Dark `#070706` bg, warm top gradient, left gold rule, two-column layout — branding/headline left, receipt stat card right. Pulls lifetime damage + 30-day burn from DB, respects `exactCosts` redaction. Loads Fraunces from Google Fonts at render time, falls back to Georgia. `generateMetadata` on `page.tsx` now wires `og:image` + `twitter:card`.
+---
 
-### 5. Helper agent (`./helper/`)
+## Live state at session end
 
-#### New this session
-- **Stale-session recovery** (`tail.ts` + `agent.ts`): `readNewLines` returns `mtimeMs`. `readLinesUpToCursor` re-reads full JSONL history for timeline rebuild. On `add`, files with `cursor.offset > 0` + `mtime > IDLE_TIMEOUT_MS` + no existing timeline get their full history replayed into `timelines`. Chokidar `ready` fires an immediate flush so stale sessions close on startup rather than waiting 15s.
-- **Auth failure detection** (`uploader.ts` + `agent.ts`): `postBatch` returns `PostResult = { ok: true } | { ok: false; authFailed: boolean }`. 401 is terminal — not retried, not queued. `flushQueue` returns `{ authFailed: boolean }`. Agent's `flush` checks every send + queue flush; on `authFailed` calls `handleAuthFailure()` which clears the interval, logs exact re-pairing instructions, and exits with code 1. Queue is preserved (not wiped) so data survives a re-register.
+| Metric | Value |
+| --- | --- |
+| Production URL | https://claudes-receipts.netlify.app |
+| Sessions (lifetime) | 299 |
+| Sessions (today) | 61+ |
+| Cost (today) | $575+ |
+| Cost (yesterday) | $659 |
+| Context window (this session peak) | ~225k / 1M (22%) |
+| Agent deployments 24h | 89+ |
+| Polling tail pid (may be dead) | 228949 |
 
-#### Re-pairing flow (what `handleAuthFailure` prints)
+---
+
+## How to run
+
+**Tail (live data):**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts/helper
+node scripts/tail.mjs
 ```
-[helper] CREDENTIAL FAILURE — ingest key rejected
-[helper] Endpoint: <endpoint>
-[helper] The device key may have been revoked or is invalid.
-[helper] To re-pair:
-[helper]   1. Sign in at <endpoint>
-[helper]   2. Navigate to Devices and register a new device
-[helper]   3. Run:  helper register --endpoint <endpoint> --device-id <new-id> --ingest-key <new-key>
-[helper]   4. Run:  helper run
+
+**Backfill (idempotent, safe after tail has been running):**
+```bash
+cd helper
+node scripts/backfill.mjs
 ```
 
-### 6. Scheduled function (`netlify/functions/rankings-snapshot.ts`)
-
-Runs daily at 4am UTC via `schedule: "0 4 * * *"`. Queries all users, runs `computeRankings` + `persistRankingSnapshots` per user. Per-user failures are caught individually. 30-second Netlify scheduled function timeout — fine for v1 user count.
-
-### 7. Schema + seed
-
-Unchanged from prior session.
-
----
-
-## How it runs today
-
-1. **Live at:** https://claudes-receipts.netlify.app — deployed via `netlify deploy --build --prod`
-2. **GitHub OAuth:** `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` / `AUTH_SECRET` are set on the Netlify site (all contexts). Sign-in works once GitHub OAuth app callback URLs are confirmed.
-3. **DB:** Neon DB **claimed** — no longer anonymous, no longer at risk of expiry.
-4. To run locally: `netlify dev:exec -- npm run dev`
-5. To reseed: `netlify dev:exec -- npm run db:seed`
-6. To re-run migrations: `netlify dev:exec -- npx drizzle-kit migrate`
-
-**Pre-seeded test credentials** (local use only):
-- Workstation device id: `seed-dev-workstation` / key: `5JUkA6fYZ6UtQj1-RR0yS79yj985vBk_`
-- Laptop device id: `seed-dev-laptop` / key: `G95oKZBubgfCP2FjOR4nfORE_n_Ns-RF`
-
----
-
-## Known gaps / follow-ups
-
-### Done this session
-- ~~GitHub OAuth~~ — env vars set on Netlify (all + prod contexts)
-- ~~Stale-session recovery on agent restart~~ — startup sweep + immediate flush
-- ~~Share page OG image~~ — `opengraph-image.tsx` at `/s/[slug]`
-- ~~Rank snapshot cron~~ — `netlify/functions/rankings-snapshot.ts`, 4am UTC daily
-- ~~Deploy to production~~ — live at https://claudes-receipts.netlify.app
-- ~~Error recovery UX~~ — auth failure stops agent, prints re-pairing steps
-
-### Still open
-1. **Rebase onto main** — branch was cut from `feat/drum-apparatus-web`. Once that branch lands, rebase.
-2. **Tauri shell** — settings UI, system tray, start-on-login. Node agent is the plumbing; Tauri wraps it.
-3. **Browser extension** — PRD §11.4. Stub in PRD only.
-
-### PRD open questions (unchanged)
-- Public rank snapshots: freeze at publish time or live? Currently live on every load.
-- Subscription baseline is `$20/mo` constant. When should users configure this?
-- SEO for public share pages — `noindex` or indexed? No directive currently set.
-- Idle timeout (15 min) and active-gap threshold (2 min) need tuning against real traffic.
-
----
-
-## Commit trail
-
+**Dev dashboard:**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
+npx netlify dev
 ```
-e59ec6d feat(claudes-receipts): GitHub OAuth, stale-session recovery, OG image, rank cron, deploy
-5f68086 feat(claudes-receipts): idle session-end detection + surface labeling
-231fb6c feat(claudes-receipts): wire token/cost telemetry + realistic seed
-3644abd docs: session handoff for claudes-receipts
-a9e9105 feat(claudes-receipts): v1 helper agent tails Claude Code JSONL
-c0708c9 feat(claudes-receipts): Receipt Mode — public + private share pages
-8eab029 feat(claudes-receipts): wire projects/tools/devices + rankings engine
-ac10154 feat(claudes-receipts): wire home and sessions to Drizzle queries
-175603b feat(claudes-receipts): first-pass Next.js 16 scaffold
+
+**Deploy to prod:**
+```bash
+cd /c/dead-pixel-design/web-forge/personal/claudes-receipts
+npm run build && npx netlify deploy --prod --site 777f66fb-001d-485d-8142-44bad6482cea
 ```
 
 ---
 
-## Key files to open first next session
+## Open items
 
-- `src/lib/receipts-queries.ts` — all DB read paths
-- `src/lib/metrics.ts` — pure metric math
-- `src/lib/rankings.ts` — percentile engine
-- `src/app/api/ingest/route.ts` — writes tokens/cost, applies `sessionEnd`
-- `helper/src/agent.ts` — chokidar watcher + flush loop + stale sweep + auth failure handling
-- `helper/src/uploader.ts` — `PostResult` type, auth failure propagation
-- `netlify/functions/rankings-snapshot.ts` — daily cron
-- `src/app/s/[slug]/opengraph-image.tsx` — OG image
+### Helper CLI still points at broken chokidar agent
+`helper/src/agent.ts` uses chokidar and doesn't fire on Windows file appends. `helper/dist/cli.js run` → `runAgent()` is effectively dead for live tailing. The working path is `node scripts/tail.mjs`. Options:
+- Swap `agent.ts` internals to use the tail.mjs polling logic, keep the CLI surface
+- Update `cli.ts` to invoke tail.mjs directly
+- Document that `helper run` is deprecated, use the tail script
+
+### Context window 1M heuristic
+`contextLimitFor()` treats all Opus 4.6 as 1M. If David runs a 200k Opus variant, the bar will under-report. To distinguish, we'd need the parser to capture actual context window from the API response, which it doesn't today.
+
+### Session-end still never fires for live sessions
+Without chokidar's idle-detection flush loop, sessions never get a `session_ended` event once tool calls stop. The realtime dashboard's 5min live cutoff + 12h idle visibility handles the UX, but the DB ends up with many `ended_at = null` rows over time. A cleanup pass (or restoring the idle-detection logic in tail.mjs) should close these.
+
+### Other pages still using old queries
+- `/sessions`, `/tools`, `/projects`, `/devices` use the pre-realtime query functions
+- Fine — they're not broken, just not live. Next session candidate.
+
+### Tauri NSIS installer still blocked
+`cargo tauri build` compiles cleanly but NSIS bundler fails. `tauri.conf.json` → switch `bundle.targets` to `["msi"]` to unblock.
 
 ---
 
-## Design decisions worth remembering
+## Key files next session
 
-- **Demo mode is first-class.** Every page gracefully falls back to mock data when `getDb()` returns null or the user has no rows. Don't break this when adding features.
-- **Dashboard UI primitives live in `receipts-ui.tsx`.** The `/s/[slug]` share page is the one intentional exception — it uses a separate CSS vocabulary.
-- **Metadata-only telemetry is a hard rule.** Helper's `parse.ts` never reads prompt/response content.
-- **Helper chose Node over Tauri for v1.** Tauri is a UI question, not a capability question.
-- **Session-end is idle-timeout, not event-driven.** 15 min of quiet + synthetic `session_ended`.
-- **`sessionEnd` is payload-level metadata, not an event.** Keeps events table clean.
-- **Auth failure is terminal, not retryable.** Queue is preserved; agent exits with instructions.
-- **Env vars prefer `NETLIFY_DATABASE_URL`, fall back to `DATABASE_URL`.** Run DB commands via `netlify dev:exec --`.
+- `src/app/api/realtime/route.ts` — endpoint, all realtime queries + context + model limits
+- `src/components/realtime-pulse.tsx` — polling client, idle/live/dormant states
+- `src/app/page.tsx` — homepage, composed of RealtimePulse + loadHomepageSummary
+- `src/lib/receipts-queries.ts` — `loadHomepageSummary` (new) + `loadDashboardData` (for /s/[slug])
+- `helper/scripts/tail.mjs` — polling ingest tail, run this not `cli.js run`
+- `helper/scripts/backfill.mjs` — idempotent, skips live files (20-min threshold)
+- `src/app/api/ingest/route.ts` — only sets `ended_at` via explicit `sessionEnd` metadata
